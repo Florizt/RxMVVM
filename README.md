@@ -21,7 +21,7 @@ dependencies {
 
 ## 用法
 ### 初始化
-- 基础用法（已经可以满足日常使用），需要在application的onCreate()中调用。
+- 基础用法（已经可以满足日常使用），需要在application的onCreate()中调用,已实现自动适配。
 
 ```java
 RxMVVMInitializer.init(this);//默认设计底稿为1080p
