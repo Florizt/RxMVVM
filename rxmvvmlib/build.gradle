@@ -1,0 +1,97 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
+    // 系统组件
+    implementation('androidx.appcompat:appcompat:1.1.0')
+    implementation('com.google.android.material:material:1.0.0')
+    implementation('androidx.recyclerview:recyclerview:1.0.0')
+    implementation('androidx.constraintlayout:constraintlayout:1.1.3')
+    implementation 'com.afollestad.material-dialogs:core:0.9.4.5'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'androidx.multidex:multidex:2.0.0'
+
+    // 沉浸式状态栏
+    implementation 'com.gyf.immersionbar:immersionbar:2.3.3'
+
+    // 下拉刷新
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
+
+    // 适配
+    implementation 'me.jessyan:autosize:1.1.2'
+
+    // 瓦力
+    implementation 'com.meituan.android.walle:library:1.1.6'
+
+    // eventbus
+    implementation 'org.greenrobot:eventbus:3.0.0'
+
+    // logx日志
+    implementation 'com.github.dgrlucky:logx:1.0.0'
+
+    // BackgroundLibrary
+    implementation 'com.noober.background:core:1.6.1'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+
+    // fastjson
+    implementation 'com.alibaba:fastjson:1.1.71.android'
+
+    // retrofit+rxjava
+    implementation 'com.squareup.retrofit2:retrofit:2.2.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+
+    // okhttp
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
+
+    //rx 6.0权限请求
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
+
+    //Google AAC
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.1.0'
+
+    //rx系列与View生命周期同步
+    implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.2'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.2'
+
+    //rxbinding
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+
+    //recyclerview的databinding套装
+    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:3.1.1'
+    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:3.1.1'
+}

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RxMVVMLib</string>
+    <string name="press_the_exit_procedure_again">再按一次退出程序</string>
+    <string name="http_timeout">请求超时，请检查您的网络</string>
+</resources>
