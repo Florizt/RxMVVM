@@ -3,4 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="rx_09bb07">#09bb07</color>
+    <color name="rx_1196db">#1196db</color>
+    <color name="rx_ea3939">#ea3939</color>
+    <color name="rx_ff443f">#ff443f</color>
+    <color name="rx_000000">#000000</color>
 </resources>

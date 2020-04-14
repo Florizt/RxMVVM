@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.rx.mvvm.viewmodel.MainViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/rx_ffffff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:margin_top="@{viewModel.marginTop()}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="测试返回按键"
+                android:textColor="@color/rx_ffffff"
+                android:textStyle="bold"
+                app:bl_corners_radius="18dp"
+                app:bl_solid_color="@color/rx_09bb07"
+                app:onScalTouchCommand="@{viewModel.setExit}" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="18dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="测试2"
+                android:textColor="@color/rx_ffffff"
+                android:textStyle="bold"
+                app:bl_corners_radius="18dp"
+                app:bl_solid_color="@color/rx_1196db" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
