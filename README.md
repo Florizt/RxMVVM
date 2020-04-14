@@ -1,5 +1,9 @@
 # RxMVVM
-一款基于mvvm+databinding+Google AAC+rxlifecycle+rxbinding+retrofit2+rxjava2的架构
+一款基于mvvm+databinding+Google AAC+rxlifecycle+rxbinding+retrofit2+rxjava2+bindingcollectionadapter的架构
+
+兼容AndroidX,适配Android Q,集成了各个好用的框架，自动适配，沉浸式状态栏，下拉刷新，软键盘监听，返回键监听，6.0权限请求，
+美团多渠道打包，网络层契合RESTful风格，从此告别setText()、setOnClickListener()、Glide.with()、recyclerview.setAdapter()、recyclerview.setLayoutManager()等，
+框架会逐渐丰富，使用方式也会逐渐更新
 
 ## 使用
 #### android studio
