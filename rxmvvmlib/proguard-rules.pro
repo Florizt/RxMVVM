@@ -48,9 +48,7 @@
 #----------------------------------------------------------------------------
 
 #---------------------------------实体类-----------------------------------
--keep class com.zai.app.entity.** { *; }
--keep class com.luck.picture.lib.entity.** { *; }
--keep class com.yalantis.ucrop.model.** { *; }
+
 #----------------------------------------------------------------------------
 
 #---------------------------------默认保留区---------------------------------
@@ -163,25 +161,6 @@
 #----------------------------------------------------------------------------
 #---------------------------------第三方jar包----------------------------------
 
-#一键登录
--keep class cn.com.chinatelecom.gateway.lib.** {*;}
--keep class com.unicom.xiaowo.login.** {*;}
--keep class com.cmic.sso.sdk.** {*;}
--keep class com.mobile.auth.** {*;}
--keep class android.support.v4.** { *;}
--keep class org.json.**{*;}
--keep class com.alibaba.fastjson.** {*;}
-
-#smallvideorecord
--dontwarn com.zero.smallvideorecord.**
--keep class com.zero.smallvideorecord.**{*;}
-
-#极光魔链
--dontwarn cn.magicwindow.**
--keep class cn.magicwindow.** {*;}
--dontwarn cn.jiguang.**
--keep class cn.jiguang.** { *; }
-
 #MaterialDialog
 -dontwarn com.afollestad.materialdialogs.**
 -keep class com.afollestad.materialdialogs.** { *;}
@@ -191,23 +170,6 @@
 -keep class com.alibaba.fastjson.** { *; }
 -keepattributes Signature
 -keepattributes *Annotation*
-
-#高德  3D 地图 V5.0.0之后：
--keep class com.amap.api.maps.**{*;}
--keep class com.autonavi.**{*;}
--keep class com.amap.api.trace.**{*;}
-#定位
--keep class com.amap.api.location.**{*;}
--keep class com.amap.api.fence.**{*;}
--keep class com.autonavi.aps.amapapi.model.**{*;}
-#搜索
--keep class com.amap.api.services.**{*;}
-#2D地图
--keep class com.amap.api.maps2d.**{*;}
--keep class com.amap.api.mapcore2d.**{*;}
-#导航
--keep class com.amap.api.navi.**{*;}
--keep class com.autonavi.**{*;}
 
 #glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -237,29 +199,10 @@
 -keep class com.google.gson.stream.** { *; }
 # 使用Gson时需要配置Gson的解析对象及变量都不混淆。不然Gson会找不到变量。
 # 将下面替换成自己的实体类
--keep class com.zai.app.entity.** { *; }
-
-#cactus
--keep class com.gyf.cactus.entity.* {*;}
 
 #immersionbar
 -dontwarn com.gyf.barlibrary.**
 -keep class com.gyf.barlibrary.** { *; }
-
-#小米推送
--dontwarn com.xiaomi.push.**
--keep class com.xiaomi.** {*;}
--keep class com.zai.app.push.XiaomiMessageReceiver {*;}
-
-#华为推送
--keepattributes *Annotation*
--keepattributes Exceptions
--keepattributes InnerClasses
--keepattributes Signature
--keepattributes SourceFile,LineNumberTable
--keep class com.hianalytics.android.**{*;}
--keep class com.huawei.updatesdk.**{*;}
--keep class com.huawei.hms.**{*;}
 
 #rxbinding2
 -dontwarn com.jakewharton.rxbinding2.**
@@ -269,20 +212,9 @@
 -dontwarn com.meituan.android.walle.**
 -keep class com.meituan.android.walle.** { *; }
 
-#网易云
--dontwarn com.netease.**
--keep class com.netease.** {*;}
-#如果你使用全文检索插件，需要加入
--dontwarn org.apache.lucene.**
--keep class org.apache.lucene.** {*;}
-
 #backgroundLib
 -dontwarn com.noober.background.**
 -keep class com.noober.background.** { *; }
-
-#七牛
--keep class com.qiniu.**{*;}
--keep class com.qiniu.**{public <init>();}
 
 #smartrefresh
 -dontwarn com.scwang.smartrefresh.layout.**
@@ -330,30 +262,9 @@
 -dontwarn com.trello.rxlifecycle2.**
 -keep class com.trello.rxlifecycle2.**{*;}
 
-# greendao
--keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
-public static java.lang.String TABLENAME;
-}
--keep class **$Properties {*;}
-
-# If you do not use SQLCipher:
--dontwarn net.sqlcipher.database.**
-# If you do not use RxJava:
--dontwarn rx.**
-
--keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
-    public static void dropTable(org.greenrobot.greendao.database.Database, boolean);
-    public static void createTable(org.greenrobot.greendao.database.Database, boolean);
-}
-
-#greendaohelper
--dontwarn com.github.yuweiguocn.**
--keep class com.github.yuweiguocn.**{*;}
-
 #autosize
 -dontwarn me.jessyan.autosize.**
 -keep class me.jessyan.autosize.** { *; }
-
 
 #bindingcollectionadapter2
 -dontwarn me.tatarka.bindingcollectionadapter2.**
@@ -367,9 +278,9 @@ public static java.lang.String TABLENAME;
 -dontwarn org.apache.commons.**
 -keep class org.apache.commons.** { *; }
 
-#paho
--dontwarn org.eclipse.paho.**
--keep class org.eclipse.paho.** {*;}
+#org
+-dontwarn org.**
+-keep class org.** {*;}
 
 #evenbus
 -keepattributes *Annotation*
@@ -387,9 +298,6 @@ public static java.lang.String TABLENAME;
 -dontwarn org.reactivestreams.**
 -keep class org.reactivestreams.** {*;}
 
-#luban
--dontwarn top.zibin.luban.**
--keep class top.zibin.luban.** { *; }
 
 #databinding
 -dontwarn android.databinding.**
@@ -398,118 +306,4 @@ public static java.lang.String TABLENAME;
 #lambda
 -dontwarn java.lang.invoke.*
 -dontwarn **$$Lambda$*
-
-#umeng share
--dontshrink
--dontoptimize
--dontwarn com.google.android.maps.**
--dontwarn android.webkit.WebView
--dontwarn com.umeng.**
--dontwarn com.tencent.weibo.sdk.**
--dontwarn com.facebook.**
--keep public class javax.**
--keep public class android.webkit.**
--dontwarn android.support.v4.**
--keep enum com.facebook.**
--keepattributes Exceptions,InnerClasses,Signature
--keepattributes *Annotation*
--keepattributes SourceFile,LineNumberTable
-
--keep public interface com.facebook.**
--keep public interface com.tencent.**
--keep public interface com.umeng.socialize.**
--keep public interface com.umeng.socialize.sensor.**
--keep public interface com.umeng.scrshot.**
-
--keep public class com.umeng.socialize.* {*;}
-
-
--keep class com.facebook.**
--keep class com.facebook.** { *; }
--keep class com.umeng.scrshot.**
--keep public class com.tencent.** {*;}
--keep class com.umeng.socialize.sensor.**
--keep class com.umeng.socialize.handler.**
--keep class com.umeng.socialize.handler.*
--keep class com.umeng.weixin.handler.**
--keep class com.umeng.weixin.handler.*
--keep class com.umeng.qq.handler.**
--keep class com.umeng.qq.handler.*
--keep class UMMoreHandler{*;}
--keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
--keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
--keep class im.yixin.sdk.api.YXMessage {*;}
--keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
--keep class com.tencent.mm.sdk.** {
-   *;
-}
--keep class com.tencent.mm.opensdk.** {
-   *;
-}
--keep class com.tencent.wxop.** {
-   *;
-}
--keep class com.tencent.mm.sdk.** {
-   *;
-}
--dontwarn twitter4j.**
--keep class twitter4j.** { *; }
-
--keep class com.tencent.** {*;}
--dontwarn com.tencent.**
--keep class com.kakao.** {*;}
--dontwarn com.kakao.**
--keep public class com.umeng.com.umeng.soexample.R$*{
-    public static final int *;
-}
--keep public class com.linkedin.android.mobilesdk.R$*{
-    public static final int *;
-}
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
-
--keep class com.tencent.open.TDialog$*
--keep class com.tencent.open.TDialog$* {*;}
--keep class com.tencent.open.PKDialog
--keep class com.tencent.open.PKDialog {*;}
--keep class com.tencent.open.PKDialog$*
--keep class com.tencent.open.PKDialog$* {*;}
--keep class com.umeng.socialize.impl.ImageImpl {*;}
--keep class com.sina.** {*;}
--dontwarn com.sina.**
--keep class  com.alipay.share.sdk.** {
-   *;
-}
-
--keepnames class * implements android.os.Parcelable {
-    public static final ** CREATOR;
-}
-
--keep class com.linkedin.** { *; }
--keep class com.android.dingtalk.share.ddsharemodule.** { *; }
--keepattributes Signature
-#umeng share end
-
-#umeng统计
--keepclassmembers class * {
-    public <init> (org.json.JSONObject);
-}
--keep public class com.zai.app.R$*{
-    public static final int *;
-}
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
--keep class com.tencent.mm.sdk.** {*;}
-
-#支付宝支付
--keep class com.alipay.android.app.IAlixPay{*;}
--keep class com.alipay.android.app.IAlixPay$Stub{*;}
--keep class com.alipay.android.app.IRemoteServiceCallback{*;}
--keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
--keep class com.alipay.sdk.app.PayTask{ public *;}
--keep class com.alipay.sdk.app.AuthTask{ public *;}
 #----------------------------------------------------------------------------

@@ -1,6 +1,8 @@
 package com.rx.rxmvvmlib.base;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 
 import com.rx.rxmvvmlib.util.UIUtils;
 
@@ -14,7 +16,23 @@ import me.jessyan.autosize.AutoSize;
  */
 public class RxMVVMInitializer {
 
+    /**
+     * 初始化
+     *
+     * @param context
+     */
     public void init(Context context) {
+        init(context, 360, 640);
+    }
+
+    /**
+     * 初始化
+     *
+     * @param context
+     * @param width   屏幕适配，底图尺寸
+     * @param height  屏幕适配，底图尺寸
+     */
+    public void init(Context context, int width, int height) {
         // 主项目配置
         UIUtils.init(context);
 
@@ -22,6 +40,14 @@ public class RxMVVMInitializer {
         CrashHandler.getInstance().init(context);
 
         // 适配配置
-        AutoSize.initCompatMultiProcess(context);
+        try {
+            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),
+                    PackageManager.GET_META_DATA);
+            appInfo.metaData.putInt("design_width_in_dp", width);
+            appInfo.metaData.putInt("design_height_in_dp", height);
+            AutoSize.initCompatMultiProcess(context);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

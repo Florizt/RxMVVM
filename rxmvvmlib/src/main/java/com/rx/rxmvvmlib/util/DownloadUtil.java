@@ -1,5 +1,7 @@
 package com.rx.rxmvvmlib.util;
 
+import com.rx.rxmvvmlib.config.HttpConfig;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -72,7 +74,7 @@ public class DownloadUtil {
         HostnameVerifier hv1 = new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
-                return hostname.contains("doc.zaidw.com");
+                return hostname.contains(HttpConfig.HTTP_HOST_NAME);
             }
         };
 
