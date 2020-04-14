@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
+import com.meituan.android.walle.WalleChannelReader;
 import com.rx.rxmvvmlib.util.UIUtils;
 
 import me.jessyan.autosize.AutoSize;
@@ -16,12 +17,15 @@ import me.jessyan.autosize.AutoSize;
  */
 public class RxMVVMInitializer {
 
+
+    private static Context context;
+
     /**
      * 初始化
      *
      * @param context
      */
-    public void init(Context context) {
+    public static void init(Context context) {
         init(context, 360, 640);
     }
 
@@ -32,7 +36,8 @@ public class RxMVVMInitializer {
      * @param width   屏幕适配，底图尺寸
      * @param height  屏幕适配，底图尺寸
      */
-    public void init(Context context, int width, int height) {
+    public static void init(Context context, int width, int height) {
+        RxMVVMInitializer.context = context;
         // 主项目配置
         UIUtils.init(context);
 
@@ -49,5 +54,12 @@ public class RxMVVMInitializer {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getChannel() {
+        if (null == context) {
+            return "";
+        }
+        return WalleChannelReader.getChannel(context.getApplicationContext(), "");
     }
 }

@@ -244,7 +244,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         System.exit(0);
     }
 
-    private void showPermissionDialog(int requestCode) {
+    protected void showPermissionDialog(int requestCode) {
         if (activity == null || activity.isDestroyed()) {
             return;
         }
