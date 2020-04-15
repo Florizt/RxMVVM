@@ -19,7 +19,7 @@
 > Add the dependency:
 ```java
 dependencies {
-	 implementation 'com.github.Florizt:RxMVVM:v1.0.0'
+	 implementation 'com.github.Florizt:RxMVVM:v1.0.1'
 	}
 ```
 
