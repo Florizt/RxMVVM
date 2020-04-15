@@ -9,6 +9,17 @@
         <variable
             name="viewModel"
             type="com.rx.mvvm.viewmodel.MainViewModel" />
+
+        <import type="me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter" />
+
+        <variable
+            name="adapter"
+            type="BindingRecyclerViewAdapter" />
+
+        <import type="com.rx.rxmvvmlib.binding.viewadapter.recyclerview.LayoutManagers" />
+
+        <import type="com.rx.rxmvvmlib.binding.viewadapter.recyclerview.LineManagers" />
+
     </data>
 
     <LinearLayout
@@ -25,7 +36,7 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="测试返回按键"
@@ -34,18 +45,17 @@
                 app:bl_corners_radius="18dp"
                 app:bl_solid_color="@color/rx_09bb07"
                 app:onScalTouchCommand="@{viewModel.setExit}" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="18dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="测试2"
-                android:textColor="@color/rx_ffffff"
-                android:textStyle="bold"
-                app:bl_corners_radius="18dp"
-                app:bl_solid_color="@color/rx_1196db" />
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:splitMotionEvents="false"
+            app:adapter="@{adapter}"
+            app:itemBinding="@{viewModel.itemBinding}"
+            app:items="@{viewModel.messageList}" />
     </LinearLayout>
 </layout>

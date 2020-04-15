@@ -7,6 +7,10 @@ import com.rx.mvvm.databinding.ActivityMainBinding;
 import com.rx.mvvm.viewmodel.MainViewModel;
 import com.rx.rxmvvmlib.base.BaseActivity;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter;
+
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
@@ -27,7 +31,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public void initView(Bundle savedInstanceState) {
-
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity, RecyclerView.VERTICAL, true);
+        linearLayoutManager.setStackFromEnd(true);
+        binding.recyc.setLayoutManager(linearLayoutManager);
+        binding.setAdapter(new BindingRecyclerViewAdapter());
     }
 
     @Override

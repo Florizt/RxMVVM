@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <import type="com.rx.mvvm.viewmodel.ChatMsgItemViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.rx.mvvm.viewmodel.ChatMsgItemViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{ChatMsgItemViewModel.time(viewModel.entity)}"
+            android:textColor="@color/rx_bdbdbd"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="@{viewModel.showTime ? View.VISIBLE : View.GONE}" />
+
+        <ImageView
+            android:id="@+id/head_img"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_below="@id/time"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="10dp"
+            android:scaleType="centerCrop"
+            android:src="@color/rx_dddddd"
+            app:round_corner="12dp"
+            app:url="@{viewModel.entity.headImg}" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/time"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/head_img"
+            android:gravity="center_vertical"
+            android:maxWidth="220dp"
+            android:minHeight="36dp"
+            android:text="@{viewModel.entity.content}"
+            android:textColor="@color/rx_ffffff"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:bl_corners_radius="17dp"
+            app:bl_padding_bottom="7dp"
+            app:bl_padding_left="14dp"
+            app:bl_padding_right="14dp"
+            app:bl_padding_top="7dp"
+            app:bl_solid_color="@color/rx_554eaa"
+            app:currentView="@{viewModel.clickView}"
+            app:margin_top="@{viewModel.marginTop()}"
+            app:onLongClickCommand="@{viewModel.longClick}" />
+    </RelativeLayout>
+</layout>
