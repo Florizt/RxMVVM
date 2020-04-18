@@ -6,8 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rx.rxmvvmlib.R;
+import com.rx.rxmvvmlib.util.LogUtil;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
+import com.rx.rxmvvmlib.util.keyboardutil.callback.IkeyBoardCallback;
+import com.rx.rxmvvmlib.util.keyboardutil.core.KeyBoardEventBus;
 import com.rx.rxmvvmlib.view.LoadingDialog;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.lang.reflect.ParameterizedType;
@@ -20,13 +25,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by wuwei
  * 2019/12/6
  * 佛祖保佑       永无BUG
  */
-public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseViewModel> extends RxFragment implements IBaseView {
+public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseViewModel> extends RxFragment implements IBaseView, IkeyBoardCallback {
     protected BaseActivity activity;
     protected V binding;
     protected VM viewModel;
@@ -69,6 +75,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         initViewObservable();
         //注册RxBus
         viewModel.registerEventBus();
+        KeyBoardEventBus.getDefault().register(this);
     }
 
     @Override
@@ -79,6 +86,9 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         }
         if (binding != null) {
             binding.unbind();
+        }
+        if (loadingDialog != null) {
+            dismissLoading();
         }
     }
 
@@ -113,6 +123,38 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         }
     }
 
+    @Override
+    public void onKeyBoardShow(int keyBoardHeight) {
+        LogUtil.i("ghy", "键盘显示-" + keyBoardHeight);
+        BaseFragment.this.onKeyboardChange(true, keyBoardHeight);
+    }
+
+    @Override
+    public void onKeyBoardHidden() {
+        LogUtil.i("ghy", "键盘隐藏");
+        BaseFragment.this.onKeyboardChange(false, 0);
+    }
+
+    public void requestPermission(final int requestCode, final boolean showDialog, String... permissions) {
+        RxPermissions rxPermissions = new RxPermissions(activity);
+        rxPermissions
+                .request(permissions)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            permissionGranted(requestCode);
+                        } else {
+                            if (showDialog) {
+                                showPermissionDialog(requestCode);
+                            } else {
+                                permissionDenied(requestCode);
+                            }
+                        }
+                        permissionGrantedOrDenineCanDo(requestCode);
+                    }
+                });
+    }
 
     /**
      * =====================================================================
@@ -120,9 +162,9 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     //注册ViewModel与View的契约UI回调事件
     protected void registorUIChangeLiveDataCallBack() {
         //加载对话框显示
-        viewModel.getUC().getShowDialogEvent().observe(this, new Observer<String>() {
+        viewModel.getUC().getShowDialogEvent().observe(this, new Observer<Void>() {
             @Override
-            public void onChanged(@Nullable String title) {
+            public void onChanged(@Nullable Void v) {
                 showLoading();
             }
         });
@@ -144,7 +186,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
 
     public void showLoading() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(activity);
+            loadingDialog = new LoadingDialog(activity, initCustomLoadingDialog(), loadingDialogCancelable());
         }
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -161,7 +203,9 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    loadingDialog.dismiss();
+                    if (!activity.isFinishing()) {
+                        loadingDialog.dismiss();
+                    }
                 }
             });
         }
@@ -199,6 +243,71 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
      */
     public VM initViewModel() {
         return null;
+    }
+
+    /**
+     * 软键盘改变
+     *
+     * @param isPopup
+     * @param keyboardHeight
+     */
+    protected void onKeyboardChange(boolean isPopup, int keyboardHeight) {
+
+    }
+
+    /**
+     * 权限申请成功执行
+     *
+     * @param requestCode
+     */
+    protected void permissionGranted(int requestCode) {
+
+    }
+
+    /**
+     * 权限申请失败执行
+     *
+     * @param requestCode
+     */
+    protected void permissionDenied(int requestCode) {
+
+    }
+
+    /**
+     * 权限申请成功或者失败都要执行
+     */
+    protected void permissionGrantedOrDenineCanDo(int requestCode) {
+
+    }
+
+    /**
+     * 权限未通过的弹窗，自己实现
+     *
+     * @param requestCode
+     */
+    protected void showPermissionDialog(int requestCode) {
+        if (activity == null || activity.isFinishing()) {
+            return;
+        }
+
+    }
+
+    /**
+     * 初始化loading弹窗布局，默认为R.layout.loading_dialog
+     *
+     * @return
+     */
+    protected int initCustomLoadingDialog() {
+        return R.layout.loading_dialog;
+    }
+
+    /**
+     * 初始化loading弹窗是否可点击外部消失，默认为false
+     *
+     * @return
+     */
+    protected boolean loadingDialogCancelable() {
+        return false;
     }
 
     /**

@@ -11,19 +11,24 @@ import com.rx.rxmvvmlib.R;
 
 public class LoadingDialog extends Dialog {
     public Context context;
+    private int layoutId;
 
     public LoadingDialog(Context context) {
+        this(context, R.layout.loading_dialog, false);
+    }
+
+    public LoadingDialog(Context context, int layoutId, boolean cancelable) {
         super(context, R.style.loading_dialog);
         this.context = context;
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
+        this.layoutId = layoutId;
+        setCancelable(cancelable);
+        setCanceledOnTouchOutside(cancelable);
         Window window = getWindow();
         window.setWindowAnimations(R.style.LoadingDialogWindowStyle);
     }
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.laoding_dialog);
+        setContentView(layoutId);
     }
 }

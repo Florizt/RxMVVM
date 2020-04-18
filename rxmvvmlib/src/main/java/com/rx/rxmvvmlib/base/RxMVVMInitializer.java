@@ -25,8 +25,8 @@ public class RxMVVMInitializer {
      *
      * @param context
      */
-    public static void init(Context context) {
-        init(context, 360, 640);
+    public static void init(Context context, ICrashHandler handler) {
+        init(context, handler, 360, 640);
     }
 
     /**
@@ -36,13 +36,13 @@ public class RxMVVMInitializer {
      * @param width   屏幕适配，底图尺寸
      * @param height  屏幕适配，底图尺寸
      */
-    public static void init(Context context, int width, int height) {
+    public static void init(Context context, ICrashHandler handler, int width, int height) {
         RxMVVMInitializer.context = context;
         // 主项目配置
         UIUtils.init(context);
 
         // 崩溃抓取
-        CrashHandler.getInstance().init(context);
+        CrashHandler.getInstance().init(context, handler);
 
         // 适配配置
         try {

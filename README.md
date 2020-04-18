@@ -19,7 +19,7 @@
 > Add the dependency:
 ```java
 dependencies {
-	 implementation 'com.github.Florizt:RxMVVM:v1.0.1'
+	 implementation 'com.github.Florizt:RxMVVM:v1.0.2'
 	}
 ```
 
@@ -28,11 +28,17 @@ dependencies {
 - 基础用法（已经可以满足日常使用），需要在application的onCreate()中调用,已实现自动适配。
 
 ```java
-RxMVVMInitializer.init(this);//默认设计底稿为1080p
+RxMVVMInitializer.init(Context context, ICrashHandler handler);//默认设计底稿为1080p即360*640，ICrashHandler为上报错误信息接口，仅支持BuildConfig.RELEASE环境下
 
-RxMVVMInitializer.init(this,360,640);//可以自己传入设计底稿的尺寸，单位为dp
+RxMVVMInitializer.init(Context context, ICrashHandler handler, int width, int height);//可以自己传入设计底稿的尺寸，单位为dp
 ```
 
+## 已实现loading弹窗
+### 项目已封装几个方法，继承BaseActivity/BaseFragment即可：
+ ```java
+initCustomLoadingDialog(); //初始化loading弹窗布局，默认为R.layout.loading_dialog
+loadingDialogCancelable(); //初始化loading弹窗是否可点击外部消失，默认为false
+ ```
 
 ## 已实现沉浸式状态栏
 ### [具体用法参考](https://github.com/Florizt/ImmersionBar)
@@ -48,7 +54,7 @@ statusBarDarkFont(); //状态栏字体是否深色，默认true
 ### [具体用法参考](https://github.com/scwang90/SmartRefreshLayout)
 
 ## 已实现软键盘监听
-### 项目已封装几个方法，继承BaseActivity即可：
+### 项目已封装几个方法，继承BaseActivity/BaseFragment即可即可：
 ```java
 onKeyboardChange(boolean isPopup, int keyboardHeight); //软键盘弹起/隐藏
 ```
@@ -62,10 +68,10 @@ doSthIsExit(); //按返回键仅仅只是返回上个界面时要做的操作
 
 ## 已实现6.0权限请求
 ### [具体用法参考](https://github.com/tbruyelle/RxPermissions)
-### 项目已封装几个方法，继承BaseActivity即可：
+### 项目已封装几个方法，继承BaseActivity/BaseFragment即可即可：
 ```java
 requestPermission(final int requestCode, final boolean showDialog, String... permissions); //请求权限
-showPermissionDialog(int requestCode); //权限申请失败，如果需要弹窗，实现这个
+showPermissionDialog(int requestCode); //权限申请失败，如果需要弹窗，自己实现
 permissionDenied(int requestCode); //权限申请失败，不弹窗
 permissionGranted(int requestCode); //权限申请成功
 permissionGrantedOrDenineCanDo(int requestCode); //权限申请成功或者失败都要执行

@@ -153,11 +153,11 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, i
     }
 
     public final class UIChangeLiveData extends SingleLiveEvent {
-        private SingleLiveEvent<String> showDialogEvent;
+        private SingleLiveEvent<Void> showDialogEvent;
         private SingleLiveEvent<Void> dismissDialogEvent;
         private SingleLiveEvent<Void> hideSoftKeyBoard;
 
-        public SingleLiveEvent<String> getShowDialogEvent() {
+        public SingleLiveEvent<Void> getShowDialogEvent() {
             return showDialogEvent = createLiveData(showDialogEvent);
         }
 

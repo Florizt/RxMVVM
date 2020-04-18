@@ -31,8 +31,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static final String FILE_NAME = "crash";
     private static final String FILE_NAME_SUFFIX = ".trace";
     private static CrashHandler sInstance = new CrashHandler();
-    private Thread.UncaughtExceptionHandler mDefaultCrashHandler;
-    private Context mContext;
+    private Thread.UncaughtExceptionHandler defaultCrashHandler;
+    private Context context;
+    private ICrashHandler handler;
 
     private CrashHandler() {
     }
@@ -41,10 +42,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         return sInstance;
     }
 
-    public void init(Context context) {
-        mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
+    public void init(Context context, ICrashHandler handler) {
+        this.context = context.getApplicationContext();
+        this.handler = handler;
+        defaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
-        mContext = context.getApplicationContext();
     }
 
     /**
@@ -60,20 +62,22 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             dumpExceptionToSDCard(ex);
             //这里可以上传异常信息到服务器，便于开发人员分析日志从而解决bug
             if (!BuildConfig.DEBUG) {
-                //TODO
+                if (handler != null) {
+                    handler.reportError(context, ex);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         ex.printStackTrace();
         //如果系统提供了默认的异常处理器，则交给系统去结束程序，否则就由自己结束自己
-        if (mDefaultCrashHandler != null) {
-            mDefaultCrashHandler.uncaughtException(thread, ex);
+        if (defaultCrashHandler != null) {
+            defaultCrashHandler.uncaughtException(thread, ex);
         }
     }
 
     private void dumpExceptionToSDCard(Throwable ex) throws IOException {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -89,7 +93,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         try {
             long current = System.currentTimeMillis();
             String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(current));
-            File file = new File(FileUtil.createDir(mContext, FileUtil.TYPE_DOCUMENT), FILE_NAME + time + FILE_NAME_SUFFIX);
+            File file = new File(FileUtil.createDir(context, FileUtil.TYPE_DOCUMENT), FILE_NAME + time + FILE_NAME_SUFFIX);
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             pw.println(time);
             dumpPhoneInfo(pw);
@@ -102,8 +106,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     private void dumpPhoneInfo(PrintWriter pw) throws PackageManager.NameNotFoundException {
-        PackageManager pm = mContext.getPackageManager();
-        PackageInfo pi = pm.getPackageInfo(mContext.getPackageName(),
+        PackageManager pm = context.getPackageManager();
+        PackageInfo pi = pm.getPackageInfo(context.getPackageName(),
                 PackageManager.GET_ACTIVITIES);
         pw.print("App Version: ");
         pw.print(pi.versionName);

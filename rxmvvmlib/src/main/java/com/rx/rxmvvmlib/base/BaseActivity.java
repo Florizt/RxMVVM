@@ -117,6 +117,9 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
             binding.unbind();
         }
         ImmersionBar.with(this).destroy();
+        if (loadingDialog != null) {
+            dismissLoading();
+        }
     }
 
     @Override
@@ -244,8 +247,13 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         System.exit(0);
     }
 
+    /**
+     * 权限未通过的弹窗，自己实现
+     *
+     * @param requestCode
+     */
     protected void showPermissionDialog(int requestCode) {
-        if (activity == null || activity.isDestroyed()) {
+        if (activity == null || activity.isFinishing()) {
             return;
         }
 
@@ -257,9 +265,9 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     //注册ViewModel与View的契约UI回调事件
     protected void registorUIChangeLiveDataCallBack() {
         //加载对话框显示
-        viewModel.getUC().getShowDialogEvent().observe(this, new Observer<String>() {
+        viewModel.getUC().getShowDialogEvent().observe(this, new Observer<Void>() {
             @Override
-            public void onChanged(@Nullable String title) {
+            public void onChanged(@Nullable Void v) {
                 showLoading();
             }
         });
@@ -281,7 +289,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
 
     public void showLoading() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(this);
+            loadingDialog = new LoadingDialog(this, initCustomLoadingDialog(), loadingDialogCancelable());
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -298,7 +306,9 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    loadingDialog.dismiss();
+                    if (!isFinishing()) {
+                        loadingDialog.dismiss();
+                    }
                 }
             });
         }
@@ -431,6 +441,24 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
      */
     protected void permissionGrantedOrDenineCanDo(int requestCode) {
 
+    }
+
+    /**
+     * 初始化loading弹窗布局，默认为R.layout.loading_dialog
+     *
+     * @return
+     */
+    protected int initCustomLoadingDialog() {
+        return R.layout.loading_dialog;
+    }
+
+    /**
+     * 初始化loading弹窗是否可点击外部消失，默认为false
+     *
+     * @return
+     */
+    protected boolean loadingDialogCancelable() {
+        return false;
     }
 
     /**
