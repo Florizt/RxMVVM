@@ -50,33 +50,24 @@ public abstract class TObserver<T> implements Observer<T> {
             if (BuildConfig.DEBUG) {
                 LogX.e("请求超时，请检查您的网络");
             }
-            onFailure(UIUtils.getString(R.string.http_timeout));
+            onFailure(UIUtils.getString(R.string.http_timeout_exception));
         } else if (e instanceof JsonSyntaxException) {
             if (BuildConfig.DEBUG) {
-                LogX.e("请求超时，请检查您的网络");
+                LogX.e("数据解析异常");
             }
-            onFailure(UIUtils.getString(R.string.http_timeout));
+            onFailure(UIUtils.getString(R.string.json_exception));
         } else if (e instanceof HttpException) {
             if (BuildConfig.DEBUG) {
-                LogX.e("请求超时，请检查您的网络");
+                LogX.e("服务器异常");
             }
-            onFailure(UIUtils.getString(R.string.http_timeout));
+            onFailure(UIUtils.getString(R.string.http_exception));
         } else if (e instanceof ResultException) {
             ResultException resultException = (ResultException) e;
             if (BuildConfig.DEBUG) {
                 LogX.e(resultException.getErrMsg());
             }
-
-            if (resultException.getErrCode() == 1001) {
-                showTokenExpireDialog();
-            } else {
-                onFailure(resultException.getErrMsg());
-            }
+            onFailure(resultException.getErrMsg());
         }
-    }
-
-    private void showTokenExpireDialog() {
-
     }
 
     /**

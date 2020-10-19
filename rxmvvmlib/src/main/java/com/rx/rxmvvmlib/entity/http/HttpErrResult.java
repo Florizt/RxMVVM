@@ -12,17 +12,17 @@ public class HttpErrResult extends BaseEntity {
     /**
      * 0 成功
      */
-    private int code;
+    private String code;
     /**
      * 给用户的提示信息
      */
     private String err;
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

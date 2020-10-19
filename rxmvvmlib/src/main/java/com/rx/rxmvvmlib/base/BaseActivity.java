@@ -1,7 +1,6 @@
 package com.rx.rxmvvmlib.base;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,11 +14,9 @@ import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.databinding.ActivityBaseBinding;
-import com.rx.rxmvvmlib.util.LogUtil;
+import com.rx.rxmvvmlib.listener.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
-import com.rx.rxmvvmlib.util.keyboardutil.callback.IkeyBoardCallback;
-import com.rx.rxmvvmlib.util.keyboardutil.core.KeyBoardEventBus;
 import com.rx.rxmvvmlib.view.LoadingDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -27,9 +24,11 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -44,9 +43,9 @@ import me.jessyan.autosize.AutoSizeConfig;
  * <p>
  * 一个拥有DataBinding框架的基Activity
  */
-public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseViewModel> extends RxAppCompatActivity implements IBaseView, IkeyBoardCallback {
+public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseViewModel> extends RxAppCompatActivity implements IBaseView {
     protected BaseActivity activity;
-    private ActivityBaseBinding mBaseBinding;
+    private ActivityBaseBinding baseBinding;
     protected V binding;
     protected VM viewModel;
     private int viewModelId;
@@ -71,7 +70,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         initViewObservable();
         //注册EventBus
         viewModel.registerEventBus();
-        KeyBoardEventBus.getDefault().register(this);
     }
 
     @Override
@@ -86,9 +84,10 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                         .init();
             } else {
                 ImmersionBar.with(this)
-                        .statusBarDarkFont(statusBarDarkFont())
-                        .statusBarColor(R.color.rx_transparent)
-                        .navigationBarColor(R.color.rx_ffffff)
+                        .fitsSystemWindows(true)
+                        .statusBarDarkFont(statusBarDarkFont(), 0.2f)
+                        .statusBarColor(statusBarColor())
+                        .navigationBarColor(navigationBarColor())
                         .init();
             }
         }
@@ -107,6 +106,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     @Override
     protected void onPause() {
         super.onPause();
+        hideSoftKeyBoard();
     }
 
     @Override
@@ -117,9 +117,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
             binding.unbind();
         }
         ImmersionBar.with(this).destroy();
-        if (loadingDialog != null) {
-            dismissLoading();
-        }
+        dismissLoading();
     }
 
     @Override
@@ -127,29 +125,17 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onKeyBoardShow(int keyBoardHeight) {
-        LogUtil.i("ghy", "键盘显示-" + keyBoardHeight);
-        BaseActivity.this.onKeyboardChange(true, keyBoardHeight);
-    }
-
-    @Override
-    public void onKeyBoardHidden() {
-        LogUtil.i("ghy", "键盘隐藏");
-        BaseActivity.this.onKeyboardChange(false, 0);
-    }
-
     /**
      * 注入绑定
      */
     private void initViewDataBinding(Bundle savedInstanceState) {
         //DataBindingUtil类需要在project的build中配置 dataBinding {enabled true }, 同步后会自动关联android.databinding包
-        mBaseBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_base, null, false);
+        baseBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_base, null, false);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         binding = DataBindingUtil.inflate(getLayoutInflater(), initLayoutId(savedInstanceState), null, false);
-        mBaseBinding.r.addView(binding.getRoot(), params);
-        setContentView(mBaseBinding.getRoot());
+        baseBinding.baseView.addView(binding.getRoot(), params);
+        setContentView(baseBinding.getRoot());
         viewModelId = initVariableId();
         viewModel = initViewModel();
         if (viewModel == null) {
@@ -179,24 +165,28 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     public void requestPermission(final int requestCode, final boolean showDialog, String... permissions) {
-        RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions
-                .request(permissions)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            permissionGranted(requestCode);
-                        } else {
-                            if (showDialog) {
-                                showPermissionDialog(requestCode);
+        try {
+            RxPermissions rxPermissions = new RxPermissions(this);
+            rxPermissions
+                    .request(permissions)
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean aBoolean) throws Exception {
+                            if (aBoolean) {
+                                permissionGranted(requestCode);
                             } else {
-                                permissionDenied(requestCode);
+                                if (showDialog) {
+                                    showPermissionDialog(requestCode);
+                                } else {
+                                    permissionDenied(requestCode);
+                                }
                             }
+                            permissionGrantedOrDenineCanDo(requestCode);
                         }
-                        permissionGrantedOrDenineCanDo(requestCode);
-                    }
-                });
+                    });
+        } catch (Exception e) {
+
+        }
     }
 
     public void stopAutoSize() {
@@ -205,6 +195,26 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
 
     public void restartAutoSize() {
         AutoSizeConfig.getInstance().restart();
+    }
+
+    protected void loadRootFragment(int containerId, @NonNull Fragment toFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .add(containerId, toFragment).hide(toFragment).commitAllowingStateLoss();
+    }
+
+    protected void showFragment(@NonNull Fragment showFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .show(showFragment).commitAllowingStateLoss();
+    }
+
+    protected void showFragment(@NonNull Fragment hideFragment, @NonNull Fragment showFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .hide(hideFragment).show(showFragment).commitAllowingStateLoss();
+    }
+
+    protected void hideFragment(@NonNull Fragment showFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .hide(showFragment).commitAllowingStateLoss();
     }
 
     @Override
@@ -232,31 +242,16 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                 }
             }, 1500);
         } else {
-            exit(activity);
-        }
-    }
+            try {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+                AppManager.getAppManager().appExit();
+                System.exit(0);
+            } catch (Exception e) {
 
-    public static void exit(Context context) {
-        if (context == null) {
-            return;
+            }
         }
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        context.startActivity(intent);
-        AppManager.getAppManager().appExit();
-        System.exit(0);
-    }
-
-    /**
-     * 权限未通过的弹窗，自己实现
-     *
-     * @param requestCode
-     */
-    protected void showPermissionDialog(int requestCode) {
-        if (activity == null || activity.isFinishing()) {
-            return;
-        }
-
     }
 
     /**
@@ -271,6 +266,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                 showLoading();
             }
         });
+
         //加载对话框消失
         viewModel.getUC().getDismissDialogEvent().observe(this, new Observer<Void>() {
             @Override
@@ -289,7 +285,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
 
     public void showLoading() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(this, initCustomLoadingDialog(), loadingDialogCancelable());
+            loadingDialog = new LoadingDialog(this);
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -375,7 +371,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     /**
-     * 是否全屏
+     * 沉浸式下是否全屏
      *
      * @return
      */
@@ -384,7 +380,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     /**
-     * 状态栏字体是否深色
+     * 沉浸式非全屏下状态栏字体是否深色
      *
      * @return
      */
@@ -393,13 +389,21 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     /**
-     * 软键盘改变
+     * 沉浸式非全屏下状态栏背景颜色
      *
-     * @param isPopup
-     * @param keyboardHeight
+     * @return
      */
-    protected void onKeyboardChange(boolean isPopup, int keyboardHeight) {
+    protected int statusBarColor() {
+        return R.color.rx_ffffff;
+    }
 
+    /**
+     * 沉浸式非全屏下底部导航栏背景颜色
+     *
+     * @return
+     */
+    protected int navigationBarColor() {
+        return R.color.rx_000000;
     }
 
     /**
@@ -416,6 +420,17 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
      */
     protected void doSthIsExit() {
 
+    }
+
+    /**
+     * 权限未通过需要展示弹窗
+     *
+     * @param requestCode
+     */
+    protected void showPermissionDialog(int requestCode) {
+        if (activity == null || activity.isDestroyed()) {
+            return;
+        }
     }
 
     /**
@@ -441,24 +456,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
      */
     protected void permissionGrantedOrDenineCanDo(int requestCode) {
 
-    }
-
-    /**
-     * 初始化loading弹窗布局，默认为R.layout.loading_dialog
-     *
-     * @return
-     */
-    protected int initCustomLoadingDialog() {
-        return R.layout.loading_dialog;
-    }
-
-    /**
-     * 初始化loading弹窗是否可点击外部消失，默认为false
-     *
-     * @return
-     */
-    protected boolean loadingDialogCancelable() {
-        return false;
     }
 
     /**

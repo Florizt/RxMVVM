@@ -1,7 +1,10 @@
 package com.rx.rxmvvmlib.http;
 
+import android.text.TextUtils;
+
 import com.dgrlucky.log.LogX;
 import com.rx.rxmvvmlib.BuildConfig;
+import com.rx.rxmvvmlib.RxMVVMInitializer;
 import com.rx.rxmvvmlib.entity.http.HttpResult;
 
 import io.reactivex.functions.Function;
@@ -23,8 +26,8 @@ public class TFunc<T> implements Function<HttpResult<T>, T> {
 
     @Override
     public T apply(HttpResult<T> tReply) throws Exception {
-        int error_code = tReply.getCode();
-        if (error_code != 0) {
+        String error_code = tReply.getCode();
+        if (!TextUtils.equals(RxMVVMInitializer.getInstance().getAppConfig().getHttpSuccessCode(), error_code)) {
             if (BuildConfig.DEBUG) {
                 LogX.e("请求失败");
             }

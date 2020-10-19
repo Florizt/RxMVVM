@@ -13,7 +13,7 @@ public class HttpResult<T> extends BaseEntity {
     /**
      * 0 成功
      */
-    private int code;
+    private String code;
     /**
      * 封装需要返回的数据
      */
@@ -23,11 +23,11 @@ public class HttpResult<T> extends BaseEntity {
      */
     private String err;
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

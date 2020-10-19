@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">RxMVVMLib</string>
     <string name="press_the_exit_procedure_again">再按一次退出程序</string>
-    <string name="http_timeout">请求超时，请检查您的网络</string>
+    <string name="http_timeout_exception">请求超时，请检查您的网络</string>
+    <string name="json_exception">数据解析异常</string>
+    <string name="http_exception">服务器异常</string>
     <string name="today">今天</string>
     <string name="tomorrow">明天</string>
     <string name="the_day_after_tomorrow">后天</string>

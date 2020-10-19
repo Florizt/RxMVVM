@@ -1,5 +1,7 @@
 package com.rx.rxmvvmlib.config;
 
+import java.util.Map;
+
 /**
  * Created by wuwei
  * 2019/12/6
@@ -8,6 +10,7 @@ package com.rx.rxmvvmlib.config;
 public class MessageEvent {
     public int type;
     public Object src;
+    public Map<String, Object> extra;
 
     public MessageEvent() {
     }
@@ -21,5 +24,9 @@ public class MessageEvent {
         this.src = src;
     }
 
-    public static final int MSG_TEST = 0;
+    public MessageEvent(int type, Object src, Map<String, Object> extra) {
+        this.type = type;
+        this.src = src;
+        this.extra = extra;
+    }
 }

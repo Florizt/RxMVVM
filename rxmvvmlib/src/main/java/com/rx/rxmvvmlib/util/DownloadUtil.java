@@ -1,6 +1,6 @@
 package com.rx.rxmvvmlib.util;
 
-import com.rx.rxmvvmlib.config.HttpConfig;
+import com.rx.rxmvvmlib.RxMVVMInitializer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -74,7 +74,7 @@ public class DownloadUtil {
         HostnameVerifier hv1 = new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
-                return hostname.contains(HttpConfig.HTTP_HOST_NAME);
+                return hostname.contains(RxMVVMInitializer.getInstance().getAppConfig().getHttpHostName());
             }
         };
 

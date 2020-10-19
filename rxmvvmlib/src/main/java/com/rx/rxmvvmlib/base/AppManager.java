@@ -96,6 +96,7 @@ public class AppManager {
             if (!activity.isFinishing()) {
                 activity.finish();
             }
+            removeActivity(activity);
         }
     }
 

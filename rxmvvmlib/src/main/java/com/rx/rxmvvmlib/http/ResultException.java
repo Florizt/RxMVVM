@@ -3,9 +3,9 @@ package com.rx.rxmvvmlib.http;
 public class ResultException extends RuntimeException {
 
     private String errMsg;
-    private int errCode;
+    private String errCode;
 
-    public ResultException(String errMsg, int errCode){
+    public ResultException(String errMsg, String errCode){
         this.errMsg = errMsg;
         this.errCode = errCode;
     }
@@ -18,11 +18,11 @@ public class ResultException extends RuntimeException {
         this.errMsg = errMsg;
     }
 
-    public int getErrCode() {
+    public String getErrCode() {
         return errCode;
     }
 
-    public void setErrCode(int errCode) {
+    public void setErrCode(String errCode) {
         this.errCode = errCode;
     }
 }

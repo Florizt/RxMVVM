@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.base;
+package com.rx.rxmvvmlib.listener;
 
 import android.os.Bundle;
 

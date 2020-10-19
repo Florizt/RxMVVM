@@ -1,7 +1,7 @@
 package com.rx.rxmvvmlib.http;
 
 
-import com.rx.rxmvvmlib.config.HttpConfig;
+import com.rx.rxmvvmlib.RxMVVMInitializer;
 import com.rx.rxmvvmlib.util.NetworkUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
 
@@ -29,7 +29,7 @@ public class CacheInterceptor implements Interceptor {
         }
         Response response = chain.proceed(request);
         if (NetworkUtil.isNetAvailable(UIUtils.getContext())) {//有网情况下，从服务器获取
-            int maxAge = HttpConfig.DEFAULT_COOKIE_NETWORK_TIME;
+            int maxAge = RxMVVMInitializer.getInstance().getAppConfig().getCookieNetworkTime();
             // 有网络时, 缓存最大保存时长为60s
             response.newBuilder()
                     .header("Cache-Control", "public, max-age=" + maxAge)
@@ -37,7 +37,7 @@ public class CacheInterceptor implements Interceptor {
                     .build();
         } else {//没网情况下，一律从缓存获取
             // 无网络时，设置超时为30天
-            int maxStale = HttpConfig.DEFAULT_COOKIE_NO_NETWORK_TIME;
+            int maxStale = RxMVVMInitializer.getInstance().getAppConfig().getCookieNoNetworkTime();
             response.newBuilder()
                     .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
                     .removeHeader("Pragma")

@@ -11,8 +11,10 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
+        manifestPlaceholders = [
+                // 设置manifest.xml中的变量
+                applicationId: "com.rx.mvvm",
+        ]
     }
 
     dataBinding {
@@ -21,8 +23,12 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles 'proguard-rules.pro'
+        }
+
+        debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
