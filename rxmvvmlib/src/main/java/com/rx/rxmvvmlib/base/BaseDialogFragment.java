@@ -256,7 +256,7 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
      * =====================================================================
      **/
     //注册ViewModel与View的契约UI回调事件
-    protected void registorUIChangeLiveDataCallBack() {
+    private void registorUIChangeLiveDataCallBack() {
         //加载对话框显示
         viewModel.getUC().getShowDialogEvent().observe(this, new Observer<Void>() {
             @Override
