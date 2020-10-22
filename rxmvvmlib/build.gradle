@@ -10,11 +10,6 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
-        manifestPlaceholders = [
-                // 设置manifest.xml中的变量
-                applicationId: "com.rx.mvvm",
-        ]
     }
 
     dataBinding {
