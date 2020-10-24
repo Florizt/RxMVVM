@@ -29,7 +29,39 @@ public class LayoutManagers {
         return new LayoutManagerFactory() {
             @Override
             public RecyclerView.LayoutManager create(RecyclerView recyclerView) {
-                return new LinearLayoutManager(recyclerView.getContext());
+                return new LinearLayoutManager(recyclerView.getContext()) {
+                    @Override
+                    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                        try {
+                            super.onLayoutChildren(recycler, state);
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+            }
+        };
+    }
+
+    public static LayoutManagerFactory linear(final boolean canScrollVertically) {
+        return new LayoutManagerFactory() {
+            @Override
+            public RecyclerView.LayoutManager create(RecyclerView recyclerView) {
+                return new LinearLayoutManager(recyclerView.getContext()) {
+                    @Override
+                    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                        try {
+                            super.onLayoutChildren(recycler, state);
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public boolean canScrollVertically() {
+                        return canScrollVertically;
+                    }
+                };
             }
         };
     }
@@ -41,7 +73,16 @@ public class LayoutManagers {
         return new LayoutManagerFactory() {
             @Override
             public RecyclerView.LayoutManager create(RecyclerView recyclerView) {
-                return new LinearLayoutManager(recyclerView.getContext(), orientation, reverseLayout);
+                return new LinearLayoutManager(recyclerView.getContext(), orientation, reverseLayout) {
+                    @Override
+                    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                        try {
+                            super.onLayoutChildren(recycler, state);
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
             }
         };
     }
@@ -53,7 +94,16 @@ public class LayoutManagers {
         return new LayoutManagerFactory() {
             @Override
             public RecyclerView.LayoutManager create(RecyclerView recyclerView) {
-                return new GridLayoutManager(recyclerView.getContext(), spanCount);
+                return new GridLayoutManager(recyclerView.getContext(), spanCount) {
+                    @Override
+                    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                        try {
+                            super.onLayoutChildren(recycler, state);
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
             }
         };
     }
@@ -65,7 +115,16 @@ public class LayoutManagers {
         return new LayoutManagerFactory() {
             @Override
             public RecyclerView.LayoutManager create(RecyclerView recyclerView) {
-                return new GridLayoutManager(recyclerView.getContext(), spanCount, orientation, reverseLayout);
+                return new GridLayoutManager(recyclerView.getContext(), spanCount, orientation, reverseLayout) {
+                    @Override
+                    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                        try {
+                            super.onLayoutChildren(recycler, state);
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
             }
         };
     }
@@ -77,7 +136,16 @@ public class LayoutManagers {
         return new LayoutManagerFactory() {
             @Override
             public RecyclerView.LayoutManager create(RecyclerView recyclerView) {
-                return new StaggeredGridLayoutManager(spanCount, orientation);
+                return new StaggeredGridLayoutManager(spanCount, orientation) {
+                    @Override
+                    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                        try {
+                            super.onLayoutChildren(recycler, state);
+                        } catch (IndexOutOfBoundsException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
             }
         };
     }

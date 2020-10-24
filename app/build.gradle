@@ -63,5 +63,5 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
 //    implementation project(':rxmvvmlib')
-    implementation 'com.github.Florizt:RxMVVM:v1.0.8'
+    implementation 'com.github.Florizt:RxMVVM:v1.0.9'
 }

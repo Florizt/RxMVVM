@@ -203,16 +203,26 @@ public class ViewAdapter {
         view.setLayoutParams(params);
     }
 
+    @BindingAdapter("selected")
+    public static void setSeleted(View view, boolean selected) {
+        view.setSelected(selected);
+    }
+
+    @BindingAdapter("enable")
+    public static void setEnable(View view, boolean enable) {
+        view.setEnabled(enable);
+    }
+
     @BindingAdapter("margin_top")
     public static void setLayoutMarginTop(View view, int marginTop) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
-        if(params instanceof LinearLayout.LayoutParams){
+        if (params instanceof LinearLayout.LayoutParams) {
             ((LinearLayout.LayoutParams) params).topMargin = marginTop;
-        }else if(params instanceof RelativeLayout.LayoutParams){
+        } else if (params instanceof RelativeLayout.LayoutParams) {
             ((RelativeLayout.LayoutParams) params).topMargin = marginTop;
-        }else if(params instanceof FrameLayout.LayoutParams){
+        } else if (params instanceof FrameLayout.LayoutParams) {
             ((FrameLayout.LayoutParams) params).topMargin = marginTop;
-        }else if(params instanceof RecyclerView.LayoutParams){
+        } else if (params instanceof RecyclerView.LayoutParams) {
             ((RecyclerView.LayoutParams) params).topMargin = marginTop;
         }
         view.setLayoutParams(params);
@@ -221,13 +231,13 @@ public class ViewAdapter {
     @BindingAdapter("margin_bottom")
     public static void setLayoutMarginBottom(View view, int marginBottom) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
-        if(params instanceof LinearLayout.LayoutParams){
+        if (params instanceof LinearLayout.LayoutParams) {
             ((LinearLayout.LayoutParams) params).bottomMargin = marginBottom;
-        }else if(params instanceof RelativeLayout.LayoutParams){
+        } else if (params instanceof RelativeLayout.LayoutParams) {
             ((RelativeLayout.LayoutParams) params).bottomMargin = marginBottom;
-        }else if(params instanceof FrameLayout.LayoutParams){
+        } else if (params instanceof FrameLayout.LayoutParams) {
             ((FrameLayout.LayoutParams) params).bottomMargin = marginBottom;
-        }else if(params instanceof RecyclerView.LayoutParams){
+        } else if (params instanceof RecyclerView.LayoutParams) {
             ((RecyclerView.LayoutParams) params).bottomMargin = marginBottom;
         }
         view.setLayoutParams(params);
