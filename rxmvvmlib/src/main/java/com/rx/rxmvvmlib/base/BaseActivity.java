@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -150,7 +149,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
             }
             viewModel = (VM) createViewModel(this, modelClass);
         }
-        Log.i("sas", "initViewDataBindingsasa: "+viewModelId+"  "+viewModel);
         //关联ViewModel
         binding.setVariable(viewModelId, viewModel);
         //让ViewModel拥有View的生命周期感应

@@ -42,8 +42,12 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles 'proguard-rules.pro'
+        }
+
+        debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -58,5 +62,6 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
-    implementation project(':rxmvvmlib')
+//    implementation project(':rxmvvmlib')
+    implementation 'com.github.Florizt:RxMVVM:v1.0.8'
 }
