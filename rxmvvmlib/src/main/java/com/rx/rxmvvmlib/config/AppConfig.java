@@ -1,5 +1,6 @@
 package com.rx.rxmvvmlib.config;
 
+import com.rx.rxmvvmlib.http.api.ApiService;
 import com.rx.rxmvvmlib.listener.ICrashHandler;
 
 import java.util.Map;
@@ -23,13 +24,13 @@ public class AppConfig {
     private int cookieNoNetworkTime = 30 * 24 * 60 * 60 * 1000;
     private String httpSuccessCode;
     private Map<String, String> header;
-    private Object apiService;
+    private ApiService apiService;
 
-    public Object getApiService() {
+    public ApiService getApiService() {
         return apiService;
     }
 
-    public void setApiService(Object apiService) {
+    public void setApiService(ApiService apiService) {
         this.apiService = apiService;
     }
 

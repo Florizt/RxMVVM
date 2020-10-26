@@ -22,6 +22,7 @@ public class App extends Application implements ICrashHandler {
         appConfig.setCrashHandler(this);
         appConfig.setDesignWidthInDp(360);
         appConfig.setDesignHeightInDp(640);
+        appConfig.setApiService(new HttpApi() {});
         appConfig.setHttpHostName("sas");
         appConfig.setHttpDebugUrl("sas");
         appConfig.setHttpReleaseUrl("sas");

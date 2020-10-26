@@ -45,6 +45,11 @@ public class RxMVVMInitializer {
         if (context == null) {
             throw new IllegalArgumentException("context is null");
         }
+
+        this.context = context.getApplicationContext();
+        // 主项目配置
+        UIUtils.init(this.context);
+
         if (appConfig == null) {
             throw new IllegalArgumentException("appConfig is null");
         }
@@ -58,10 +63,7 @@ public class RxMVVMInitializer {
             throw new IllegalArgumentException("apiService is null");
         }
 
-        this.context = context.getApplicationContext();
         this.appConfig = appConfig;
-        // 主项目配置
-        UIUtils.init(this.context);
 
         // 崩溃抓取
         CrashHandler.getInstance().init(this.context, this.appConfig.getCrashHandler());
