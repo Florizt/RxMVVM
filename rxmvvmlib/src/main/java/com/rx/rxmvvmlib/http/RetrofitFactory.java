@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rx.rxmvvmlib.BuildConfig;
 import com.rx.rxmvvmlib.RxMVVMInitializer;
-import com.rx.rxmvvmlib.http.api.ApiService;
 import com.rx.rxmvvmlib.util.UIUtils;
 
 import java.io.File;
@@ -52,11 +51,11 @@ public class RetrofitFactory {
                 .build();
     }
 
-    public static ApiService sApiService = new Retrofit.Builder()
+    public static Object sApiService = new Retrofit.Builder()
             .baseUrl(sUrl)
             .addConverterFactory(GsonDConverterFactory.create(sGson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(sOkHttpClient)
             .build()
-            .create(ApiService.class);
+            .create(RxMVVMInitializer.getInstance().getAppConfig().getApiService().getClass());
 }

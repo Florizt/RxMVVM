@@ -31,12 +31,12 @@ public class TFunc<T> implements Function<HttpResult<T>, T> {
             if (BuildConfig.DEBUG) {
                 LogX.e("请求失败");
             }
-            throw new ResultException(tReply.getErr(), tReply.getCode());
+            throw new ResultException(tReply.getMessage(), tReply.getCode());
         } else {
             if (BuildConfig.DEBUG) {
                 LogX.e("请求成功");
             }
-            return tReply.getData();
+            return tReply.getContent();
         }
     }
 }

@@ -11,17 +11,17 @@ import com.rx.rxmvvmlib.entity.BaseEntity;
 
 public class HttpResult<T> extends BaseEntity {
     /**
-     * 0 成功
+     * 1 成功
      */
     private String code;
     /**
      * 封装需要返回的数据
      */
-    private T data;
+    private T content;
     /**
      * 给用户的提示信息
      */
-    private String err;
+    private String message;
 
     public String getCode() {
         return code;
@@ -31,28 +31,28 @@ public class HttpResult<T> extends BaseEntity {
         this.code = code;
     }
 
-    public T getData() {
-        return data;
+    public T getContent() {
+        return content;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setContent(T content) {
+        this.content = content;
     }
 
-    public String getErr() {
-        return err;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErr(String err) {
-        this.err = err;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
     public String toString() {
         return "Reply{" +
                 "code=" + code +
-                ", data=" + data +
-                ", err='" + err + '\'' +
+                ", content=" + content +
+                ", message" + message + '\'' +
                 '}';
     }
 }
