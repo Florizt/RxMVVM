@@ -59,9 +59,6 @@ public class RxMVVMInitializer {
         if (TextUtils.isEmpty(appConfig.getHttpDebugUrl()) || TextUtils.isEmpty(appConfig.getHttpReleaseUrl())) {
             throw new IllegalArgumentException("httpDebugUrl or httpReleaseUrl is null");
         }
-        if (appConfig.getApiService() == null) {
-            throw new IllegalArgumentException("apiService is null");
-        }
 
         this.appConfig = appConfig;
 

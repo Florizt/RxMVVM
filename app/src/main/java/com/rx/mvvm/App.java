@@ -22,10 +22,9 @@ public class App extends Application implements ICrashHandler {
         appConfig.setCrashHandler(this);
         appConfig.setDesignWidthInDp(360);
         appConfig.setDesignHeightInDp(640);
-        appConfig.setApiService(new HttpApi() {});
         appConfig.setHttpHostName("sas");
-        appConfig.setHttpDebugUrl("sas");
-        appConfig.setHttpReleaseUrl("sas");
+        appConfig.setHttpDebugUrl("http://192.168.1.19:9082/");
+        appConfig.setHttpReleaseUrl("http://192.168.1.19:9082/");
         appConfig.setHttpSuccessCode("0");
         appConfig.setHeader(new HashMap<String, String>());
         RxMVVMInitializer.getInstance().init(this, appConfig);
