@@ -1,7 +1,7 @@
 package com.rx.rxmvvmlib.http;
 
 import com.dgrlucky.log.LogX;
-import com.rx.rxmvvmlib.BuildConfig;
+import com.rx.rxmvvmlib.RxMVVMInitializer;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
