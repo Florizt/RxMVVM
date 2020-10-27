@@ -46,7 +46,7 @@ public class LoggingInterceptor implements Interceptor {
             body = buffer.readString(charset);
         }
 
-        if (BuildConfig.DEBUG) {
+        if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
             LogX.e("发送请求\nmethod：%s\nurl：%s\nheaders: %sbody：%s",
                     request.method(), request.url(), request.headers(), body);
         }
@@ -73,7 +73,7 @@ public class LoggingInterceptor implements Interceptor {
         }
         rBody = buffer.clone().readString(charset);
 
-        if (BuildConfig.DEBUG) {
+        if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
             LogX.e("收到响应 %s%s %ss\n请求url：%s\nheaders: %s请求body：%s\n响应body：%s",
                     response.code(), response.message(), tookMs, response.request().url(), response.headers(), body, rBody);
         }

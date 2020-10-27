@@ -2,7 +2,6 @@ package com.rx.rxmvvmlib.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.rx.rxmvvmlib.BuildConfig;
 import com.rx.rxmvvmlib.RxMVVMInitializer;
 import com.rx.rxmvvmlib.http.api.ApiService;
 import com.rx.rxmvvmlib.util.UIUtils;
@@ -33,7 +32,7 @@ public class RetrofitFactory {
             .create();
 
     static {
-        if (BuildConfig.DEBUG) {
+        if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
             sUrl = RxMVVMInitializer.getInstance().getAppConfig().getHttpDebugUrl();
         } else {
             sUrl = RxMVVMInitializer.getInstance().getAppConfig().getHttpReleaseUrl();
@@ -59,4 +58,5 @@ public class RetrofitFactory {
             .client(sOkHttpClient)
             .build()
             .create(ApiService.class);
+    private HttpLoggingInterceptor logging;
 }

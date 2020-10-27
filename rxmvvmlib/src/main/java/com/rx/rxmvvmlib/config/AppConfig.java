@@ -23,6 +23,15 @@ public class AppConfig {
     private int cookieNoNetworkTime = 30 * 24 * 60 * 60 * 1000;
     private String httpSuccessCode;
     private Map<String, String> header;
+    private boolean debugEnable;
+
+    public boolean isDebugEnable() {
+        return debugEnable;
+    }
+
+    public void setDebugEnable(boolean debugEnable) {
+        this.debugEnable = debugEnable;
+    }
 
     public ICrashHandler getCrashHandler() {
         return crashHandler;

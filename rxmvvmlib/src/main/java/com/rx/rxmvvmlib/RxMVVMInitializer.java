@@ -89,6 +89,9 @@ public class RxMVVMInitializer {
     }
 
     public AppConfig getAppConfig() {
+        if (appConfig == null) {
+            throw new IllegalArgumentException("appConfig is null");
+        }
         return appConfig;
     }
 }

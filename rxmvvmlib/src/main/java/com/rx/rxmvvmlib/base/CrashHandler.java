@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.rx.rxmvvmlib.BuildConfig;
+import com.rx.rxmvvmlib.RxMVVMInitializer;
 import com.rx.rxmvvmlib.listener.ICrashHandler;
 import com.rx.rxmvvmlib.util.FileUtil;
 import com.rx.rxmvvmlib.util.LogUtil;
@@ -62,7 +63,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             //导出异常信息到SD卡中
             dumpExceptionToSDCard(ex);
             //这里可以上传异常信息到服务器，便于开发人员分析日志从而解决bug
-            if (!BuildConfig.DEBUG) {
+            if (!RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
                 if (handler != null) {
                     handler.reportError(context, ex);
                 }
@@ -85,7 +86,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
         //如果SD卡不存在或无法使用，则无法把异常信息写入SD卡
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            if (BuildConfig.DEBUG) {
+            if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
                 LogUtil.w(TAG, "sdcard unmounted,skip dump exception");
                 return;
             }
