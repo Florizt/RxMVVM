@@ -58,5 +58,4 @@ public class RetrofitFactory {
             .client(sOkHttpClient)
             .build()
             .create(ApiService.class);
-    private HttpLoggingInterceptor logging;
 }
