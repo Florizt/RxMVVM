@@ -1,7 +1,5 @@
-package com.rx.rxmvvmlib.entity.http;
+package com.rx.rxmvvmlib.entity;
 
-
-import com.rx.rxmvvmlib.entity.BaseEntity;
 
 /**
  * Created by wuwei

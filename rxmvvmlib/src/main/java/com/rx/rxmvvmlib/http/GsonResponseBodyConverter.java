@@ -4,8 +4,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.rx.rxmvvmlib.RxMVVMInitializer;
-import com.rx.rxmvvmlib.entity.http.HttpErrResult;
-import com.rx.rxmvvmlib.entity.http.HttpResult;
+import com.rx.rxmvvmlib.entity.HttpResult;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -38,9 +37,8 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
             //0的时候就直接解析，不可能出现解析异常。因为我们实体基类中传入的泛型，就是数据成功时候的格式
             return gson.fromJson(response, type);
         } else {
-            HttpErrResult errorResponse = gson.fromJson(response, HttpErrResult.class);
             //抛一个自定义ResultException 传入失败时候的状态码，和信息
-            throw new ResultException(errorResponse.getErr(), errorResponse.getCode());
+            throw new ResultException(httpResult.getMessage(), httpResult.getCode());
         }
     }
 }

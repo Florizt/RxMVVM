@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.dgrlucky.log.LogX;
 import com.rx.rxmvvmlib.RxMVVMInitializer;
-import com.rx.rxmvvmlib.entity.http.HttpResult;
+import com.rx.rxmvvmlib.entity.HttpResult;
 
 import io.reactivex.functions.Function;
 
