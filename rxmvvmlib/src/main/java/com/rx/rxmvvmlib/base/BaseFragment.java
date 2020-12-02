@@ -15,6 +15,7 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -205,6 +206,26 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         } catch (Exception e) {
 
         }
+    }
+
+    protected void loadRootFragment(int containerId, @NonNull Fragment toFragment) {
+        getChildFragmentManager().beginTransaction()
+                .add(containerId, toFragment).hide(toFragment).commitAllowingStateLoss();
+    }
+
+    protected void showFragment(@NonNull Fragment showFragment) {
+        getChildFragmentManager().beginTransaction()
+                .show(showFragment).commitAllowingStateLoss();
+    }
+
+    protected void showFragment(@NonNull Fragment hideFragment, @NonNull Fragment showFragment) {
+        getChildFragmentManager().beginTransaction()
+                .hide(hideFragment).show(showFragment).commitAllowingStateLoss();
+    }
+
+    protected void hideFragment(@NonNull Fragment showFragment) {
+        getChildFragmentManager().beginTransaction()
+                .hide(showFragment).commitAllowingStateLoss();
     }
 
     /**
