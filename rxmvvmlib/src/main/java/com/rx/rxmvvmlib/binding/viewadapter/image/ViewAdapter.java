@@ -1,5 +1,6 @@
 package com.rx.rxmvvmlib.binding.viewadapter.image;
 
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -32,6 +33,17 @@ public final class ViewAdapter {
             //使用Glide框架加载图片
             Glide.with(imageView.getContext())
                     .load(resId)
+                    .apply(new RequestOptions().placeholder(placeholderRes != 0 ? placeholderRes : R.drawable.placeholder_bg))
+                    .into(imageView);
+        }
+    }
+
+    @BindingAdapter(value = {"url", "placeholderRes"}, requireAll = false)
+    public static void setImageUri(ImageView imageView, Drawable drawable, int placeholderRes) {
+        if (drawable != null) {
+            //使用Glide框架加载图片
+            Glide.with(imageView.getContext())
+                    .load(drawable)
                     .apply(new RequestOptions().placeholder(placeholderRes != 0 ? placeholderRes : R.drawable.placeholder_bg))
                     .into(imageView);
         }
