@@ -2,8 +2,7 @@ package com.rx.rxmvvmlib.util;
 
 import android.util.Log;
 
-import com.rx.rxmvvmlib.BuildConfig;
-import com.rx.rxmvvmlib.RxMVVMInitializer;
+import com.rx.rxmvvmlib.RxMVVMInit;
 
 
 /**
@@ -16,28 +15,28 @@ import com.rx.rxmvvmlib.RxMVVMInitializer;
 public class LogUtil {
 
     public static void d(String tag, String message) {
-        if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
+        if (RxMVVMInit.config.debugEnable) {
             Log.d(tag, message);
         }
     }
 
 
     public static void i(String tag, String message) {
-        if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
+        if (RxMVVMInit.config.debugEnable) {
             Log.i(tag, message);
         }
     }
 
 
     public static void w(String tag, String message) {
-        if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
+        if (RxMVVMInit.config.debugEnable) {
             Log.w(tag, message);
         }
     }
 
 
     public static void e(String tag, String message) {
-        if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
+        if (RxMVVMInit.config.debugEnable) {
             Log.e(tag, message);
         }
     }

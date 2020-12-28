@@ -1,6 +1,6 @@
 package com.rx.mvvm.entity;
 
-import com.rx.rxmvvmlib.entity.BaseEntity;
+import com.rx.rxmvvmlib.base.BaseEntity;
 
 /**
  * Created by wuwei

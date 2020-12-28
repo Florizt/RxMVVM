@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.http;
+package com.rx.mvvm;
 
 import com.dgrlucky.log.LogX;
 import com.rx.rxmvvmlib.RxMVVMInit;

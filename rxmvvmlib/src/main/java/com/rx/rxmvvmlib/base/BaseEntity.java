@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.entity;
+package com.rx.rxmvvmlib.base;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

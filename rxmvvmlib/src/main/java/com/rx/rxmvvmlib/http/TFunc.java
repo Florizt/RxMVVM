@@ -3,8 +3,7 @@ package com.rx.rxmvvmlib.http;
 import android.text.TextUtils;
 
 import com.dgrlucky.log.LogX;
-import com.rx.rxmvvmlib.RxMVVMInitializer;
-import com.rx.rxmvvmlib.entity.HttpResult;
+import com.rx.rxmvvmlib.RxMVVMInit;
 
 import io.reactivex.functions.Function;
 
@@ -26,16 +25,16 @@ public class TFunc<T> implements Function<HttpResult<T>, T> {
     @Override
     public T apply(HttpResult<T> tReply) throws Exception {
         String error_code = tReply.getCode();
-        if (!TextUtils.equals(RxMVVMInitializer.getInstance().getAppConfig().getHttpSuccessCode(), error_code)) {
-            if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
+        if (!TextUtils.equals(RxMVVMInit.config.httpSuccessCode, error_code)) {
+            if (RxMVVMInit.config.debugEnable) {
                 LogX.e("请求失败");
             }
             throw new ResultException(tReply.getMessage(), tReply.getCode());
         } else {
-            if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
+            if (RxMVVMInit.config.debugEnable) {
                 LogX.e("请求成功");
             }
-            return tReply.getContent();
+            return tReply.getData();
         }
     }
 }

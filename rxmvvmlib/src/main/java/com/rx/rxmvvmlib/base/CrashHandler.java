@@ -7,8 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
-import com.rx.rxmvvmlib.BuildConfig;
-import com.rx.rxmvvmlib.RxMVVMInitializer;
+import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.listener.ICrashHandler;
 import com.rx.rxmvvmlib.util.FileUtil;
 import com.rx.rxmvvmlib.util.LogUtil;
@@ -35,7 +34,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static CrashHandler sInstance = new CrashHandler();
     private Thread.UncaughtExceptionHandler defaultCrashHandler;
     private Context context;
-    private ICrashHandler handler;
+    private Class<? extends ICrashHandler> handler;
 
     private CrashHandler() {
     }
@@ -44,7 +43,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         return sInstance;
     }
 
-    public void init(Context context, ICrashHandler handler) {
+    public void init(Context context, Class<? extends ICrashHandler> handler) {
         this.context = context.getApplicationContext();
         this.handler = handler;
         defaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -63,12 +62,16 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             //导出异常信息到SD卡中
             dumpExceptionToSDCard(ex);
             //这里可以上传异常信息到服务器，便于开发人员分析日志从而解决bug
-            if (!RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
+            if (!RxMVVMInit.config.debugEnable) {
                 if (handler != null) {
-                    handler.reportError(context, ex);
+                    handler.newInstance().reportError(context, ex);
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
             e.printStackTrace();
         }
         ex.printStackTrace();
@@ -86,10 +89,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
         //如果SD卡不存在或无法使用，则无法把异常信息写入SD卡
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            if (RxMVVMInitializer.getInstance().getAppConfig().isDebugEnable()) {
-                LogUtil.w(TAG, "sdcard unmounted,skip dump exception");
-                return;
-            }
+            LogUtil.w(TAG, "sdcard unmounted,skip dump exception");
+            return;
         }
 
         try {
