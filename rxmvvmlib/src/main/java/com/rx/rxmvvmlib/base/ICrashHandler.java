@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.listener;
+package com.rx.rxmvvmlib.base;
 
 import android.content.Context;
 

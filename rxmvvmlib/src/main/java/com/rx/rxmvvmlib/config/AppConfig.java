@@ -1,6 +1,7 @@
 package com.rx.rxmvvmlib.config;
 
-import com.rx.rxmvvmlib.listener.ICrashHandler;
+import com.rx.rxmvvmlib.base.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.base.ICrashHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,12 @@ public class AppConfig {
     public int designWidthInDp;
     public int designHeightInDp;
     public Class<? extends ICrashHandler> crashHandlerClass;
+    public Class<? extends IActivityLifecycleCallbacks> activityLifecycleCallbacksClass;
+    public String floderName;
     //network
     public String httpDebugUrl;
     public String httpReleaseUrl;
     public String httpSuccessCode;
-    public Class httpResultClass;
     public List<Class<? extends Interceptor>> interceptors;
 
     public void setDebugEnable(boolean debugEnable) {
@@ -41,6 +43,14 @@ public class AppConfig {
         this.crashHandlerClass = crashHandlerClass;
     }
 
+    public void setActivityLifecycleCallbacksClass(Class<? extends IActivityLifecycleCallbacks> activityLifecycleCallbacksClass) {
+        this.activityLifecycleCallbacksClass = activityLifecycleCallbacksClass;
+    }
+
+    public void setFloderName(String floderName) {
+        this.floderName = floderName;
+    }
+
     public void setHttpDebugUrl(String httpDebugUrl) {
         this.httpDebugUrl = httpDebugUrl;
     }
@@ -51,10 +61,6 @@ public class AppConfig {
 
     public void setHttpSuccessCode(String httpSuccessCode) {
         this.httpSuccessCode = httpSuccessCode;
-    }
-
-    public void setHttpResultClass(Class httpResultClass) {
-        this.httpResultClass = httpResultClass;
     }
 
     public void setInterceptors(List<Class<? extends Interceptor>> interceptors) {

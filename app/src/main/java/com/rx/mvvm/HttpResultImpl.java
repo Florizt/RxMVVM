@@ -1,15 +1,20 @@
 package com.rx.mvvm;
 
-import com.rx.rxmvvmlib.http.HttpResult;
+import com.rx.rxmvvmlib.annotation.HttpCode;
+import com.rx.rxmvvmlib.annotation.HttpData;
+import com.rx.rxmvvmlib.annotation.HttpMsg;
 
 /**
  * Created by wuwei
  * 2020/12/28
  * 佛祖保佑       永无BUG
  */
-public class HttpResultImpl<D> extends HttpResult {
+public class HttpResultImpl<D> {
+    @HttpCode
     private String httpCode;
+    @HttpMsg
     private String httpMsg;
+    @HttpData
     private D content;
 
     public String getHttpCode() {

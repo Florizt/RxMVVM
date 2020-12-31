@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.rx.rxmvvmlib.RxMVVMInit;
-import com.rx.rxmvvmlib.listener.ICrashHandler;
+import com.rx.rxmvvmlib.base.ICrashHandler;
 
 /**
  * Created by wuwei

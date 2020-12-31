@@ -1,13 +1,15 @@
 package com.rx.rxmvvmlib;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.rx.rxmvvmlib.base.CrashHandler;
+import com.rx.rxmvvmlib.base.IActivityLifecycleCallbacks;
 import com.rx.rxmvvmlib.config.AppConfig;
-import com.rx.rxmvvmlib.listener.ICrashHandler;
+import com.rx.rxmvvmlib.base.ICrashHandler;
 import com.rx.rxmvvmlib.util.UIUtils;
 
 import java.util.ArrayList;
@@ -47,16 +49,21 @@ public class RxMVVMInit {
             config.setDebugEnable(Boolean.parseBoolean(properties.getProperty("debugEnable")));
             config.setDesignWidthInDp(Integer.parseInt(properties.getProperty("designWidthInDp")));
             config.setDesignHeightInDp(Integer.parseInt(properties.getProperty("designHeightInDp")));
+
             Class<?> crashHandlerClass = Class.forName(properties.getProperty("crashHandlerClass"));
             if (ICrashHandler.class.isAssignableFrom(crashHandlerClass)) {
                 config.setCrashHandlerClass((Class<? extends ICrashHandler>) crashHandlerClass);
             }
+
+            Class<?> activityLifecycleCallbacksClass = Class.forName(properties.getProperty("activityLifecycleCallbacksClass"));
+            if (IActivityLifecycleCallbacks.class.isAssignableFrom(activityLifecycleCallbacksClass)) {
+                config.setActivityLifecycleCallbacksClass((Class<? extends IActivityLifecycleCallbacks>) activityLifecycleCallbacksClass);
+            }
+
+            config.setFloderName(properties.getProperty("floderName"));
             config.setHttpDebugUrl(properties.getProperty("httpDebugUrl"));
             config.setHttpReleaseUrl(properties.getProperty("httpReleaseUrl"));
             config.setHttpSuccessCode(properties.getProperty("httpSuccessCode"));
-
-            Class<?> httpResultClass = Class.forName(properties.getProperty("HttpResultClass"));
-            config.setHttpResultClass(httpResultClass);
 
             String interceptorsStr = properties.getProperty("interceptors");
             if (!TextUtils.isEmpty(interceptorsStr)) {
@@ -85,22 +92,28 @@ public class RxMVVMInit {
             throw new IllegalArgumentException("context is null");
         }
 
-        Context context = cx.getApplicationContext();
-
-        // 主项目配置
-        UIUtils.init(context);
-
-        // 崩溃抓取
-        CrashHandler.getInstance().init(context, config.crashHandlerClass);
-
-        // 适配配置
         try {
+            Context context = cx.getApplicationContext();
+
+            // 主项目配置
+            UIUtils.init(context);
+
+            // 崩溃抓取
+            if (config.crashHandlerClass != null) {
+                CrashHandler.getInstance().init(context, config.crashHandlerClass.newInstance());
+            }
+
+            if (config.activityLifecycleCallbacksClass != null) {
+                ((Application) context).registerActivityLifecycleCallbacks(config.activityLifecycleCallbacksClass.newInstance());
+            }
+
+            // 适配配置
             ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),
                     PackageManager.GET_META_DATA);
             appInfo.metaData.putInt("design_width_in_dp", config.designWidthInDp);
             appInfo.metaData.putInt("design_height_in_dp", config.designHeightInDp);
             AutoSize.initCompatMultiProcess(context);
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

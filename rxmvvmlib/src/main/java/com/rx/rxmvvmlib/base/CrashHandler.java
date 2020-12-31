@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.rx.rxmvvmlib.RxMVVMInit;
-import com.rx.rxmvvmlib.listener.ICrashHandler;
 import com.rx.rxmvvmlib.util.FileUtil;
 import com.rx.rxmvvmlib.util.LogUtil;
 
@@ -34,7 +33,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static CrashHandler sInstance = new CrashHandler();
     private Thread.UncaughtExceptionHandler defaultCrashHandler;
     private Context context;
-    private Class<? extends ICrashHandler> handler;
+    private ICrashHandler handler;
 
     private CrashHandler() {
     }
@@ -43,7 +42,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         return sInstance;
     }
 
-    public void init(Context context, Class<? extends ICrashHandler> handler) {
+    public void init(Context context, ICrashHandler handler) {
         this.context = context.getApplicationContext();
         this.handler = handler;
         defaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -64,14 +63,10 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             //这里可以上传异常信息到服务器，便于开发人员分析日志从而解决bug
             if (!RxMVVMInit.config.debugEnable) {
                 if (handler != null) {
-                    handler.newInstance().reportError(context, ex);
+                    handler.reportError(context, ex);
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
             e.printStackTrace();
         }
         ex.printStackTrace();

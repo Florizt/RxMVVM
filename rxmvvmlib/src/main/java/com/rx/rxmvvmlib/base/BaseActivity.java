@@ -14,7 +14,6 @@ import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.databinding.ActivityBaseBinding;
-import com.rx.rxmvvmlib.listener.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
 import com.rx.rxmvvmlib.view.LoadingDialog;

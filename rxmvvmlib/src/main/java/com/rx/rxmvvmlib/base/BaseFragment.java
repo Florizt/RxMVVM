@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rx.rxmvvmlib.listener.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
 import com.rx.rxmvvmlib.view.LoadingDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;

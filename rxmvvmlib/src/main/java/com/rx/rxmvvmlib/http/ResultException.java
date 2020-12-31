@@ -5,9 +5,13 @@ public class ResultException extends RuntimeException {
     private String errMsg;
     private String errCode;
 
-    public ResultException(String errMsg, String errCode){
-        this.errMsg = errMsg;
+    public ResultException() {
+
+    }
+
+    public ResultException(String errCode, String errMsg) {
         this.errCode = errCode;
+        this.errMsg = errMsg;
     }
 
     public String getErrMsg() {

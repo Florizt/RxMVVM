@@ -39,7 +39,7 @@ public abstract class TObserver<T> implements Observer<T> {
         if (t != null) {
             onSuccees(t);
         } else {
-            onFailure("ret 不是0");
+            onFailure("data is null");
         }
     }
 
