@@ -1,9 +1,11 @@
 package com.rx.rxmvvmlib;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.rx.rxmvvmlib.base.CrashHandler;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.jessyan.autosize.AutoSize;
 import okhttp3.Interceptor;
 
@@ -104,9 +108,45 @@ public class RxMVVMInit {
             }
 
             if (config.activityLifecycleCallbacksClass != null) {
-                ((Application) context).registerActivityLifecycleCallbacks(config.activityLifecycleCallbacksClass.newInstance());
-            }
+                final IActivityLifecycleCallbacks iActivityLifecycleCallbacks = config.activityLifecycleCallbacksClass.newInstance();
 
+                ((Application) context).registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+                    @Override
+                    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+                        iActivityLifecycleCallbacks.onActivityCreated(activity, savedInstanceState);
+                    }
+
+                    @Override
+                    public void onActivityStarted(@NonNull Activity activity) {
+                        iActivityLifecycleCallbacks.onActivityStarted(activity);
+                    }
+
+                    @Override
+                    public void onActivityResumed(@NonNull Activity activity) {
+                        iActivityLifecycleCallbacks.onActivityResumed(activity);
+                    }
+
+                    @Override
+                    public void onActivityPaused(@NonNull Activity activity) {
+                        iActivityLifecycleCallbacks.onActivityPaused(activity);
+                    }
+
+                    @Override
+                    public void onActivityStopped(@NonNull Activity activity) {
+                        iActivityLifecycleCallbacks.onActivityStopped(activity);
+                    }
+
+                    @Override
+                    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+                        iActivityLifecycleCallbacks.onActivitySaveInstanceState(activity, outState);
+                    }
+
+                    @Override
+                    public void onActivityDestroyed(@NonNull Activity activity) {
+                        iActivityLifecycleCallbacks.onActivityDestroyed(activity);
+                    }
+                });
+            }
             // 适配配置
             ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),
                     PackageManager.GET_META_DATA);

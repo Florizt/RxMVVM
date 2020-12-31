@@ -6,6 +6,13 @@ import android.os.Bundle;
 
 import com.rx.mvvm.databinding.ActivityLoginBinding;
 import com.rx.rxmvvmlib.base.BaseActivity;
+import com.rx.rxmvvmlib.base.BaseEntity;
+import com.rx.rxmvvmlib.http.RetrofitFactory;
+import com.rx.rxmvvmlib.http.TFunc;
+import com.rx.rxmvvmlib.http.TObserver;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -50,7 +57,31 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     @Override
     public void initData() {
+        RetrofitFactory.apiService(TestApi.class).add()
+                .map(new TFunc<HttpResultImpl, BaseEntity>())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new TObserver<BaseEntity>() {
+                    @Override
+                    protected void onRequestStart() {
 
+                    }
+
+                    @Override
+                    protected void onRequestEnd() {
+
+                    }
+
+                    @Override
+                    protected void onSuccees(BaseEntity baseEntity) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(String message) {
+
+                    }
+                });
     }
 
     @Override

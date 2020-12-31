@@ -1,7 +1,7 @@
 # RxMVVM
 一款基于mvvm+databinding+Google AAC+rxlifecycle+rxbinding+retrofit2+rxjava2+bindingcollectionadapter架构的快速开发框架
 
-兼容AndroidX,适配Android Q,集成了各个好用的框架，自动适配，沉浸式状态栏，下拉刷新，返回键监听，6.0权限请求，美团多渠道打包，网络层契合RESTful风格，从此告别setText()、setOnClickListener()、Glide.with()、recyclerview.setAdapter()、recyclerview.setLayoutManager()等，框架会逐渐丰富，使用方式也会逐渐更新
+兼容AndroidX,适配Android Q，自动适配，沉浸式状态栏，下拉刷新，返回键监听，6.0权限请求，美团多渠道打包，网络层契合RESTful风格，从此告别setText()、setOnClickListener()、Glide.with()、recyclerview.setAdapter()、recyclerview.setLayoutManager()等，框架会逐渐丰富，使用方式也会逐渐更新
 
 ## 依赖
 #### android studio
@@ -17,31 +17,37 @@
 > Add the dependency:
 ```java
 dependencies {
-	 implementation 'com.github.Florizt:RxMVVM:v1.0.3'
+	 implementation 'com.github.Florizt:RxMVVM:v2.0.0'
 	}
 ```
 
 ## 用法
 #### 初始化
-- 基础用法（已经可以满足日常使用），需要在application的onCreate()中调用,已实现自动适配。
+- 步骤1：
+    在项目main目录下新建assets文件夹，新建rxmvvm.properties配置文件
 
+- 步骤2：
+	在项目Application的onCreate方法中初始化
 ```java
-RxMVVMInitializer.getInstance().init(this, appConfig);
+RxMVVMInit.getInstance().init(this);
 ```
-#### AppConfig
+
+#### rxmvvm.properties属性介绍：
 | 方法      | 描述 |
 | --------- | -----:|
-| setCrashHandler  | 上报错误信息接口，仅支持BuildConfig.RELEASE环境 |
-| setDesignWidthInDp     |   设计底稿的宽度，单位为dp（必填） |
-| setDesignHeightInDp      |    设计底稿的高度，单位为dp（必填） |
-| setHttpHostName      |    主机名，验证用 |
-| setHttpDebugUrl      |    测试服url（必填） |
-| setHttpReleaseUrl      |    正式服url（必填） |
-| setCookieNetworkTime      |    有网络http缓存时长 |
-| setCookieNoNetworkTime      |    无网络http缓存时长 |
-| setHttpSuccessCode      |    http成功码 |
-| setHeader      |    http请求头 |
+| debugEnable|是否是debug环境，影响到网络层url和日志系统|
+| designWidthInDp|设计底稿的宽度，单位为dp（必填）|
+| designHeightInDp|设计底稿的高度，单位为dp（必填）|
+| crashHandlerClass|框架自动捕获全局异常，如需上报错误日志，需自定义一个类实现ICrashHandler接口，并配置这个类的全限定类名|
+| activityLifecycleCallbacksClass|如需控制生命周期和管理堆栈，需自定义一个类继承IActivityLifecycleCallbacks，并配置这个类的全限定类名|
+| floderName      |  文件系统，适配AndroidQ，最外层文件夹名称|
+| httpDebugUrl      |    测试服url（必填） |
+| httpReleaseUrl      |    正式服url（必填） |
+| httpSuccessCode      |    http成功码 |
+| interceptors      |    http拦截器，多个需用','隔开 |
 
+---
+## UI层
 #### BaseActivity
 | 方法      | 描述 |
 | --------- | -----:|
@@ -88,9 +94,9 @@ navigationBarColor(); //沉浸式非全屏下底部导航栏背景颜色，默�
 
 #### 下拉刷新，[具体用法](https://github.com/scwang90/SmartRefreshLayout)
 
-#### 美团多渠道打包，如果需要拿到渠道号上传到统计平台，实现方法如下,必须先在application的onCreate()中调用RxMVVMInitializer.init(this)：
+#### 美团多渠道打包，如果需要拿到渠道号上传到统计平台：
 ```java
-RxMVVMInitializer.getInstance().getChannel();
+WalleChannelReader.getChannel(getApplicationContext(), "default"),
 ```
 
 #### 事件总线EventBus
@@ -108,9 +114,50 @@ onMessageEvent(MessageEvent event); //需要继承BaseViewModel,重写此方法�
 app:url="@{viewModel.userHeadimg}"
 ```
 
-## 已封装retrofit2+rxjava2+okhttp,具体用法稍后更新
+---
+## 网络层
+#### 已封装retrofit2+rxjava2+okhttp
+- 步骤1：
+在你的http返回实体类中（例如：HttpResult），使用注解：
+1.@HttpCode，代表内部定义的http错误码
+2.@HttpMsg，代表内部定义的http错误信息
+3.@HttpData，代表内部定义的http返回数据
 
-## 已实现bindingcollectionadapter，从此告别setAdapter();,具体用法稍后更新
+- 步骤2：
+	自定义一接口，并使用步骤1中的实体类：
+```java
+@POST("passenger/transferStation/timeConfirmation")
+Observable<HttpResult<BaseEntity>> responseDriverModifyTime();
+```
+
+- 调用：
+```java
+RetrofitFactory.apiService(TestApi.class).add()
+          .map(new TFunc<HttpResult, BaseEntity>())
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(new TObserver<BaseEntity>() {
+              @Override
+              protected void onRequestStart() {
+
+              }
+
+              @Override
+              protected void onRequestEnd() {
+
+              }
+
+              @Override
+              protected void onSuccees(BaseEntity baseEntity) {
+
+              }
+
+              @Override
+              protected void onFailure(String message) {
+
+              }
+         });
+```
 
 
 ## 联系我 ##
