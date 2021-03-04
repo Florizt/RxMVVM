@@ -17,7 +17,7 @@
 > Add the dependency:
 ```java
 dependencies {
-	 implementation 'com.github.Florizt:RxMVVM:v2.0.0'
+	 implementation 'com.github.Florizt:RxMVVM:v2.0.1'
 	}
 ```
 
@@ -45,6 +45,7 @@ RxMVVMInit.getInstance().init(this);
 | httpReleaseUrl      |    正式服url（必填） |
 | httpSuccessCode      |    http成功码 |
 | interceptors      |    http拦截器，多个需用','隔开 |
+| customHttpCodeFilterClass|http自定义code拦截，需自定义一个类实现ICustomHttpCodeFilter接口，并配置这个类的全限定类名|
 
 ---
 ## UI层
@@ -57,13 +58,13 @@ RxMVVMInit.getInstance().init(this);
 | initViewObservable      |    页面事件监听的方法，一般用于ViewModel层转到View层的事件注册 |
 | initLayoutId      |    初始化根布局 |
 | initVariableId      |    初始化ViewModel的id |
-| isExit      |    按返回键是否只是返回 |
+| initLoadingLayoutId      |    设置loading弹窗布局，有默认弹窗 |
+| loadingCancelable      |    loading弹窗是否取消，默认false |
+| isExit      |    按返回键是否只是返回，默认true |
 | doSthIsExit      |    按返回键仅仅只是返回上个界面时要做的操作 |
 | requestPermission      |    请求权限 |
-| showPermissionDialog      |    权限申请失败，如果需要弹窗，自己实现 |
-| permissionDenied      |    权限申请失败，不弹窗 |
 | permissionGranted      |    权限申请成功 |
-| permissionGrantedOrDenineCanDo      |    权限申请成功或者失败都要执行 |
+| permissionDenied      |    权限申请失败 |
 | loadRootFragment      |    添加fragment |
 | showFragment      |    显示fragment |
 | hideFragment      |    隐藏fragment |
@@ -106,8 +107,6 @@ onMessageEvent(MessageEvent event); //需要继承BaseViewModel,重写此方法�
 ```
 
 #### BackgroundLibrary，通过标签直接生成shape，无需再写shape.xml，[具体用法](https://github.com/JavaNoober/BackgroundLibrary)
-
-#### 已实现BaseEntity的toString方法，继承BaseEntity，直接toString
 
 #### 已集成Glide，通过实现BindingAdapter,再也不用写Glide.with(this);直接在xml里写：
 ```java
