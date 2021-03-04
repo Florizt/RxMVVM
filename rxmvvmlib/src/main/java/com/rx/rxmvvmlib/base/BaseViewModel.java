@@ -3,6 +3,7 @@ package com.rx.rxmvvmlib.base;
 import android.app.Application;
 
 import com.rx.rxmvvmlib.config.MessageEvent;
+import com.rx.rxmvvmlib.interfaces.IBaseViewModel;
 import com.trello.rxlifecycle2.LifecycleProvider;
 
 import org.greenrobot.eventbus.EventBus;

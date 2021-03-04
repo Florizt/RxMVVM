@@ -1,7 +1,9 @@
-package com.rx.rxmvvmlib.base;
+package com.rx.rxmvvmlib.interfaces;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.rx.rxmvvmlib.base.AppManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,7 +13,7 @@ import androidx.annotation.Nullable;
  * 2020/12/31
  * 佛祖保佑       永无BUG
  */
-public class IActivityLifecycleCallbacks {
+public abstract class IActivityLifecycleCallbacks {
     private int appCount;
     private boolean isRunInBackground;
 
@@ -24,6 +26,7 @@ public class IActivityLifecycleCallbacks {
         appCount++;
         if (isRunInBackground) {
             //应用从后台回到前台 需要做的操作
+            isRunInBackground = false;
             back2App();
         }
     }
@@ -43,6 +46,7 @@ public class IActivityLifecycleCallbacks {
         appCount--;
         if (appCount == 0) {
             //应用进入后台 需要做的操作
+            isRunInBackground = true;
             leaveApp();
         }
     }
@@ -57,11 +61,7 @@ public class IActivityLifecycleCallbacks {
         AppManager.getAppManager().removeActivity(activity);
     }
 
-    public void back2App() {
+    public abstract void back2App();
 
-    }
-
-    public void leaveApp() {
-
-    }
+    public abstract void leaveApp();
 }

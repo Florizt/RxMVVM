@@ -2,7 +2,7 @@ package com.rx.mvvm;
 
 import android.util.Log;
 
-import com.rx.rxmvvmlib.base.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
 
 /**
  * Created by wuwei

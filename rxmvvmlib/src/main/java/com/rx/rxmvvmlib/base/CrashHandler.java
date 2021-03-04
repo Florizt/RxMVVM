@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.rx.rxmvvmlib.RxMVVMInit;
+import com.rx.rxmvvmlib.interfaces.ICrashHandler;
 import com.rx.rxmvvmlib.util.FileUtil;
 import com.rx.rxmvvmlib.util.LogUtil;
 

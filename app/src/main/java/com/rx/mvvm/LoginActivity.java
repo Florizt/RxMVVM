@@ -78,7 +78,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
                     }
 
                     @Override
-                    protected void onFailure(String message) {
+                    protected void onFailure(String code, String message) {
 
                     }
                 });

@@ -14,9 +14,9 @@ import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.databinding.ActivityBaseBinding;
+import com.rx.rxmvvmlib.interfaces.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
-import com.rx.rxmvvmlib.view.LoadingDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -48,7 +48,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     protected V binding;
     protected VM viewModel;
     private int viewModelId;
-    private LoadingDialog loadingDialog;
+    private BaseLoadingDialog loadingDialog;
     private boolean isExit;
 
     @Override
@@ -163,59 +163,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         }
     }
 
-    public void requestPermission(final int requestCode, final boolean showDialog, String... permissions) {
-        try {
-            RxPermissions rxPermissions = new RxPermissions(this);
-            rxPermissions
-                    .request(permissions)
-                    .subscribe(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(Boolean aBoolean) throws Exception {
-                            if (aBoolean) {
-                                permissionGranted(requestCode);
-                            } else {
-                                if (showDialog) {
-                                    showPermissionDialog(requestCode);
-                                } else {
-                                    permissionDenied(requestCode);
-                                }
-                            }
-                            permissionGrantedOrDenineCanDo(requestCode);
-                        }
-                    });
-        } catch (Exception e) {
-
-        }
-    }
-
-    public void stopAutoSize() {
-        AutoSizeConfig.getInstance().stop(this);
-    }
-
-    public void restartAutoSize() {
-        AutoSizeConfig.getInstance().restart();
-    }
-
-    protected void loadRootFragment(int containerId, @NonNull Fragment toFragment) {
-        getSupportFragmentManager().beginTransaction()
-                .add(containerId, toFragment).hide(toFragment).commitAllowingStateLoss();
-    }
-
-    protected void showFragment(@NonNull Fragment showFragment) {
-        getSupportFragmentManager().beginTransaction()
-                .show(showFragment).commitAllowingStateLoss();
-    }
-
-    protected void showFragment(@NonNull Fragment hideFragment, @NonNull Fragment showFragment) {
-        getSupportFragmentManager().beginTransaction()
-                .hide(hideFragment).show(showFragment).commitAllowingStateLoss();
-    }
-
-    protected void hideFragment(@NonNull Fragment showFragment) {
-        getSupportFragmentManager().beginTransaction()
-                .hide(showFragment).commitAllowingStateLoss();
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -284,7 +231,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
 
     public void showLoading() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(this);
+            loadingDialog = new BaseLoadingDialog(this, initLoadingLayoutId(), loadingCancelable());
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -314,6 +261,54 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         if (v != null) {
             SoftKeyboardUtil.hiddenSoftKeyboard(this, v.getWindowToken());
         }
+    }
+
+    public void requestPermission(final int requestCode, final boolean showDialog, String... permissions) {
+        try {
+            RxPermissions rxPermissions = new RxPermissions(this);
+            rxPermissions
+                    .request(permissions)
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean aBoolean) throws Exception {
+                            if (aBoolean) {
+                                permissionGranted(requestCode);
+                            } else {
+                                permissionDenied(requestCode);
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void stopAutoSize() {
+        AutoSizeConfig.getInstance().stop(this);
+    }
+
+    public void restartAutoSize() {
+        AutoSizeConfig.getInstance().restart();
+    }
+
+    protected void loadRootFragment(int containerId, @NonNull Fragment toFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .add(containerId, toFragment).hide(toFragment).commitAllowingStateLoss();
+    }
+
+    protected void showFragment(@NonNull Fragment showFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .show(showFragment).commitAllowingStateLoss();
+    }
+
+    protected void showFragment(@NonNull Fragment hideFragment, @NonNull Fragment showFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .hide(hideFragment).show(showFragment).commitAllowingStateLoss();
+    }
+
+    protected void hideFragment(@NonNull Fragment showFragment) {
+        getSupportFragmentManager().beginTransaction()
+                .hide(showFragment).commitAllowingStateLoss();
     }
 
     /**
@@ -358,6 +353,14 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
      */
     public VM initViewModel() {
         return null;
+    }
+
+    public int initLoadingLayoutId() {
+        return R.layout.loading_dialog;
+    }
+
+    public boolean loadingCancelable() {
+        return false;
     }
 
     /**
@@ -422,17 +425,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     }
 
     /**
-     * 权限未通过需要展示弹窗
-     *
-     * @param requestCode
-     */
-    protected void showPermissionDialog(int requestCode) {
-        if (activity == null || activity.isDestroyed()) {
-            return;
-        }
-    }
-
-    /**
      * 权限申请成功执行
      *
      * @param requestCode
@@ -447,13 +439,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
      * @param requestCode
      */
     protected void permissionDenied(int requestCode) {
-
-    }
-
-    /**
-     * 权限申请成功或者失败都要执行
-     */
-    protected void permissionGrantedOrDenineCanDo(int requestCode) {
 
     }
 

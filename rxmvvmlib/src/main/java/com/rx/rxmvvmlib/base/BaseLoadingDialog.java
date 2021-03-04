@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.view;
+package com.rx.rxmvvmlib.base;
 
 
 import android.app.Dialog;
@@ -9,17 +9,20 @@ import android.view.Window;
 import com.rx.rxmvvmlib.R;
 
 
-public class LoadingDialog extends Dialog {
+public class BaseLoadingDialog extends Dialog {
     public Context context;
     private int layoutId;
 
-    public LoadingDialog(Context context) {
+    public BaseLoadingDialog(Context context) {
         this(context, R.layout.loading_dialog, false);
     }
 
-    public LoadingDialog(Context context, int layoutId, boolean cancelable) {
+    public BaseLoadingDialog(Context context, int layoutId, boolean cancelable) {
         super(context, R.style.loading_dialog);
         this.context = context;
+        if (layoutId == 0) {
+            layoutId = R.layout.loading_dialog;
+        }
         this.layoutId = layoutId;
         setCancelable(cancelable);
         setCanceledOnTouchOutside(cancelable);

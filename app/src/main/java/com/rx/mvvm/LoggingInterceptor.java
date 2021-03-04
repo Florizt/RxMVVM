@@ -1,7 +1,6 @@
 package com.rx.mvvm;
 
-import com.dgrlucky.log.LogX;
-import com.rx.rxmvvmlib.RxMVVMInit;
+import com.rx.rxmvvmlib.util.LogUtil;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -46,10 +45,8 @@ public class LoggingInterceptor implements Interceptor {
             body = buffer.readString(charset);
         }
 
-        if (RxMVVMInit.config.debugEnable) {
-            LogX.e("发送请求\nmethod：%s\nurl：%s\nheaders: %sbody：%s",
-                    request.method(), request.url(), request.headers(), body);
-        }
+        LogUtil.e("发送请求\nmethod：%s\nurl：%s\nheaders: %sbody：%s",
+                request.method(), request.url(), request.headers(), body);
 
         long startNs = System.nanoTime();
         Response response = chain.proceed(request);
@@ -73,10 +70,8 @@ public class LoggingInterceptor implements Interceptor {
         }
         rBody = buffer.clone().readString(charset);
 
-        if (RxMVVMInit.config.debugEnable) {
-            LogX.e("收到响应 %s%s %ss\n请求url：%s\nheaders: %s请求body：%s\n响应body：%s",
-                    response.code(), response.message(), tookMs, response.request().url(), response.headers(), body, rBody);
-        }
+        LogUtil.e("收到响应 %s%s %ss\n请求url：%s\nheaders: %s请求body：%s\n响应body：%s",
+                response.code(), response.message(), tookMs, response.request().url(), response.headers(), body, rBody);
 
         return response;
     }

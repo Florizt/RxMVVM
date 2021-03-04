@@ -1,13 +1,17 @@
 package com.rx.rxmvvmlib.base;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rx.rxmvvmlib.R;
+import com.rx.rxmvvmlib.interfaces.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
-import com.rx.rxmvvmlib.view.LoadingDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
@@ -34,7 +38,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     protected V binding;
     protected VM viewModel;
     private int viewModelId;
-    private LoadingDialog loadingDialog;
+    private BaseLoadingDialog loadingDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,7 +152,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
 
     public void showLoading() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(activity);
+            loadingDialog = new BaseLoadingDialog(activity,initLoadingLayoutId(),loadingCancelable());
         }
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -193,13 +197,8 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
                             if (aBoolean) {
                                 permissionGranted(requestCode);
                             } else {
-                                if (showDialog) {
-                                    showPermissionDialog(requestCode);
-                                } else {
-                                    permissionDenied(requestCode);
-                                }
+                                permissionDenied(requestCode);
                             }
-                            permissionGrantedOrDenineCanDo(requestCode);
                         }
                     });
         } catch (Exception e) {
@@ -225,6 +224,25 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     protected void hideFragment(@NonNull Fragment showFragment) {
         getChildFragmentManager().beginTransaction()
                 .hide(showFragment).commitAllowingStateLoss();
+    }
+
+    /**
+     * 启动应用的设置
+     *
+     * @since 2.5.0
+     */
+    public void startAppSettings() {
+        if (activity == null || activity.isDestroyed()) {
+            return;
+        }
+        try {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setData(Uri.parse("package:" + activity.getPackageName()));
+            startActivity(intent);
+        } catch (Exception e) {
+
+        }
     }
 
     /**
@@ -254,15 +272,12 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         return null;
     }
 
-    /**
-     * 权限未通过需要展示弹窗
-     *
-     * @param requestCode
-     */
-    protected void showPermissionDialog(int requestCode) {
-        if (activity == null || activity.isDestroyed()) {
-            return;
-        }
+    public int initLoadingLayoutId() {
+        return R.layout.loading_dialog;
+    }
+
+    public boolean loadingCancelable() {
+        return false;
     }
 
     /**
@@ -280,13 +295,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
      * @param requestCode
      */
     protected void permissionDenied(int requestCode) {
-
-    }
-
-    /**
-     * 权限申请成功或者失败都要执行
-     */
-    protected void permissionGrantedOrDenineCanDo(int requestCode) {
 
     }
 

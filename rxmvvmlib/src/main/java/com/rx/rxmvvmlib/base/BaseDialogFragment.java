@@ -18,8 +18,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.rx.rxmvvmlib.R;
+import com.rx.rxmvvmlib.interfaces.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
-import com.rx.rxmvvmlib.view.LoadingDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxDialogFragment;
 
@@ -50,7 +51,7 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
     protected V binding;
     protected VM viewModel;
     private int viewModelId;
-    private LoadingDialog loadingDialog;
+    private BaseLoadingDialog loadingDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -179,50 +180,6 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
         }
     }
 
-    public void requestPermission(final int requestCode,final boolean showDialog, String... permissions) {
-        try {
-            RxPermissions rxPermissions = new RxPermissions(activity);
-            rxPermissions
-                    .request(permissions)
-                    .subscribe(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(Boolean aBoolean) throws Exception {
-                            if (aBoolean) {
-                                permissionGranted(requestCode);
-                            } else {
-                                if (showDialog) {
-                                    showPermissionDialog(requestCode);
-                                } else {
-                                    permissionDenied(requestCode);
-                                }
-                            }
-                            permissionGrantedOrDenineCanDo(requestCode);
-                        }
-                    });
-        } catch (Exception e) {
-
-        }
-    }
-
-    /**
-     * 启动应用的设置
-     *
-     * @since 2.5.0
-     */
-    public void startAppSettings() {
-        if (activity == null || activity.isDestroyed()) {
-            return;
-        }
-        try {
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setData(Uri.parse("package:" + activity.getPackageName()));
-            startActivity(intent);
-        } catch (Exception e) {
-
-        }
-    }
-
     @Override
     public void show(FragmentManager manager, String tag) {
         //        super.show(manager, tag);
@@ -281,7 +238,7 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
 
     public void showLoading() {
         if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog(activity);
+            loadingDialog = new BaseLoadingDialog(activity,initLoadingLayoutId(),loadingCancelable());
         }
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -330,6 +287,45 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
         }
     }
 
+    public void requestPermission(final int requestCode, final boolean showDialog, String... permissions) {
+        try {
+            RxPermissions rxPermissions = new RxPermissions(activity);
+            rxPermissions
+                    .request(permissions)
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean aBoolean) throws Exception {
+                            if (aBoolean) {
+                                permissionGranted(requestCode);
+                            } else {
+                                permissionDenied(requestCode);
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+
+        }
+    }
+
+    /**
+     * 启动应用的设置
+     *
+     * @since 2.5.0
+     */
+    public void startAppSettings() {
+        if (activity == null || activity.isDestroyed()) {
+            return;
+        }
+        try {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setData(Uri.parse("package:" + activity.getPackageName()));
+            startActivity(intent);
+        } catch (Exception e) {
+
+        }
+    }
+
     /**
      * =====================================================================
      **/
@@ -357,24 +353,20 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
         return null;
     }
 
+    public int initLoadingLayoutId() {
+        return R.layout.loading_dialog;
+    }
+
+    public boolean loadingCancelable() {
+        return false;
+    }
+
     protected int setGravity() {
         return Gravity.CENTER;
     }
 
     protected int setWindowAnimations() {
         return -1;
-    }
-
-    /**
-     * 权限未通过需要展示弹窗
-     *
-     * @param requestCode
-     */
-    protected void showPermissionDialog(int requestCode) {
-        if (activity == null || activity.isDestroyed()) {
-            return;
-        }
-
     }
 
     /**
@@ -392,13 +384,6 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
      * @param requestCode
      */
     protected void permissionDenied(int requestCode) {
-
-    }
-
-    /**
-     * 权限申请成功或者失败都要执行
-     */
-    protected void permissionGrantedOrDenineCanDo(int requestCode) {
 
     }
 

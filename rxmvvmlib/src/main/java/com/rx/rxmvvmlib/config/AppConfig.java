@@ -1,7 +1,8 @@
 package com.rx.rxmvvmlib.config;
 
-import com.rx.rxmvvmlib.base.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.base.ICrashHandler;
+import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.interfaces.ICrashHandler;
+import com.rx.rxmvvmlib.interfaces.ICustomHttpCodeFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class AppConfig {
     public String httpReleaseUrl;
     public String httpSuccessCode;
     public List<Class<? extends Interceptor>> interceptors;
+    public Class<? extends ICustomHttpCodeFilter> customHttpCodeFilterClass;
 
     public void setDebugEnable(boolean debugEnable) {
         this.debugEnable = debugEnable;
@@ -68,5 +70,9 @@ public class AppConfig {
             this.interceptors = new ArrayList<>();
         }
         this.interceptors.addAll(interceptors);
+    }
+
+    public void setCustomHttpCodeFilterClass(Class<? extends ICustomHttpCodeFilter> customHttpCodeFilterClass) {
+        this.customHttpCodeFilterClass = customHttpCodeFilterClass;
     }
 }

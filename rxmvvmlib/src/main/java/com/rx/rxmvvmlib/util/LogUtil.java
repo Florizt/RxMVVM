@@ -1,7 +1,6 @@
 package com.rx.rxmvvmlib.util;
 
-import android.util.Log;
-
+import com.dgrlucky.log.LogX;
 import com.rx.rxmvvmlib.RxMVVMInit;
 
 
@@ -14,30 +13,51 @@ import com.rx.rxmvvmlib.RxMVVMInit;
  */
 public class LogUtil {
 
-    public static void d(String tag, String message) {
+    public static void d(String message) {
         if (RxMVVMInit.config.debugEnable) {
-            Log.d(tag, message);
+            LogX.d(message);
         }
     }
 
-
-    public static void i(String tag, String message) {
+    public static void d(String message, Object... args) {
         if (RxMVVMInit.config.debugEnable) {
-            Log.i(tag, message);
+            LogX.d(message, args);
         }
     }
 
-
-    public static void w(String tag, String message) {
+    public static void i(String message) {
         if (RxMVVMInit.config.debugEnable) {
-            Log.w(tag, message);
+            LogX.i(message);
         }
     }
 
-
-    public static void e(String tag, String message) {
+    public static void i(String message, Object... args) {
         if (RxMVVMInit.config.debugEnable) {
-            Log.e(tag, message);
+            LogX.i(message, args);
+        }
+    }
+
+    public static void w(String message) {
+        if (RxMVVMInit.config.debugEnable) {
+            LogX.w(message);
+        }
+    }
+
+    public static void w(String message, Object... args) {
+        if (RxMVVMInit.config.debugEnable) {
+            LogX.w(message, args);
+        }
+    }
+
+    public static void e(String message) {
+        if (RxMVVMInit.config.debugEnable) {
+            LogX.e(message);
+        }
+    }
+
+    public static void e(String message, Object... args) {
+        if (RxMVVMInit.config.debugEnable) {
+            LogX.e(message, args);
         }
     }
 }

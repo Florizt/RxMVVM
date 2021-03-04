@@ -9,9 +9,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.rx.rxmvvmlib.base.CrashHandler;
-import com.rx.rxmvvmlib.base.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.interfaces.ICustomHttpCodeFilter;
 import com.rx.rxmvvmlib.config.AppConfig;
-import com.rx.rxmvvmlib.base.ICrashHandler;
+import com.rx.rxmvvmlib.interfaces.ICrashHandler;
 import com.rx.rxmvvmlib.util.UIUtils;
 
 import java.util.ArrayList;
@@ -80,6 +81,11 @@ public class RxMVVMInit {
                     }
                 }
                 config.setInterceptors(interceptors);
+            }
+
+            Class<?> customHttpCodeFilterClass = Class.forName(properties.getProperty("customHttpCodeFilterClass"));
+            if (ICustomHttpCodeFilter.class.isAssignableFrom(customHttpCodeFilterClass)) {
+                config.setCustomHttpCodeFilterClass((Class<? extends ICustomHttpCodeFilter>) customHttpCodeFilterClass);
             }
         } catch (Exception e) {
             e.printStackTrace();

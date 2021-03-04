@@ -3,7 +3,7 @@ package com.rx.mvvm;
 import android.content.Context;
 import android.util.Log;
 
-import com.rx.rxmvvmlib.base.ICrashHandler;
+import com.rx.rxmvvmlib.interfaces.ICrashHandler;
 
 /**
  * Created by wuwei

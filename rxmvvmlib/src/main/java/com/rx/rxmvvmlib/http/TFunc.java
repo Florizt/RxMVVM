@@ -2,11 +2,11 @@ package com.rx.rxmvvmlib.http;
 
 import android.text.TextUtils;
 
-import com.dgrlucky.log.LogX;
 import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.annotation.HttpCode;
 import com.rx.rxmvvmlib.annotation.HttpData;
 import com.rx.rxmvvmlib.annotation.HttpMsg;
+import com.rx.rxmvvmlib.util.LogUtil;
 
 import java.lang.reflect.Field;
 
@@ -42,16 +42,12 @@ public class TFunc<T, D> implements Function<T, D> {
             }
         }
 
-        if (!TextUtils.equals(RxMVVMInit.config.httpSuccessCode, String.valueOf(httpCode))) {
-            if (RxMVVMInit.config.debugEnable) {
-                LogX.e("请求失败");
-            }
-            throw new ResultException(String.valueOf(httpCode), String.valueOf(httpMsg));
-        } else {
-            if (RxMVVMInit.config.debugEnable) {
-                LogX.e("请求成功");
-            }
+        if (TextUtils.equals(RxMVVMInit.config.httpSuccessCode, String.valueOf(httpCode))) {
+            LogUtil.e("请求成功");
             return (D) httpData;
+        } else {
+            LogUtil.e("请求失败");
+            throw new ResultException(String.valueOf(httpCode), String.valueOf(httpMsg));
         }
     }
 }

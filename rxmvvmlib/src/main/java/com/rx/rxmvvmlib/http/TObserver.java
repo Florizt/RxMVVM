@@ -1,9 +1,9 @@
 package com.rx.rxmvvmlib.http;
 
-import com.dgrlucky.log.LogX;
 import com.google.gson.JsonSyntaxException;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.RxMVVMInit;
+import com.rx.rxmvvmlib.util.LogUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
 
 import java.net.SocketTimeoutException;
@@ -39,7 +39,7 @@ public abstract class TObserver<T> implements Observer<T> {
         if (t != null) {
             onSuccees(t);
         } else {
-            onFailure("data is null");
+            onFailure("-1", "data is null");
         }
     }
 
@@ -47,26 +47,27 @@ public abstract class TObserver<T> implements Observer<T> {
     public void onError(Throwable e) {
         onRequestEnd();
         if (e instanceof SocketTimeoutException) {
-            if (RxMVVMInit.config.debugEnable) {
-                LogX.e("请求超时，请检查您的网络");
-            }
-            onFailure(UIUtils.getString(R.string.http_timeout_exception));
+            LogUtil.e(UIUtils.getString(R.string.http_timeout_exception));
+            onFailure("-2", UIUtils.getString(R.string.http_timeout_exception));
         } else if (e instanceof JsonSyntaxException) {
-            if (RxMVVMInit.config.debugEnable) {
-                LogX.e("数据解析异常");
-            }
-            onFailure(UIUtils.getString(R.string.json_exception));
+            LogUtil.e(UIUtils.getString(R.string.json_exception));
+            onFailure("-3", UIUtils.getString(R.string.json_exception));
         } else if (e instanceof HttpException) {
-            if (RxMVVMInit.config.debugEnable) {
-                LogX.e("服务器异常");
-            }
-            onFailure(UIUtils.getString(R.string.http_exception));
+            LogUtil.e(UIUtils.getString(R.string.http_exception));
+            onFailure("-4", UIUtils.getString(R.string.http_exception));
         } else if (e instanceof ResultException) {
-            ResultException resultException = (ResultException) e;
-            if (RxMVVMInit.config.debugEnable) {
-                LogX.e(resultException.getErrMsg());
+            try {
+                ResultException resultException = (ResultException) e;
+                LogUtil.e(resultException.getErrMsg());
+                if (RxMVVMInit.config.customHttpCodeFilterClass != null) {
+                    RxMVVMInit.config.customHttpCodeFilterClass.newInstance().onFilter(
+                            resultException.getErrCode(), resultException.getErrMsg());
+                } else {
+                    onFailure(resultException.getErrCode(), resultException.getErrMsg());
+                }
+            } catch (Exception ex) {
+                e.printStackTrace();
             }
-            onFailure(resultException.getErrMsg());
         }
     }
 
@@ -92,7 +93,8 @@ public abstract class TObserver<T> implements Observer<T> {
      * 返回失败
      *
      * @param
+     * @param code
      * @throws Exception
      */
-    protected abstract void onFailure(String message);
+    protected abstract void onFailure(String code, String message);
 }
