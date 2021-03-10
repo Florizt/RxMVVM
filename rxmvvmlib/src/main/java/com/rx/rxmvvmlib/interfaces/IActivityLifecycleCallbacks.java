@@ -1,6 +1,7 @@
 package com.rx.rxmvvmlib.interfaces;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import com.rx.rxmvvmlib.base.AppManager;
@@ -27,7 +28,7 @@ public abstract class IActivityLifecycleCallbacks {
         if (isRunInBackground) {
             //应用从后台回到前台 需要做的操作
             isRunInBackground = false;
-            back2App();
+            back2App(activity);
         }
     }
 
@@ -47,7 +48,7 @@ public abstract class IActivityLifecycleCallbacks {
         if (appCount == 0) {
             //应用进入后台 需要做的操作
             isRunInBackground = true;
-            leaveApp();
+            leaveApp(activity);
         }
     }
 
@@ -61,7 +62,7 @@ public abstract class IActivityLifecycleCallbacks {
         AppManager.getAppManager().removeActivity(activity);
     }
 
-    public abstract void back2App();
+    public abstract void back2App(Context context);
 
-    public abstract void leaveApp();
+    public abstract void leaveApp(Context context);
 }

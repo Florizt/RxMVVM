@@ -1,6 +1,6 @@
 package com.rx.mvvm;
 
-import android.util.Log;
+import android.content.Context;
 
 import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
 
@@ -10,13 +10,14 @@ import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
  * 佛祖保佑       永无BUG
  */
 public class ActivityLifecycleCallbacksImpl extends IActivityLifecycleCallbacks {
+
     @Override
-    public void back2App() {
-        Log.i("TAG", "back2Apsasp-111: ");
+    public void back2App(Context context) {
+
     }
 
     @Override
-    public void leaveApp() {
-        Log.i("TAG", "back2Apsasp-222: ");
+    public void leaveApp(Context context) {
+
     }
 }
