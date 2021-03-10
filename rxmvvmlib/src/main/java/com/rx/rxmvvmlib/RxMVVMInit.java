@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.rx.rxmvvmlib.base.CrashHandler;
 import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
 import com.rx.rxmvvmlib.interfaces.ICustomHttpCodeFilter;
@@ -107,6 +108,8 @@ public class RxMVVMInit {
 
             // 主项目配置
             UIUtils.init(context);
+
+            ARouter.init((Application) context);
 
             // 崩溃抓取
             if (config.crashHandlerClass != null) {

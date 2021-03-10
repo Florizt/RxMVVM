@@ -10,6 +10,12 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
     }
 
     dataBinding {
@@ -47,6 +53,16 @@ dependencies {
 
     // BackgroundLibrary
     api 'com.noober.background:core:1.6.1'
+
+    //阴影布局
+    api 'com.github.lihangleo2:ShadowLayout:3.1.8'
+
+    //腾讯x5内核浏览器
+    api 'com.tencent.tbs.tbssdk:sdk:43903'
+
+    //ARouter
+    api'com.alibaba:arouter-api:1.4.1'
+    annotationProcessor'com.alibaba:arouter-compiler:1.2.2'
 
     //Glide
     api 'com.github.bumptech.glide:glide:4.10.0'

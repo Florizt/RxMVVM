@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.interfaces.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
@@ -76,6 +77,8 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //注册ARouter
+        ARouter.getInstance().inject(this);
         initDialog();
         //页面接受的参数方法
         initParam();
