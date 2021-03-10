@@ -13,9 +13,9 @@ import com.rx.rxmvvmlib.RxMVVMInit;
  */
 public class LogUtil {
 
-    public static void d(String message) {
+    public static void d(Object object) {
         if (RxMVVMInit.config.debugEnable) {
-            LogX.d(message);
+            LogX.d(object);
         }
     }
 
@@ -25,9 +25,9 @@ public class LogUtil {
         }
     }
 
-    public static void i(String message) {
+    public static void i(Object object) {
         if (RxMVVMInit.config.debugEnable) {
-            LogX.i(message);
+            LogX.i(object);
         }
     }
 
@@ -37,9 +37,9 @@ public class LogUtil {
         }
     }
 
-    public static void w(String message) {
+    public static void w(Object object) {
         if (RxMVVMInit.config.debugEnable) {
-            LogX.w(message);
+            LogX.w(object);
         }
     }
 
@@ -49,9 +49,9 @@ public class LogUtil {
         }
     }
 
-    public static void e(String message) {
+    public static void e(Object object) {
         if (RxMVVMInit.config.debugEnable) {
-            LogX.e(message);
+            LogX.e(object);
         }
     }
 

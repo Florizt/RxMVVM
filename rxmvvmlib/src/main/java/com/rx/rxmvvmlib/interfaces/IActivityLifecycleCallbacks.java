@@ -2,6 +2,7 @@ package com.rx.rxmvvmlib.interfaces;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.rx.rxmvvmlib.base.AppManager;
@@ -57,9 +58,17 @@ public abstract class IActivityLifecycleCallbacks {
 
     }
 
+    public void onActivityResult(@NonNull Activity activity,int requestCode, int resultCode, @Nullable Intent data) {
+
+    }
+
 
     public void onActivityDestroyed(@NonNull Activity activity) {
         AppManager.getAppManager().removeActivity(activity);
+    }
+
+    public void onAppExit(@NonNull Activity activity) {
+
     }
 
     public abstract void back2App(Context context);

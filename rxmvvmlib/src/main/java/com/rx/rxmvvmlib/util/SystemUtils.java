@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.util;
+package com.ymx.passenger.util;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -12,7 +12,11 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+
+import com.rx.rxmvvmlib.util.FileUtil;
+import com.rx.rxmvvmlib.util.UIUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -103,6 +107,22 @@ public class SystemUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getAppVersionCode() {
+        long appVersionCode = 0;
+        try {
+            PackageInfo packageInfo = UIUtils.getContext().getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(UIUtils.getContext().getPackageName(), 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                appVersionCode = packageInfo.getLongVersionCode();
+            } else {
+                appVersionCode = packageInfo.versionCode;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        return String.valueOf(appVersionCode);
     }
 
     public static boolean stackResumed(Context context) {
@@ -335,6 +355,23 @@ public class SystemUtils {
             }
         }
         return line;
+    }
+
+    @SuppressLint("MissingPermission")
+    public static String getDeviceId() {
+        try {
+            final TelephonyManager manager = (TelephonyManager) UIUtils.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+            if (TextUtils.isEmpty(manager.getDeviceId())) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    return manager.getDeviceId(0);
+                }
+            } else {
+                return manager.getDeviceId();
+            }
+        } catch (Exception e) {
+
+        }
+        return "";
     }
 
     public static String getProcessName(Context context) {

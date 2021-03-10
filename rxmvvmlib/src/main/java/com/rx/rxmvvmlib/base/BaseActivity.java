@@ -14,7 +14,9 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.rx.rxmvvmlib.R;
+import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.databinding.ActivityBaseBinding;
+import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
 import com.rx.rxmvvmlib.interfaces.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
@@ -125,6 +127,14 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (RxMVVMInit.config.activityLifecycleCallbacksClass != null) {
+                IActivityLifecycleCallbacks iActivityLifecycleCallbacks = RxMVVMInit.config.activityLifecycleCallbacksClass.newInstance();
+                iActivityLifecycleCallbacks.onActivityResult(activity, requestCode, resultCode, data);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -192,6 +202,10 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
             }, 1500);
         } else {
             try {
+                if (RxMVVMInit.config.activityLifecycleCallbacksClass != null) {
+                    IActivityLifecycleCallbacks iActivityLifecycleCallbacks = RxMVVMInit.config.activityLifecycleCallbacksClass.newInstance();
+                    iActivityLifecycleCallbacks.onAppExit(activity);
+                }
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_HOME);
                 startActivity(intent);
