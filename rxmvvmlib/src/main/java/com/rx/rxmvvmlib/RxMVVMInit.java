@@ -10,11 +10,13 @@ import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.rx.rxmvvmlib.base.CrashHandler;
-import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.interfaces.ICustomHttpCodeFilter;
 import com.rx.rxmvvmlib.config.AppConfig;
+import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
 import com.rx.rxmvvmlib.interfaces.ICrashHandler;
+import com.rx.rxmvvmlib.interfaces.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.util.LogUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
+import com.tencent.smtt.sdk.QbSdk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +164,25 @@ public class RxMVVMInit {
             appInfo.metaData.putInt("design_width_in_dp", config.designWidthInDp);
             appInfo.metaData.putInt("design_height_in_dp", config.designHeightInDp);
             AutoSize.initCompatMultiProcess(context);
+
+            //腾讯x5内核浏览器配置
+            //非wifi情况下，主动下载x5内核
+            QbSdk.setDownloadWithoutWifi(true);
+            //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
+            QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+                @Override
+                public void onViewInitFinished(boolean arg0) {
+                    //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                    LogUtil.i("腾讯x5内核浏览器：-------->  " + arg0);
+                }
+
+                @Override
+                public void onCoreInitFinished() {
+
+                }
+            };
+            //x5内核初始化接口
+            QbSdk.initX5Environment(context, cb);
         } catch (Exception e) {
             e.printStackTrace();
         }
