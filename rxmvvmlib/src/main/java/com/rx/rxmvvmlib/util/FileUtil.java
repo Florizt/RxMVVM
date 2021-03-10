@@ -269,7 +269,7 @@ public class FileUtil {
 
     public static File createDir(Context context, int type) {
         File rootDir;
-        if (SystemUtils.checkedAndroid_Q()) {
+        if (com.ymx.passenger.util.SystemUtils.checkedAndroid_Q()) {
             rootDir = getRootDirFile(context, type);
         } else {
             String state = Environment.getExternalStorageState();
@@ -279,7 +279,7 @@ public class FileUtil {
         if (rootDir != null && !rootDir.exists() && rootDir.mkdirs()) {
         }
 
-        File folderDir = new File(SystemUtils.checkedAndroid_Q()
+        File folderDir = new File(com.ymx.passenger.util.SystemUtils.checkedAndroid_Q()
                 ? rootDir.getAbsolutePath() : rootDir.getAbsolutePath() + getParentPath(type));
 
         if (folderDir != null && !folderDir.exists() && folderDir.mkdirs()) {
@@ -339,14 +339,14 @@ public class FileUtil {
     @SuppressLint("NewApi")
     public static String getPath(final Context context, final Uri uri) {
         // DocumentProvider
-        if (SystemUtils.hasKitKat() && DocumentsContract.isDocumentUri(context, uri)) {
+        if (com.ymx.passenger.util.SystemUtils.hasKitKat() && DocumentsContract.isDocumentUri(context, uri)) {
             if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
 
                 if ("primary".equalsIgnoreCase(type)) {
-                    if (SystemUtils.checkedAndroid_Q()) {
+                    if (com.ymx.passenger.util.SystemUtils.checkedAndroid_Q()) {
                         return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/" + split[1];
                     } else {
                         return Environment.getExternalStorageDirectory() + "/" + split[1];
