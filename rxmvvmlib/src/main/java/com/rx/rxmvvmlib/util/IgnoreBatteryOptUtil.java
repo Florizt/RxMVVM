@@ -67,7 +67,7 @@ public class IgnoreBatteryOptUtil {
             } else if (RomUtil.isHuawei()) {
                 //无
             } else if (RomUtil.isOppo()) {
-                String property = com.ymx.passenger.util.SystemUtils.getSystemProperty("ro.build.version.opporom");
+                String property = SystemUtils.getSystemProperty("ro.build.version.opporom");
                 if (RomUtil.getOppoVer(property) < 5.0) {
                     componentName = new ComponentName("com.coloros.oppoguardelf",
                             "com.coloros.powermanager.fuelgaue.PowerConsumptionActivity");

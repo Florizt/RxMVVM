@@ -1,4 +1,4 @@
-package com.ymx.passenger.util;
+package com.rx.rxmvvmlib.util;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -14,9 +14,6 @@ import android.os.StatFs;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-
-import com.rx.rxmvvmlib.util.FileUtil;
-import com.rx.rxmvvmlib.util.UIUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
