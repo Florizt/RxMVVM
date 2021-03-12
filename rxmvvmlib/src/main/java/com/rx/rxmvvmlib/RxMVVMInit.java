@@ -54,24 +54,42 @@ public class RxMVVMInit {
             properties.load(RxMVVMInit.class.getResourceAsStream("/assets/rxmvvm.properties"));
 
             config = new AppConfig();
-            config.setDebugEnable(Boolean.parseBoolean(properties.getProperty("debugEnable")));
-            config.setDesignWidthInDp(Integer.parseInt(properties.getProperty("designWidthInDp")));
-            config.setDesignHeightInDp(Integer.parseInt(properties.getProperty("designHeightInDp")));
-
-            Class<?> crashHandlerClass = Class.forName(properties.getProperty("crashHandlerClass"));
-            if (ICrashHandler.class.isAssignableFrom(crashHandlerClass)) {
-                config.setCrashHandlerClass((Class<? extends ICrashHandler>) crashHandlerClass);
+            if (!TextUtils.isEmpty(properties.getProperty("debugEnable"))) {
+                config.setDebugEnable(Boolean.parseBoolean(properties.getProperty("debugEnable")));
+            }
+            if (!TextUtils.isEmpty(properties.getProperty("designWidthInDp"))) {
+                config.setDesignWidthInDp(Integer.parseInt(properties.getProperty("designWidthInDp")));
+            }
+            if (!TextUtils.isEmpty(properties.getProperty("designHeightInDp"))) {
+                config.setDesignHeightInDp(Integer.parseInt(properties.getProperty("designHeightInDp")));
             }
 
-            Class<?> activityLifecycleCallbacksClass = Class.forName(properties.getProperty("activityLifecycleCallbacksClass"));
-            if (IActivityLifecycleCallbacks.class.isAssignableFrom(activityLifecycleCallbacksClass)) {
-                config.setActivityLifecycleCallbacksClass((Class<? extends IActivityLifecycleCallbacks>) activityLifecycleCallbacksClass);
+            if (!TextUtils.isEmpty(properties.getProperty("crashHandlerClass"))) {
+                Class<?> crashHandlerClass = Class.forName(properties.getProperty("crashHandlerClass"));
+                if (ICrashHandler.class.isAssignableFrom(crashHandlerClass)) {
+                    config.setCrashHandlerClass((Class<? extends ICrashHandler>) crashHandlerClass);
+                }
             }
 
-            config.setFloderName(properties.getProperty("floderName"));
-            config.setHttpDebugUrl(properties.getProperty("httpDebugUrl"));
-            config.setHttpReleaseUrl(properties.getProperty("httpReleaseUrl"));
-            config.setHttpSuccessCode(properties.getProperty("httpSuccessCode"));
+            if (!TextUtils.isEmpty(properties.getProperty("activityLifecycleCallbacksClass"))) {
+                Class<?> activityLifecycleCallbacksClass = Class.forName(properties.getProperty("activityLifecycleCallbacksClass"));
+                if (IActivityLifecycleCallbacks.class.isAssignableFrom(activityLifecycleCallbacksClass)) {
+                    config.setActivityLifecycleCallbacksClass((Class<? extends IActivityLifecycleCallbacks>) activityLifecycleCallbacksClass);
+                }
+            }
+
+            if (!TextUtils.isEmpty(properties.getProperty("floderName"))) {
+                config.setFloderName(properties.getProperty("floderName"));
+            }
+            if (!TextUtils.isEmpty(properties.getProperty("httpDebugUrl"))) {
+                config.setHttpDebugUrl(properties.getProperty("httpDebugUrl"));
+            }
+            if (!TextUtils.isEmpty(properties.getProperty("httpReleaseUrl"))) {
+                config.setHttpReleaseUrl(properties.getProperty("httpReleaseUrl"));
+            }
+            if (!TextUtils.isEmpty(properties.getProperty("httpSuccessCode"))) {
+                config.setHttpSuccessCode(properties.getProperty("httpSuccessCode"));
+            }
 
             String interceptorsStr = properties.getProperty("interceptors");
             if (!TextUtils.isEmpty(interceptorsStr)) {
@@ -86,9 +104,11 @@ public class RxMVVMInit {
                 config.setInterceptors(interceptors);
             }
 
-            Class<?> customHttpCodeFilterClass = Class.forName(properties.getProperty("customHttpCodeFilterClass"));
-            if (ICustomHttpCodeFilter.class.isAssignableFrom(customHttpCodeFilterClass)) {
-                config.setCustomHttpCodeFilterClass((Class<? extends ICustomHttpCodeFilter>) customHttpCodeFilterClass);
+            if (!TextUtils.isEmpty(properties.getProperty("customHttpCodeFilterClass"))) {
+                Class<?> customHttpCodeFilterClass = Class.forName(properties.getProperty("customHttpCodeFilterClass"));
+                if (ICustomHttpCodeFilter.class.isAssignableFrom(customHttpCodeFilterClass)) {
+                    config.setCustomHttpCodeFilterClass((Class<? extends ICustomHttpCodeFilter>) customHttpCodeFilterClass);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
