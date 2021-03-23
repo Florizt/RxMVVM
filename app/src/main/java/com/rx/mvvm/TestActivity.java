@@ -3,11 +3,8 @@ package com.rx.mvvm;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.rx.mvvm.databinding.ActivityLoginBinding;
 import com.rx.rxmvvmlib.base.BaseActivity;
 
 
@@ -16,8 +13,8 @@ import com.rx.rxmvvmlib.base.BaseActivity;
  * 2020/10/24
  * 佛祖保佑       永无BUG
  */
-@Route(path = "/app/login")
-public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
+@Route(path = "/app/test")
+public class TestActivity extends BaseActivity {
 
     public static void start(Context context) {
         start(context, null);
@@ -25,7 +22,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     public static void start(Context context, Intent extras) {
         Intent intent = new Intent();
-        intent.setClass(context, LoginActivity.class);
+        intent.setClass(context, TestActivity.class);
         if (extras != null) {
             intent.putExtras(extras);
         }
@@ -34,7 +31,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     @Override
     public int initLayoutId(Bundle bundle) {
-        return R.layout.activity_login;
+        return R.layout.activity_test;
     }
 
     @Override
@@ -49,12 +46,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     @Override
     public void initView(Bundle bundle) {
-        binding.test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/app/test").navigation();
-            }
-        });
+
     }
 
     @Override
