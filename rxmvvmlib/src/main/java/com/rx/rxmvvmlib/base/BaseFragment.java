@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.interfaces.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
@@ -64,8 +63,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //注册ARouter
-        ARouter.getInstance().inject(this);
         //页面接受的参数方法
         initParam();
         //私有的初始化Databinding和ViewModel方法

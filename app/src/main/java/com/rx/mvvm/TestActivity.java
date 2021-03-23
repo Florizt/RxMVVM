@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
 import com.rx.rxmvvmlib.base.BaseActivity;
 
 
@@ -13,7 +12,6 @@ import com.rx.rxmvvmlib.base.BaseActivity;
  * 2020/10/24
  * 佛祖保佑       永无BUG
  */
-@Route(path = "/app/test")
 public class TestActivity extends BaseActivity {
 
     public static void start(Context context) {

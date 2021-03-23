@@ -12,12 +12,6 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
-        }
     }
 
     dataBinding {
@@ -61,10 +55,6 @@ dependencies {
 
     //腾讯x5内核浏览器
     api 'com.tencent.tbs.tbssdk:sdk:43903'
-
-    //ARouter
-    api'com.alibaba:arouter-api:1.4.1'
-    annotationProcessor'com.alibaba:arouter-compiler:1.2.2'
 
     //Glide
     api 'com.github.bumptech.glide:glide:4.10.0'

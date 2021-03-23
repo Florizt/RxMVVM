@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.rx.mvvm.databinding.ActivityLoginBinding;
 import com.rx.rxmvvmlib.base.BaseActivity;
 
@@ -16,7 +14,6 @@ import com.rx.rxmvvmlib.base.BaseActivity;
  * 2020/10/24
  * 佛祖保佑       永无BUG
  */
-@Route(path = "/app/login")
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
 
     public static void start(Context context) {
@@ -52,7 +49,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         binding.test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/app/test").navigation();
+
             }
         });
     }
