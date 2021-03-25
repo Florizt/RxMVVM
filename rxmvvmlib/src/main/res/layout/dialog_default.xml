@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="dialog"
+            type="com.rx.rxmvvmlib.base.DefaultStyleDialog" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.rx.rxmvvmlib.view.rclayout.RCRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            app:clip_background="true"
+            app:round_corner="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:bl_solid_color="@color/rx_ffffff">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="120dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="18dp"
+                        android:textColor="@color/rx_333333"
+                        android:textSize="14sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/body"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginRight="24dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/rx_555555"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/rx_e1e1e1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/negativeText"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/cancel"
+                        android:textColor="@color/rx_555555"
+                        android:textSize="14sp"
+                        app:bl_pressed_solid_color="@color/rx_f2f2f2"
+                        app:bl_unPressed_solid_color="@color/rx_ffffff"
+                        app:onClickCommand="@{dialog.negative}" />
+
+                    <View
+                        android:id="@+id/line"
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="@color/rx_e1e1e1" />
+
+                    <TextView
+                        android:id="@+id/positiveText"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/confirm"
+                        android:textColor="@color/rx_ff8008"
+                        android:textSize="14sp"
+                        app:bl_pressed_solid_color="@color/rx_f2f2f2"
+                        app:bl_unPressed_solid_color="@color/rx_ffffff"
+                        app:onClickCommand="@{dialog.positive}" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.rx.rxmvvmlib.view.rclayout.RCRelativeLayout>
+    </FrameLayout>
+</layout>

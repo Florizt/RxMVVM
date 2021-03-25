@@ -32,4 +32,6 @@
     <string name="morning">上午</string>
     <string name="afternoon">下午</string>
     <string name="night">晚上</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
 </resources>

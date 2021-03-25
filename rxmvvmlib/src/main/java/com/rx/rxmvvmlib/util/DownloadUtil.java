@@ -27,7 +27,6 @@ import okhttp3.Response;
  * 佛祖保佑       永无BUG
  */
 public class DownloadUtil {
-
     private static DownloadUtil downloadUtil;
     private final OkHttpClient okHttpClient;
     private Call mCall;
@@ -102,58 +101,62 @@ public class DownloadUtil {
      * @param listener 下载监听
      */
     public void download(final String url, final OnDownloadListener listener) {
-        Request request = new Request.Builder().url(url).build();
-        mCall = okHttpClient.newCall(request);
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // 下载失败
-                listener.onDownloadFailed(e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                InputStream is = null;
-                byte[] buf = new byte[2048];
-                int len = 0;
-                FileOutputStream fos = null;
-                try {
-                    is = response.body().byteStream();
-                    long total = response.body().contentLength();
-                    File file = FileUtil.createFile(UIUtils.getContext(), FileUtil.TYPE_DOWNLOAD, getNameFromUrl(url), ".apk");
-                    if (file.exists()) {
-                        file.delete();
-                    }
-                    fos = new FileOutputStream(file);
-                    long sum = 0;
-                    while ((len = is.read(buf)) != -1) {
-                        fos.write(buf, 0, len);
-                        sum += len;
-                        int progress = (int) (sum * 1.0f / total * 100);
-                        // 下载中
-                        listener.onDownloading(progress);
-                    }
-                    fos.flush();
-                    // 下载完成
-                    listener.onDownloadSuccess(file);
-                } catch (Exception e) {
+        try {
+            Request request = new Request.Builder().url(url).build();
+            mCall = okHttpClient.newCall(request);
+            mCall.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    // 下载失败
                     listener.onDownloadFailed(e.getMessage());
-                } finally {
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    InputStream is = null;
+                    byte[] buf = new byte[2048];
+                    int len = 0;
+                    FileOutputStream fos = null;
                     try {
-                        if (is != null)
-                            is.close();
-                    } catch (IOException e) {
+                        is = response.body().byteStream();
+                        long total = response.body().contentLength();
+                        File file = FileUtil.createFile(UIUtils.getContext(), FileUtil.TYPE_DOWNLOAD, getNameFromUrl(url), ".apk");
+                        if (file.exists()) {
+                            file.delete();
+                        }
+                        fos = new FileOutputStream(file);
+                        long sum = 0;
+                        while ((len = is.read(buf)) != -1) {
+                            fos.write(buf, 0, len);
+                            sum += len;
+                            int progress = (int) (sum * 1.0f / total * 100);
+                            // 下载中
+                            listener.onDownloading(progress);
+                        }
+                        fos.flush();
+                        // 下载完成
+                        listener.onDownloadSuccess(file);
+                    } catch (Exception e) {
                         listener.onDownloadFailed(e.getMessage());
-                    }
-                    try {
-                        if (fos != null)
-                            fos.close();
-                    } catch (IOException e) {
-                        listener.onDownloadFailed(e.getMessage());
+                    } finally {
+                        try {
+                            if (is != null)
+                                is.close();
+                        } catch (IOException e) {
+                            listener.onDownloadFailed(e.getMessage());
+                        }
+                        try {
+                            if (fos != null)
+                                fos.close();
+                        } catch (IOException e) {
+                            listener.onDownloadFailed(e.getMessage());
+                        }
                     }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     public int getContentLength(long l) {
@@ -167,8 +170,10 @@ public class DownloadUtil {
      * @return 从下载连接中解析出文件名
      */
     @NonNull
-    private String getNameFromUrl(String url) {
-        return url.substring(url.lastIndexOf("/") + 1);
+    public static String getNameFromUrl(String url) {
+        return url.substring(url.lastIndexOf("/") + 1).contains(".apk")
+                ? url.substring(url.lastIndexOf("/") + 1).replace(".apk", "")
+                : url.substring(url.lastIndexOf("/") + 1);
     }
 
     public interface OnDownloadListener {

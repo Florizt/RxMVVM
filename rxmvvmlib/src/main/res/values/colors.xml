@@ -9,4 +9,8 @@
     <color name="rx_dddddd">#dddddd</color>
     <color name="rx_000000">#000000</color>
     <color name="rx_333333">#333333</color>
+    <color name="rx_555555">#555555</color>
+    <color name="rx_ff8008">#ff8008</color>
+    <color name="rx_e1e1e1">#e1e1e1</color>
+    <color name="rx_f2f2f2">#f2f2f2</color>
 </resources>
