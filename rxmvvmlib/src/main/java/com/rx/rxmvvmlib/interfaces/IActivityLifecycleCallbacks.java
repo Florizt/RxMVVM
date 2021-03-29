@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
  */
 public abstract class IActivityLifecycleCallbacks {
     private int appCount;
-    private boolean isRunInBackground;
+    private boolean isRunInBackground = true;
 
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
         AppManager.getAppManager().addActivity(activity);
@@ -58,7 +58,7 @@ public abstract class IActivityLifecycleCallbacks {
 
     }
 
-    public void onActivityResult(@NonNull Activity activity,int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(@NonNull Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
 
     }
 
