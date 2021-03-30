@@ -85,7 +85,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                         .init();
             } else {
                 ImmersionBar.with(this)
-                        .fitsSystemWindows(true)
+                        .fitsSystemWindows(fitsSystemWindows())
                         .statusBarDarkFont(statusBarDarkFont(), 0.2f)
                         .statusBarColor(statusBarColor())
                         .navigationBarColor(navigationBarColor())
@@ -401,6 +401,15 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
      * @return
      */
     protected boolean statusBarDarkFont() {
+        return true;
+    }
+
+    /**
+     * 是否fitsSystemWindows
+     *
+     * @return
+     */
+    protected boolean fitsSystemWindows() {
         return true;
     }
 
