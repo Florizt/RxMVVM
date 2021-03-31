@@ -60,7 +60,7 @@ public abstract class TObserver<T> implements Observer<T> {
                 ResultException resultException = (ResultException) e;
                 LogUtil.e(resultException.getErrMsg());
                 if (RxMVVMInit.config.customHttpCodeFilterClass != null) {
-                    RxMVVMInit.config.customHttpCodeFilterClass.newInstance().onFilter(
+                    RxMVVMInit.config.customHttpCodeFilterClass.newInstance().onFilter(this,
                             resultException.getErrCode(), resultException.getErrMsg());
                 } else {
                     onFailure(resultException.getErrCode(), resultException.getErrMsg());
