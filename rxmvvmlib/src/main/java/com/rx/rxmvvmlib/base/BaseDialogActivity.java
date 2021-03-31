@@ -22,6 +22,7 @@ public abstract class BaseDialogActivity<V extends ViewDataBinding, VM extends B
         getWindow().setGravity(setGravity());
         getWindow().setWindowAnimations(setWindowAnimations());
         getWindow().setDimAmount(setDimAmount());
+        setFinishOnTouchOutside(setCanceledOnTouchOutside());
     }
 
     protected int setGravity() {
@@ -34,5 +35,9 @@ public abstract class BaseDialogActivity<V extends ViewDataBinding, VM extends B
 
     protected float setDimAmount() {
         return 1.0f;
+    }
+
+    protected boolean setCanceledOnTouchOutside() {
+        return true;
     }
 }
