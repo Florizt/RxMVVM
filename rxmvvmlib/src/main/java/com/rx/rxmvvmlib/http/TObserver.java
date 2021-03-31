@@ -74,12 +74,12 @@ public abstract class TObserver<T> implements Observer<T> {
     /**
      * 请求开始
      */
-    protected abstract void onRequestStart();
+    public abstract void onRequestStart();
 
     /**
      * 请求结束
      */
-    protected abstract void onRequestEnd();
+    public abstract void onRequestEnd();
 
     /**
      * 返回成功
@@ -87,7 +87,7 @@ public abstract class TObserver<T> implements Observer<T> {
      * @param t
      * @throws Exception
      */
-    protected abstract void onSuccees(T t);
+    public abstract void onSuccees(T t);
 
     /**
      * 返回失败
@@ -96,5 +96,5 @@ public abstract class TObserver<T> implements Observer<T> {
      * @param code
      * @throws Exception
      */
-    protected abstract void onFailure(String code, String message);
+    public abstract void onFailure(String code, String message);
 }
