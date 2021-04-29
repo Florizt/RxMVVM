@@ -17,7 +17,7 @@ allprojects {
 - Add the dependency:
 ```java
 dependencies {
-    implementation 'com.github.Florizt:RxMVVM:v2.0.1'
+    implementation 'com.github.Florizt:RxMVVM:v2.1.6'
 }
 ```
 
