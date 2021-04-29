@@ -3,28 +3,19 @@ package com.rx.rxmvvmlib;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.rx.rxmvvmlib.base.CrashHandler;
 import com.rx.rxmvvmlib.config.AppConfig;
-import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.interfaces.ICrashHandler;
-import com.rx.rxmvvmlib.interfaces.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.listener.ICfgsAdapter;
 import com.rx.rxmvvmlib.util.LogUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
 import com.tencent.smtt.sdk.QbSdk;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import me.jessyan.autosize.AutoSize;
-import okhttp3.Interceptor;
+import me.jessyan.autosize.AutoSizeConfig;
 
 
 /**
@@ -48,71 +39,9 @@ public class RxMVVMInit {
     }
 
     static {
-        try {
-            Properties properties = new Properties();
-            properties.load(RxMVVMInit.class.getResourceAsStream("/assets/rxmvvm.properties"));
-
-            config = new AppConfig();
-            if (!TextUtils.isEmpty(properties.getProperty("debugEnable"))) {
-                config.setDebugEnable(Boolean.parseBoolean(properties.getProperty("debugEnable")));
-            }
-            if (!TextUtils.isEmpty(properties.getProperty("designWidthInDp"))) {
-                config.setDesignWidthInDp(Integer.parseInt(properties.getProperty("designWidthInDp")));
-            }
-            if (!TextUtils.isEmpty(properties.getProperty("designHeightInDp"))) {
-                config.setDesignHeightInDp(Integer.parseInt(properties.getProperty("designHeightInDp")));
-            }
-
-            if (!TextUtils.isEmpty(properties.getProperty("crashHandlerClass"))) {
-                Class<?> crashHandlerClass = Class.forName(properties.getProperty("crashHandlerClass"));
-                if (ICrashHandler.class.isAssignableFrom(crashHandlerClass)) {
-                    config.setCrashHandlerClass((Class<? extends ICrashHandler>) crashHandlerClass);
-                }
-            }
-
-            if (!TextUtils.isEmpty(properties.getProperty("activityLifecycleCallbacksClass"))) {
-                Class<?> activityLifecycleCallbacksClass = Class.forName(properties.getProperty("activityLifecycleCallbacksClass"));
-                if (IActivityLifecycleCallbacks.class.isAssignableFrom(activityLifecycleCallbacksClass)) {
-                    config.setActivityLifecycleCallbacksClass((Class<? extends IActivityLifecycleCallbacks>) activityLifecycleCallbacksClass);
-                }
-            }
-
-            if (!TextUtils.isEmpty(properties.getProperty("floderName"))) {
-                config.setFloderName(properties.getProperty("floderName"));
-            }
-            if (!TextUtils.isEmpty(properties.getProperty("httpDebugUrl"))) {
-                config.setHttpDebugUrl(properties.getProperty("httpDebugUrl"));
-            }
-            if (!TextUtils.isEmpty(properties.getProperty("httpReleaseUrl"))) {
-                config.setHttpReleaseUrl(properties.getProperty("httpReleaseUrl"));
-            }
-            if (!TextUtils.isEmpty(properties.getProperty("httpSuccessCode"))) {
-                config.setHttpSuccessCode(properties.getProperty("httpSuccessCode"));
-            }
-
-            String interceptorsStr = properties.getProperty("interceptors");
-            if (!TextUtils.isEmpty(interceptorsStr)) {
-                String[] strings = interceptorsStr.split(",");
-                List<Class<? extends Interceptor>> interceptors = new ArrayList<>();
-                for (String classPath : strings) {
-                    Class<?> interceptor = Class.forName(classPath);
-                    if (Interceptor.class.isAssignableFrom(interceptor)) {
-                        interceptors.add((Class<? extends Interceptor>) interceptor);
-                    }
-                }
-                config.setInterceptors(interceptors);
-            }
-
-            if (!TextUtils.isEmpty(properties.getProperty("customHttpCodeFilterClass"))) {
-                Class<?> customHttpCodeFilterClass = Class.forName(properties.getProperty("customHttpCodeFilterClass"));
-                if (ICustomHttpCodeFilter.class.isAssignableFrom(customHttpCodeFilterClass)) {
-                    config.setCustomHttpCodeFilterClass((Class<? extends ICustomHttpCodeFilter>) customHttpCodeFilterClass);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        config = new AppConfig();
     }
+
 
     /**
      * 初始化
@@ -120,9 +49,19 @@ public class RxMVVMInit {
      * @param cx
      */
     public void init(Context cx) {
+        init(cx, DefaultCfgsAdapter.create());
+    }
+
+    public void init(Context cx, ICfgsAdapter iCfgsAdapter) {
         if (cx == null) {
             throw new IllegalArgumentException("context is null");
         }
+
+        if (iCfgsAdapter == null) {
+            iCfgsAdapter = DefaultCfgsAdapter.create();
+        }
+
+        buildAdapter(iCfgsAdapter);
 
         try {
             Context context = cx.getApplicationContext();
@@ -131,56 +70,51 @@ public class RxMVVMInit {
             UIUtils.init(context);
 
             // 崩溃抓取
-            if (config.crashHandlerClass != null) {
-                CrashHandler.getInstance().init(context, config.crashHandlerClass.newInstance());
-            }
+            CrashHandler.getInstance().init(context, getConfig().getCrashHandler());
 
-            if (config.activityLifecycleCallbacksClass != null) {
-                final IActivityLifecycleCallbacks iActivityLifecycleCallbacks = config.activityLifecycleCallbacksClass.newInstance();
-
+            if (getConfig().getActivityLifecycleCallbacks() != null) {
                 ((Application) context).registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
                     @Override
                     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-                        iActivityLifecycleCallbacks.onActivityCreated(activity, savedInstanceState);
+                        getConfig().getActivityLifecycleCallbacks().onActivityCreated(activity, savedInstanceState);
                     }
 
                     @Override
                     public void onActivityStarted(@NonNull Activity activity) {
-                        iActivityLifecycleCallbacks.onActivityStarted(activity);
+                        getConfig().getActivityLifecycleCallbacks().onActivityStarted(activity);
                     }
 
                     @Override
                     public void onActivityResumed(@NonNull Activity activity) {
-                        iActivityLifecycleCallbacks.onActivityResumed(activity);
+                        getConfig().getActivityLifecycleCallbacks().onActivityResumed(activity);
                     }
 
                     @Override
                     public void onActivityPaused(@NonNull Activity activity) {
-                        iActivityLifecycleCallbacks.onActivityPaused(activity);
+                        getConfig().getActivityLifecycleCallbacks().onActivityPaused(activity);
                     }
 
                     @Override
                     public void onActivityStopped(@NonNull Activity activity) {
-                        iActivityLifecycleCallbacks.onActivityStopped(activity);
+                        getConfig().getActivityLifecycleCallbacks().onActivityStopped(activity);
                     }
 
                     @Override
                     public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-                        iActivityLifecycleCallbacks.onActivitySaveInstanceState(activity, outState);
+                        getConfig().getActivityLifecycleCallbacks().onActivitySaveInstanceState(activity, outState);
                     }
 
                     @Override
                     public void onActivityDestroyed(@NonNull Activity activity) {
-                        iActivityLifecycleCallbacks.onActivityDestroyed(activity);
+                        getConfig().getActivityLifecycleCallbacks().onActivityDestroyed(activity);
                     }
                 });
             }
+
             // 适配配置
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),
-                    PackageManager.GET_META_DATA);
-            appInfo.metaData.putInt("design_width_in_dp", config.designWidthInDp);
-            appInfo.metaData.putInt("design_height_in_dp", config.designHeightInDp);
             AutoSize.initCompatMultiProcess(context);
+            AutoSizeConfig.getInstance().setDesignWidthInDp(getConfig().getDesignWidthInDp());
+            AutoSizeConfig.getInstance().setDesignHeightInDp(getConfig().getDesignHeightInDp());
 
             //腾讯x5内核浏览器配置
             //非wifi情况下，主动下载x5内核
@@ -203,5 +137,22 @@ public class RxMVVMInit {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static AppConfig getConfig() {
+        return config;
+    }
+
+    private void buildAdapter(ICfgsAdapter iCfgsAdapter) {
+        config.setDebugEnable(iCfgsAdapter.debugEnable());
+        config.setDesignWidthInDp(iCfgsAdapter.designWidthInDp());
+        config.setDesignHeightInDp(iCfgsAdapter.designHeightInDp());
+        config.setCrashHandler(iCfgsAdapter.crashHandler());
+        config.setActivityLifecycleCallbacks(iCfgsAdapter.activityLifecycleCallbacks());
+        config.setFloderName(iCfgsAdapter.floderName());
+        config.setHttpBaseUrl(iCfgsAdapter.httpBaseUrl());
+        config.setHttpSuccessCode(iCfgsAdapter.httpSuccessCode());
+        config.setInterceptors(iCfgsAdapter.interceptors());
+        config.setCustomHttpCodeFilter(iCfgsAdapter.customHttpCodeFilter());
     }
 }

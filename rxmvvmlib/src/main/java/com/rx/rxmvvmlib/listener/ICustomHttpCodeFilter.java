@@ -1,6 +1,7 @@
-package com.rx.rxmvvmlib.interfaces;
+package com.rx.rxmvvmlib.listener;
 
-import com.rx.rxmvvmlib.http.TObserver;
+
+import com.rx.rxmvvmlib.retrofit.TObserver;
 
 /**
  * Created by wuwei

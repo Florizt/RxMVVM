@@ -7,8 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
-import com.rx.rxmvvmlib.RxMVVMInit;
-import com.rx.rxmvvmlib.interfaces.ICrashHandler;
+import com.rx.rxmvvmlib.listener.ICrashHandler;
 import com.rx.rxmvvmlib.util.FileUtil;
 import com.rx.rxmvvmlib.util.LogUtil;
 
@@ -62,10 +61,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             //导出异常信息到SD卡中
             dumpExceptionToSDCard(ex);
             //这里可以上传异常信息到服务器，便于开发人员分析日志从而解决bug
-            if (!RxMVVMInit.config.debugEnable) {
-                if (handler != null) {
-                    handler.reportError(context, ex);
-                }
+            if (handler != null) {
+                handler.reportError(context, ex);
             }
         } catch (IOException e) {
             e.printStackTrace();

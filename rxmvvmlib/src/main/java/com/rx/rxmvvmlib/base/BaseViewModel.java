@@ -3,7 +3,7 @@ package com.rx.rxmvvmlib.base;
 import android.app.Application;
 
 import com.rx.rxmvvmlib.config.MessageEvent;
-import com.rx.rxmvvmlib.interfaces.IBaseViewModel;
+import com.rx.rxmvvmlib.listener.IBaseViewModel;
 import com.trello.rxlifecycle2.LifecycleProvider;
 
 import org.greenrobot.eventbus.EventBus;
@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -151,10 +150,11 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, i
 
     }
 
-    public final class UIChangeLiveData extends SingleLiveEvent {
+    public static final class UIChangeLiveData extends SingleLiveEvent {
         private SingleLiveEvent<Void> showDialogEvent;
         private SingleLiveEvent<Void> dismissDialogEvent;
         private SingleLiveEvent<Void> hideSoftKeyBoard;
+        private SingleLiveEvent<Void> back;
 
         public SingleLiveEvent<Void> getShowDialogEvent() {
             return showDialogEvent = createLiveData(showDialogEvent);
@@ -168,16 +168,15 @@ public class BaseViewModel extends AndroidViewModel implements IBaseViewModel, i
             return hideSoftKeyBoard = createLiveData(hideSoftKeyBoard);
         }
 
+        public SingleLiveEvent<Void> getBackEvent() {
+            return back = createLiveData(back);
+        }
+
         private <T> SingleLiveEvent<T> createLiveData(SingleLiveEvent<T> liveData) {
             if (liveData == null) {
                 liveData = new SingleLiveEvent<>();
             }
             return liveData;
-        }
-
-        @Override
-        public void observe(LifecycleOwner owner, Observer observer) {
-            super.observe(owner, observer);
         }
     }
 }

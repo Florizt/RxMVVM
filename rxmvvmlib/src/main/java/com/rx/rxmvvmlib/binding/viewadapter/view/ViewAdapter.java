@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer;
 
 public class ViewAdapter {
     //防重复点击间隔(秒)
-    public static final int CLICK_INTERVAL = 1;
+    public static final int CLICK_INTERVAL = 500;//ms
 
     /**
      * requireAll 是意思是是否需要绑定全部参数, false为否
@@ -50,7 +50,7 @@ public class ViewAdapter {
                     });
         } else {
             RxView.clicks(view)
-                    .throttleFirst(CLICK_INTERVAL, TimeUnit.SECONDS)//1秒钟内只允许点击1次
+                    .throttleFirst(CLICK_INTERVAL, TimeUnit.MILLISECONDS)//500ms内只允许点击1次
                     .subscribe(new Consumer<Object>() {
                         @Override
                         public void accept(Object object) throws Exception {
@@ -183,24 +183,19 @@ public class ViewAdapter {
         }
     }
 
-    @BindingAdapter("layout_width")
-    public static void setLayoutWidth(View view, float width) {
-        if (width == 0) {
-            return;
+    @BindingAdapter(value = {"layout_width", "layout_height"}, requireAll = false)
+    public static void setLayoutWidth(View view, float width, float height) {
+        if (width != 0) {
+            ViewGroup.LayoutParams params = view.getLayoutParams();
+            params.width = (int) width;
+            view.setLayoutParams(params);
         }
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        params.width = (int) width;
-        view.setLayoutParams(params);
-    }
+        if (height != 0) {
+            ViewGroup.LayoutParams params = view.getLayoutParams();
+            params.height = (int) height;
+            view.setLayoutParams(params);
+        }
 
-    @BindingAdapter("layout_height")
-    public static void setLayoutHeight(View view, float height) {
-        if (height == 0) {
-            return;
-        }
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        params.height = (int) height;
-        view.setLayoutParams(params);
     }
 
     @BindingAdapter("selected")
@@ -213,46 +208,30 @@ public class ViewAdapter {
         view.setEnabled(enable);
     }
 
-    @BindingAdapter("margin_top")
-    public static void setLayoutMarginTop(View view, int marginTop) {
+    @BindingAdapter(value = {"margin_top", "margin_bottom", "margin_left", "margin_right"}, requireAll = false)
+    public static void setLayoutMargins(View view, int marginTop, int marginBottom, int marginLeft, int marginRight) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if (params instanceof LinearLayout.LayoutParams) {
             ((LinearLayout.LayoutParams) params).topMargin = marginTop;
+            ((LinearLayout.LayoutParams) params).bottomMargin = marginBottom;
+            ((LinearLayout.LayoutParams) params).leftMargin = marginLeft;
+            ((LinearLayout.LayoutParams) params).rightMargin = marginRight;
         } else if (params instanceof RelativeLayout.LayoutParams) {
             ((RelativeLayout.LayoutParams) params).topMargin = marginTop;
+            ((RelativeLayout.LayoutParams) params).bottomMargin = marginBottom;
+            ((RelativeLayout.LayoutParams) params).leftMargin = marginLeft;
+            ((RelativeLayout.LayoutParams) params).rightMargin = marginRight;
         } else if (params instanceof FrameLayout.LayoutParams) {
             ((FrameLayout.LayoutParams) params).topMargin = marginTop;
+            ((FrameLayout.LayoutParams) params).bottomMargin = marginBottom;
+            ((FrameLayout.LayoutParams) params).leftMargin = marginLeft;
+            ((FrameLayout.LayoutParams) params).rightMargin = marginRight;
         } else if (params instanceof RecyclerView.LayoutParams) {
             ((RecyclerView.LayoutParams) params).topMargin = marginTop;
-        }
-        view.setLayoutParams(params);
-    }
-
-    @BindingAdapter("margin_bottom")
-    public static void setLayoutMarginBottom(View view, int marginBottom) {
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        if (params instanceof LinearLayout.LayoutParams) {
-            ((LinearLayout.LayoutParams) params).bottomMargin = marginBottom;
-        } else if (params instanceof RelativeLayout.LayoutParams) {
-            ((RelativeLayout.LayoutParams) params).bottomMargin = marginBottom;
-        } else if (params instanceof FrameLayout.LayoutParams) {
-            ((FrameLayout.LayoutParams) params).bottomMargin = marginBottom;
-        } else if (params instanceof RecyclerView.LayoutParams) {
             ((RecyclerView.LayoutParams) params).bottomMargin = marginBottom;
+            ((RecyclerView.LayoutParams) params).leftMargin = marginLeft;
+            ((RecyclerView.LayoutParams) params).rightMargin = marginRight;
         }
         view.setLayoutParams(params);
     }
-
-    //    @BindingAdapter({"onTouchCommand"})
-    //    public static void onTouchCommand(View view, final ResponseCommand<MotionEvent, Boolean> onTouchCommand) {
-    //        view.setOnTouchListener(new View.OnTouchListener() {
-    //            @Override
-    //            public boolean onTouch(View v, MotionEvent event) {
-    //                if (onTouchCommand != null) {
-    //                    return onTouchCommand.execute(event);
-    //                }
-    //                return false;
-    //            }
-    //        });
-    //    }
 }

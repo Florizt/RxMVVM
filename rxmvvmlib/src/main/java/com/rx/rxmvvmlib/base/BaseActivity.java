@@ -2,9 +2,7 @@ package com.rx.rxmvvmlib.base;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,11 +13,9 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.databinding.ActivityBaseBinding;
-import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.interfaces.IBaseView;
+import com.rx.rxmvvmlib.listener.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.reflect.ParameterizedType;
@@ -34,7 +30,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
-import io.reactivex.functions.Consumer;
 import me.jessyan.autosize.AutoSizeConfig;
 
 /**
@@ -125,9 +120,8 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (RxMVVMInit.config.activityLifecycleCallbacksClass != null) {
-                IActivityLifecycleCallbacks iActivityLifecycleCallbacks = RxMVVMInit.config.activityLifecycleCallbacksClass.newInstance();
-                iActivityLifecycleCallbacks.onActivityResult(activity, requestCode, resultCode, data);
+            if (RxMVVMInit.getConfig().getActivityLifecycleCallbacks() != null) {
+                RxMVVMInit.getConfig().getActivityLifecycleCallbacks().onActivityResult(activity, requestCode, resultCode, data);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,6 +158,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         getLifecycle().addObserver(viewModel);
         //注入RxLifecycle生命周期
         viewModel.injectLifecycleProvider(this);
+        binding.setLifecycleOwner(this);
     }
 
     //刷新布局
@@ -199,9 +194,8 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
             }, 1500);
         } else {
             try {
-                if (RxMVVMInit.config.activityLifecycleCallbacksClass != null) {
-                    IActivityLifecycleCallbacks iActivityLifecycleCallbacks = RxMVVMInit.config.activityLifecycleCallbacksClass.newInstance();
-                    iActivityLifecycleCallbacks.onAppExit(activity);
+                if (RxMVVMInit.getConfig().getActivityLifecycleCallbacks() != null) {
+                    RxMVVMInit.getConfig().getActivityLifecycleCallbacks().onAppExit(activity);
                 }
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_HOME);
@@ -241,6 +235,13 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
                 hideSoftKeyBoard();
             }
         });
+
+        viewModel.getUC().getBackEvent().observe(this, new Observer<Void>() {
+            @Override
+            public void onChanged(Void aVoid) {
+                doSthIsExit();
+            }
+        });
     }
 
     public void showLoading() {
@@ -277,26 +278,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         }
     }
 
-    public void requestPermission(final int requestCode, final boolean showDialog, String... permissions) {
-        try {
-            RxPermissions rxPermissions = new RxPermissions(this);
-            rxPermissions
-                    .request(permissions)
-                    .subscribe(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(Boolean aBoolean) throws Exception {
-                            if (aBoolean) {
-                                permissionGranted(requestCode);
-                            } else {
-                                permissionDenied(requestCode);
-                            }
-                        }
-                    });
-        } catch (Exception e) {
-
-        }
-    }
-
     public void stopAutoSize() {
         AutoSizeConfig.getInstance().stop(this);
     }
@@ -323,22 +304,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     protected void hideFragment(@NonNull Fragment showFragment) {
         getSupportFragmentManager().beginTransaction()
                 .hide(showFragment).commitAllowingStateLoss();
-    }
-
-    /**
-     * 启动应用的设置
-     *
-     * @since 2.5.0
-     */
-    public void startAppSettings() {
-        try {
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setData(Uri.parse("package:" + getPackageName()));
-            startActivity(intent);
-        } catch (Exception e) {
-
-        }
     }
 
 
@@ -444,25 +409,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
      * 按返回键仅仅只是返回上个界面时要做的操作
      */
     protected void doSthIsExit() {
-
-    }
-
-    /**
-     * 权限申请成功执行
-     *
-     * @param requestCode
-     */
-    protected void permissionGranted(int requestCode) {
-
-    }
-
-    /**
-     * 权限申请失败执行
-     *
-     * @param requestCode
-     */
-    protected void permissionDenied(int requestCode) {
-
+        finish();
     }
 
     /**

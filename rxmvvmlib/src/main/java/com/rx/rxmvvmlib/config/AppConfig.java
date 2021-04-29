@@ -1,78 +1,110 @@
 package com.rx.rxmvvmlib.config;
 
-import com.rx.rxmvvmlib.interfaces.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.interfaces.ICrashHandler;
-import com.rx.rxmvvmlib.interfaces.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.listener.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.listener.ICrashHandler;
+import com.rx.rxmvvmlib.listener.ICustomHttpCodeFilter;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 import okhttp3.Interceptor;
 
 /**
  * Created by wuwei
- * 2020/10/19
+ * 2021/4/28
  * 佛祖保佑       永无BUG
  */
-public class AppConfig {
+public class AppConfig implements Serializable {
     //ui
-    public boolean debugEnable;
-    public int designWidthInDp;
-    public int designHeightInDp;
-    public Class<? extends ICrashHandler> crashHandlerClass;
-    public Class<? extends IActivityLifecycleCallbacks> activityLifecycleCallbacksClass;
-    public String floderName;
+    private boolean debugEnable;
+    private int designWidthInDp;
+    private int designHeightInDp;
+    private ICrashHandler crashHandler;
+    private IActivityLifecycleCallbacks activityLifecycleCallbacks;
+    private String floderName;
     //network
-    public String httpDebugUrl;
-    public String httpReleaseUrl;
-    public String httpSuccessCode;
-    public List<Class<? extends Interceptor>> interceptors;
-    public Class<? extends ICustomHttpCodeFilter> customHttpCodeFilterClass;
+    private String httpBaseUrl;
+    private String httpSuccessCode;
+    private List<Interceptor> interceptors;
+    private ICustomHttpCodeFilter customHttpCodeFilter;
+
+    public boolean isDebugEnable() {
+        return debugEnable;
+    }
 
     public void setDebugEnable(boolean debugEnable) {
         this.debugEnable = debugEnable;
+    }
+
+    public int getDesignWidthInDp() {
+        return designWidthInDp;
     }
 
     public void setDesignWidthInDp(int designWidthInDp) {
         this.designWidthInDp = designWidthInDp;
     }
 
+    public int getDesignHeightInDp() {
+        return designHeightInDp;
+    }
+
     public void setDesignHeightInDp(int designHeightInDp) {
         this.designHeightInDp = designHeightInDp;
     }
 
-    public void setCrashHandlerClass(Class<? extends ICrashHandler> crashHandlerClass) {
-        this.crashHandlerClass = crashHandlerClass;
+    public ICrashHandler getCrashHandler() {
+        return crashHandler;
     }
 
-    public void setActivityLifecycleCallbacksClass(Class<? extends IActivityLifecycleCallbacks> activityLifecycleCallbacksClass) {
-        this.activityLifecycleCallbacksClass = activityLifecycleCallbacksClass;
+    public void setCrashHandler(ICrashHandler crashHandler) {
+        this.crashHandler = crashHandler;
+    }
+
+    public IActivityLifecycleCallbacks getActivityLifecycleCallbacks() {
+        return activityLifecycleCallbacks;
+    }
+
+    public void setActivityLifecycleCallbacks(IActivityLifecycleCallbacks activityLifecycleCallbacks) {
+        this.activityLifecycleCallbacks = activityLifecycleCallbacks;
+    }
+
+    public String getFloderName() {
+        return floderName;
     }
 
     public void setFloderName(String floderName) {
         this.floderName = floderName;
     }
 
-    public void setHttpDebugUrl(String httpDebugUrl) {
-        this.httpDebugUrl = httpDebugUrl;
+    public String getHttpBaseUrl() {
+        return httpBaseUrl;
     }
 
-    public void setHttpReleaseUrl(String httpReleaseUrl) {
-        this.httpReleaseUrl = httpReleaseUrl;
+    public void setHttpBaseUrl(String httpBaseUrl) {
+        this.httpBaseUrl = httpBaseUrl;
+    }
+
+    public String getHttpSuccessCode() {
+        return httpSuccessCode;
     }
 
     public void setHttpSuccessCode(String httpSuccessCode) {
         this.httpSuccessCode = httpSuccessCode;
     }
 
-    public void setInterceptors(List<Class<? extends Interceptor>> interceptors) {
-        if (this.interceptors == null) {
-            this.interceptors = new ArrayList<>();
-        }
-        this.interceptors.addAll(interceptors);
+    public List<Interceptor> getInterceptors() {
+        return interceptors;
     }
 
-    public void setCustomHttpCodeFilterClass(Class<? extends ICustomHttpCodeFilter> customHttpCodeFilterClass) {
-        this.customHttpCodeFilterClass = customHttpCodeFilterClass;
+    public void setInterceptors(List<Interceptor> interceptors) {
+        this.interceptors = interceptors;
+    }
+
+    public ICustomHttpCodeFilter getCustomHttpCodeFilter() {
+        return customHttpCodeFilter;
+    }
+
+    public void setCustomHttpCodeFilter(ICustomHttpCodeFilter customHttpCodeFilter) {
+        this.customHttpCodeFilter = customHttpCodeFilter;
     }
 }

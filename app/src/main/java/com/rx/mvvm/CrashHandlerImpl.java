@@ -3,7 +3,8 @@ package com.rx.mvvm;
 import android.content.Context;
 import android.util.Log;
 
-import com.rx.rxmvvmlib.interfaces.ICrashHandler;
+import com.rx.rxmvvmlib.listener.ICrashHandler;
+
 
 /**
  * Created by wuwei
@@ -11,7 +12,7 @@ import com.rx.rxmvvmlib.interfaces.ICrashHandler;
  * 佛祖保佑       永无BUG
  */
 public class CrashHandlerImpl implements ICrashHandler {
-    @Override
+
     public void reportError(Context context, Throwable ex) {
         Log.i("TAG", "reportErrosasar: ");
     }

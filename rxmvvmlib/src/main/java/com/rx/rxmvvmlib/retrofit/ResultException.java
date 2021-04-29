@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.http;
+package com.rx.rxmvvmlib.retrofit;
 
 public class ResultException extends RuntimeException {
 

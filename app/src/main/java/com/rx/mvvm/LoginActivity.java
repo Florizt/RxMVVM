@@ -1,11 +1,13 @@
 package com.rx.mvvm;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.rx.mvvm.databinding.ActivityLoginBinding;
+import com.rx.rxmvvmlib.annotation.PermissionCheck;
 import com.rx.rxmvvmlib.base.BaseActivity;
 
 
@@ -47,6 +49,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     @Override
     public void initView(Bundle bundle) {
         binding.test.setOnClickListener(new View.OnClickListener() {
+            @PermissionCheck(permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    clazz = PermissionCheckDenineImpl.class)
             @Override
             public void onClick(View v) {
 

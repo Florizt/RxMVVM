@@ -1,18 +1,14 @@
 package com.rx.rxmvvmlib.base;
 
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.rx.rxmvvmlib.R;
-import com.rx.rxmvvmlib.interfaces.IBaseView;
+import com.rx.rxmvvmlib.listener.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.lang.reflect.ParameterizedType;
@@ -26,7 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by wuwei
@@ -77,6 +72,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         initViewObservable();
         //注册RxBus
         viewModel.registerEventBus();
+        binding.setLifecycleOwner(this);
     }
 
     @Override
@@ -186,26 +182,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         }
     }
 
-    public void requestPermission(final int requestCode,final boolean showDialog, String... permissions) {
-        try {
-            RxPermissions rxPermissions = new RxPermissions(activity);
-            rxPermissions
-                    .request(permissions)
-                    .subscribe(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(Boolean aBoolean) throws Exception {
-                            if (aBoolean) {
-                                permissionGranted(requestCode);
-                            } else {
-                                permissionDenied(requestCode);
-                            }
-                        }
-                    });
-        } catch (Exception e) {
-
-        }
-    }
-
     protected void loadRootFragment(int containerId, @NonNull Fragment toFragment) {
         getChildFragmentManager().beginTransaction()
                 .add(containerId, toFragment).hide(toFragment).commitAllowingStateLoss();
@@ -224,25 +200,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     protected void hideFragment(@NonNull Fragment showFragment) {
         getChildFragmentManager().beginTransaction()
                 .hide(showFragment).commitAllowingStateLoss();
-    }
-
-    /**
-     * 启动应用的设置
-     *
-     * @since 2.5.0
-     */
-    public void startAppSettings() {
-        if (activity == null || activity.isDestroyed()) {
-            return;
-        }
-        try {
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setData(Uri.parse("package:" + activity.getPackageName()));
-            startActivity(intent);
-        } catch (Exception e) {
-
-        }
     }
 
     /**
@@ -278,24 +235,6 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
 
     public boolean loadingCancelable() {
         return false;
-    }
-
-    /**
-     * 权限申请成功执行
-     *
-     * @param requestCode
-     */
-    protected void permissionGranted(int requestCode) {
-
-    }
-
-    /**
-     * 权限申请失败执行
-     *
-     * @param requestCode
-     */
-    protected void permissionDenied(int requestCode) {
-
     }
 
     /**

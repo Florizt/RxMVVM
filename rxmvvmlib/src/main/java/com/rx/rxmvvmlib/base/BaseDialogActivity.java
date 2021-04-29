@@ -34,7 +34,7 @@ public abstract class BaseDialogActivity<V extends ViewDataBinding, VM extends B
     }
 
     protected float setDimAmount() {
-        return 1.0f;
+        return 0.6f;
     }
 
     protected boolean setCanceledOnTouchOutside() {

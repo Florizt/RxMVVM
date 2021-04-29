@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.http;
+package com.rx.rxmvvmlib.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,11 +33,7 @@ public class RetrofitFactory {
 
     static {
         try {
-            if (RxMVVMInit.config.debugEnable) {
-                url = RxMVVMInit.config.httpDebugUrl;
-            } else {
-                url = RxMVVMInit.config.httpReleaseUrl;
-            }
+            url = RxMVVMInit.getConfig().getHttpBaseUrl();
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -46,9 +42,10 @@ public class RetrofitFactory {
                     .connectTimeout(60000, TimeUnit.MILLISECONDS)
                     .retryOnConnectionFailure(true)
                     .cache(cache);
-            if (RxMVVMInit.config.interceptors != null && RxMVVMInit.config.interceptors.size() > 0) {
-                for (Class<? extends Interceptor> interceptor : RxMVVMInit.config.interceptors) {
-                    builder.addInterceptor(interceptor.newInstance());
+            if (RxMVVMInit.getConfig().getInterceptors() != null
+                    && RxMVVMInit.getConfig().getInterceptors().size() > 0) {
+                for (Interceptor interceptor : RxMVVMInit.getConfig().getInterceptors()) {
+                    builder.addInterceptor(interceptor);
                 }
             } else {
                 builder.addInterceptor(new JsonInterceptor());

@@ -2,6 +2,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.Florizt'
 
+apply from: '../aspectj-lib.gradle'
+
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"

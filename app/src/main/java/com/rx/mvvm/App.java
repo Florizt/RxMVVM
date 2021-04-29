@@ -2,7 +2,7 @@ package com.rx.mvvm;
 
 import android.app.Application;
 
-import com.rx.rxmvvmlib.RxMVVMInit;
+import com.rx.rxmvvmlib.annotation.RxMVVMInitz;
 
 /**
  * Created by wuwei
@@ -10,9 +10,9 @@ import com.rx.rxmvvmlib.RxMVVMInit;
  * 佛祖保佑       永无BUG
  */
 public class App extends Application {
+    @RxMVVMInitz(clazz = DemoCfgsAdapter.class)
     @Override
     public void onCreate() {
         super.onCreate();
-        RxMVVMInit.getInstance().init(this);
     }
 }

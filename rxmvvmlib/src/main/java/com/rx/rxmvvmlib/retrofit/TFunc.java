@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.http;
+package com.rx.rxmvvmlib.retrofit;
 
 import android.text.TextUtils;
 
@@ -42,7 +42,7 @@ public class TFunc<T, D> implements Function<T, D> {
             }
         }
 
-        if (TextUtils.equals(RxMVVMInit.config.httpSuccessCode, String.valueOf(httpCode))) {
+        if (TextUtils.equals(RxMVVMInit.getConfig().getHttpSuccessCode(), String.valueOf(httpCode))) {
             LogUtil.e("请求成功");
             return (D) httpData;
         } else {

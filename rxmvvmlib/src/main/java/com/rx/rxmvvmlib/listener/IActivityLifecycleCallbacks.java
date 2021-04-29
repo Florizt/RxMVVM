@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.interfaces;
+package com.rx.rxmvvmlib.listener;
 
 import android.app.Activity;
 import android.content.Context;
@@ -40,7 +40,9 @@ public abstract class IActivityLifecycleCallbacks {
 
 
     public void onActivityPaused(@NonNull Activity activity) {
-
+        if (activity.isFinishing()) {
+            AppManager.getAppManager().removeActivity(activity);
+        }
     }
 
 
@@ -64,7 +66,7 @@ public abstract class IActivityLifecycleCallbacks {
 
 
     public void onActivityDestroyed(@NonNull Activity activity) {
-        AppManager.getAppManager().removeActivity(activity);
+
     }
 
     public void onAppExit(@NonNull Activity activity) {

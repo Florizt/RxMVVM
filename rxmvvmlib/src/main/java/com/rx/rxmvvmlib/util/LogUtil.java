@@ -12,51 +12,56 @@ import com.rx.rxmvvmlib.RxMVVMInit;
  * log工具类
  */
 public class LogUtil {
+    private static boolean debug;
+
+    static {
+        debug = RxMVVMInit.getConfig().isDebugEnable();
+    }
 
     public static void d(Object object) {
-        if (RxMVVMInit.config.debugEnable) {
+        if (debug) {
             LogX.d(object);
         }
     }
 
     public static void d(String message, Object... args) {
-        if (RxMVVMInit.config.debugEnable) {
+        if (debug) {
             LogX.d(message, args);
         }
     }
 
     public static void i(Object object) {
-        if (RxMVVMInit.config.debugEnable) {
+        if (debug) {
             LogX.i(object);
         }
     }
 
     public static void i(String message, Object... args) {
-        if (RxMVVMInit.config.debugEnable) {
+        if (debug) {
             LogX.i(message, args);
         }
     }
 
     public static void w(Object object) {
-        if (RxMVVMInit.config.debugEnable) {
+        if (debug) {
             LogX.w(object);
         }
     }
 
     public static void w(String message, Object... args) {
-        if (RxMVVMInit.config.debugEnable) {
+        if (debug) {
             LogX.w(message, args);
         }
     }
 
     public static void e(Object object) {
-        if (RxMVVMInit.config.debugEnable) {
+        if (debug) {
             LogX.e(object);
         }
     }
 
     public static void e(String message, Object... args) {
-        if (RxMVVMInit.config.debugEnable) {
+        if (debug) {
             LogX.e(message, args);
         }
     }

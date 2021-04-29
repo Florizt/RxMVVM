@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.http;
+package com.rx.rxmvvmlib.retrofit;
 
 import com.google.gson.JsonSyntaxException;
 import com.rx.rxmvvmlib.R;
@@ -59,8 +59,8 @@ public abstract class TObserver<T> implements Observer<T> {
             try {
                 ResultException resultException = (ResultException) e;
                 LogUtil.e(resultException.getErrMsg());
-                if (RxMVVMInit.config.customHttpCodeFilterClass != null) {
-                    RxMVVMInit.config.customHttpCodeFilterClass.newInstance().onFilter(this,
+                if (RxMVVMInit.getConfig().getCustomHttpCodeFilter() != null) {
+                    RxMVVMInit.getConfig().getCustomHttpCodeFilter().onFilter(this,
                             resultException.getErrCode(), resultException.getErrMsg());
                 } else {
                     onFailure(resultException.getErrCode(), resultException.getErrMsg());

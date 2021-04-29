@@ -19,9 +19,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.rx.rxmvvmlib.R;
-import com.rx.rxmvvmlib.interfaces.IBaseView;
+import com.rx.rxmvvmlib.listener.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxDialogFragment;
 
 import java.lang.reflect.Constructor;
@@ -39,7 +38,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by wuwei
@@ -91,6 +89,7 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
         initViewObservable();
         //注册RxBus
         viewModel.registerEventBus();
+        binding.setLifecycleOwner(this);
     }
 
     @Override
@@ -135,8 +134,8 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
         try {
             setStyle(DialogFragment.STYLE_NO_TITLE, 0);// 设置Dialog为无标题模式
             if (getDialog() != null) {
-                getDialog().setCanceledOnTouchOutside(true);
-                getDialog().setCancelable(true);
+                getDialog().setCanceledOnTouchOutside(setCanceledOnTouchOutside());
+                getDialog().setCancelable(setCanceledOnTouchOutside());
                 getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
                     @Override
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -287,26 +286,6 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
         }
     }
 
-    public void requestPermission(final int requestCode, final boolean showDialog, String... permissions) {
-        try {
-            RxPermissions rxPermissions = new RxPermissions(activity);
-            rxPermissions
-                    .request(permissions)
-                    .subscribe(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(Boolean aBoolean) throws Exception {
-                            if (aBoolean) {
-                                permissionGranted(requestCode);
-                            } else {
-                                permissionDenied(requestCode);
-                            }
-                        }
-                    });
-        } catch (Exception e) {
-
-        }
-    }
-
     /**
      * 启动应用的设置
      *
@@ -361,30 +340,16 @@ public abstract class BaseDialogFragment<V extends ViewDataBinding, VM extends B
         return false;
     }
 
+    protected boolean setCanceledOnTouchOutside() {
+        return true;
+    }
+
     protected int setGravity() {
         return Gravity.CENTER;
     }
 
     protected int setWindowAnimations() {
         return -1;
-    }
-
-    /**
-     * 权限申请成功执行
-     *
-     * @param requestCode
-     */
-    protected void permissionGranted(int requestCode) {
-
-    }
-
-    /**
-     * 权限申请失败执行
-     *
-     * @param requestCode
-     */
-    protected void permissionDenied(int requestCode) {
-
     }
 
     /**
