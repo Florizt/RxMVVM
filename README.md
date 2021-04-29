@@ -369,7 +369,7 @@ public class HttpResult<D> {
 自定义一接口，并使用步骤1中的实体类：
 ```java
 public interface TestApi {
-    @POST("passenger/transferStation/timeConfirmation")
+    @POST("test/add")
     Observable<HttpResult<String>> add();
 }
 ```
@@ -392,7 +392,7 @@ RetrofitFactory.apiService(TestApi.class).add()
               }
 
               @Override
-              protected void onSuccees(BaseEntity baseEntity) {
+              protected void onSuccees(String s) {
 
               }
 
@@ -492,6 +492,7 @@ public BindingCommand itemClick2 = new BindingCommand(new BindingConsumer<String
 | items  |数据|
 | layoutManager  |可设置是否垂直滚动（canScrollVertically），默认true|
 
+示例：
 ```
 <data>
 
