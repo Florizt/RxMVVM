@@ -4,11 +4,16 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.rx.mvvm.databinding.ActivityLoginBinding;
-import com.rx.rxmvvmlib.annotation.PermissionCheck;
-import com.rx.rxmvvmlib.base.BaseActivity;
+import com.rx.rxmvvmlib.aop.anno.PermissionCheck;
+import com.rx.rxmvvmlib.view.base.RxBaseActivity;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 
 /**
@@ -16,7 +21,9 @@ import com.rx.rxmvvmlib.base.BaseActivity;
  * 2020/10/24
  * 佛祖保佑       永无BUG
  */
-public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
+
+@AndroidEntryPoint
+public class LoginActivity extends RxBaseActivity<ActivityLoginBinding, LoginViewModel> {
 
     public static void start(Context context) {
         start(context, null);
@@ -42,6 +49,26 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     }
 
     @Override
+    public int initLoadingLayoutId() {
+        return 0;
+    }
+
+    @Override
+    public boolean loadingCancelable() {
+        return false;
+    }
+
+    @Override
+    public boolean isExit() {
+        return false;
+    }
+
+    @Override
+    public void doSthIsExit() {
+
+    }
+
+    @Override
     public void initParam() {
 
     }
@@ -58,9 +85,13 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         });
     }
 
+    @Inject
+    Repo repo;
+
     @Override
     public void initData() {
-
+        Log.i("TAG", "initData-------: "+repo);
+        repo.get();
     }
 
     @Override
@@ -69,7 +100,33 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     }
 
     @Override
-    protected boolean statusBarDarkFont() {
+    public boolean immersionBarEnabled() {
         return false;
+    }
+
+    @Override
+    public boolean isFullScreen() {
+        return false;
+    }
+
+    @Override
+    public boolean statusBarDarkFont() {
+        return false;
+    }
+
+
+    @Override
+    public boolean fitsSystemWindows() {
+        return false;
+    }
+
+    @Override
+    public int statusBarColor() {
+        return 0;
+    }
+
+    @Override
+    public int navigationBarColor() {
+        return 0;
     }
 }

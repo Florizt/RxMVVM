@@ -5,11 +5,10 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.rx.rxmvvmlib.base.CrashHandler;
 import com.rx.rxmvvmlib.config.AppConfig;
-import com.rx.rxmvvmlib.listener.ICfgsAdapter;
 import com.rx.rxmvvmlib.util.LogUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
+import com.rx.rxmvvmlib.view.base.CrashHandler;
 import com.tencent.smtt.sdk.QbSdk;
 
 import androidx.annotation.NonNull;

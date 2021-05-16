@@ -6,14 +6,14 @@
 
         <variable
             name="dialog"
-            type="com.rx.rxmvvmlib.base.DefaultStyleDialog" />
+            type="com.rx.rxmvvmlib.view.base.DefaultStyleDialog" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.rx.rxmvvmlib.view.rclayout.RCRelativeLayout
+        <com.rx.rxmvvmlib.layout.rclayout.RCRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="48dp"
@@ -100,6 +100,6 @@
                         app:onClickCommand="@{dialog.positive}" />
                 </LinearLayout>
             </LinearLayout>
-        </com.rx.rxmvvmlib.view.rclayout.RCRelativeLayout>
+        </com.rx.rxmvvmlib.layout.rclayout.RCRelativeLayout>
     </FrameLayout>
 </layout>

@@ -1,8 +1,8 @@
 package com.rx.mvvm;
 
-import com.rx.rxmvvmlib.annotation.HttpCode;
-import com.rx.rxmvvmlib.annotation.HttpData;
-import com.rx.rxmvvmlib.annotation.HttpMsg;
+import com.rx.rxmvvmlib.mode.remote.retrofit.anno.HttpCode;
+import com.rx.rxmvvmlib.mode.remote.retrofit.anno.HttpData;
+import com.rx.rxmvvmlib.mode.remote.retrofit.anno.HttpMsg;
 
 /**
  * Created by wuwei

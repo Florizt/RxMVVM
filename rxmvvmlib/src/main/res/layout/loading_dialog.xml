@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-    <com.rx.rxmvvmlib.view.LoadingView
+    <com.rx.rxmvvmlib.layout.LoadingView
         android:layout_width="30dp"
         android:layout_height="30dp" />
 </LinearLayout>

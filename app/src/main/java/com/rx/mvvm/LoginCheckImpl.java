@@ -1,7 +1,7 @@
 package com.rx.mvvm;
 
-import com.rx.rxmvvmlib.annotation.LoginReExecute;
-import com.rx.rxmvvmlib.listener.ILoginCheck;
+import com.rx.rxmvvmlib.aop.anno.LoginReExecute;
+import com.rx.rxmvvmlib.aop.ILoginCheck;
 import com.rx.rxmvvmlib.util.LogUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
 

@@ -21,18 +21,12 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.rx.rxmvvmlib.R;
-import com.rx.rxmvvmlib.base.AppManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;

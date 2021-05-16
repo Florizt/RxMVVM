@@ -2,10 +2,9 @@ package com.rx.rxmvvmlib;
 
 import android.content.Context;
 
-import com.rx.rxmvvmlib.listener.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.listener.ICfgsAdapter;
-import com.rx.rxmvvmlib.listener.ICrashHandler;
-import com.rx.rxmvvmlib.listener.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.view.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.view.ICrashHandler;
+import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
 import com.rx.rxmvvmlib.util.LogUtil;
 
 import java.util.List;

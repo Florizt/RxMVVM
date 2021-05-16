@@ -3,6 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.Florizt'
 
 apply from: '../aspectj-lib.gradle'
+apply plugin: 'dagger.hilt.android.plugin'
 
 
 android {
@@ -93,4 +94,7 @@ dependencies {
     //recyclerview的databinding套装
     api 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:3.1.1'
     api 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:3.1.1'
+
+    implementation "com.google.dagger:hilt-android:2.28-alpha"
+    annotationProcessor "com.google.dagger:hilt-android-compiler:2.28-alpha"
 }

@@ -2,7 +2,7 @@ package com.rx.mvvm;
 
 import android.content.Context;
 
-import com.rx.rxmvvmlib.listener.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.view.IActivityLifecycleCallbacks;
 
 
 /**

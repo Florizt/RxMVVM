@@ -1,6 +1,6 @@
 package com.rx.mvvm;
 
-import com.rx.rxmvvmlib.base.BaseEntity;
+import com.rx.rxmvvmlib.mode.BaseEntity;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;

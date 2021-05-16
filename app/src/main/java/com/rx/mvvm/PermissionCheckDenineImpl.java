@@ -2,7 +2,7 @@ package com.rx.mvvm;
 
 import android.content.Context;
 
-import com.rx.rxmvvmlib.listener.IPermissionCheckDenine;
+import com.rx.rxmvvmlib.aop.IPermissionCheckDenine;
 
 /**
  * Created by wuwei

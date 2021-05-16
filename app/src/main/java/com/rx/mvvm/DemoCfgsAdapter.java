@@ -1,9 +1,9 @@
 package com.rx.mvvm;
 
-import com.rx.rxmvvmlib.listener.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.listener.ICfgsAdapter;
-import com.rx.rxmvvmlib.listener.ICrashHandler;
-import com.rx.rxmvvmlib.listener.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.view.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.ICfgsAdapter;
+import com.rx.rxmvvmlib.view.ICrashHandler;
+import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
 
 import java.util.List;
 
@@ -43,17 +43,17 @@ public class DemoCfgsAdapter implements ICfgsAdapter {
 
     @Override
     public String floderName() {
-        return null;
+        return "test";
     }
 
     @Override
     public String httpBaseUrl() {
-        return null;
+        return "https://www.baidu.com";
     }
 
     @Override
     public String httpSuccessCode() {
-        return null;
+        return "1";
     }
 
     @Override
