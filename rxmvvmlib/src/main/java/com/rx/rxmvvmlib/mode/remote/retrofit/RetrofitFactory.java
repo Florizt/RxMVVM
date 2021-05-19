@@ -57,12 +57,13 @@ public class RetrofitFactory {
         }
     }
 
-    public static Retrofit getRetrofit() {
+    public static <S> S create(Class<S> clazz) {
         return new Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonDConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
-                .build();
+                .build()
+                .create(clazz);
     }
 }

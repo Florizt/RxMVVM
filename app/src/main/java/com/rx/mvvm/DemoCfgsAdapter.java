@@ -1,9 +1,9 @@
 package com.rx.mvvm;
 
-import com.rx.rxmvvmlib.view.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.ICfgsAdapter;
-import com.rx.rxmvvmlib.view.ICrashHandler;
+import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.ui.ICrashHandler;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import okhttp3.Interceptor;
  * 2021/4/28
  * 佛祖保佑       永无BUG
  */
-public class DemoCfgsAdapter implements ICfgsAdapter {
+public class DemoCfgsAdapter implements RxMVVMInit.ICfgsAdapter {
 
     @Override
     public boolean debugEnable() {

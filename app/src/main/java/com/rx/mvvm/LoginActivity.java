@@ -4,16 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.rx.mvvm.databinding.ActivityLoginBinding;
 import com.rx.rxmvvmlib.aop.anno.PermissionCheck;
-import com.rx.rxmvvmlib.view.base.RxBaseActivity;
-
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
+import com.rx.rxmvvmlib.ui.base.RxBaseActivity;
 
 
 /**
@@ -22,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint;
  * 佛祖保佑       永无BUG
  */
 
-@AndroidEntryPoint
 public class LoginActivity extends RxBaseActivity<ActivityLoginBinding, LoginViewModel> {
 
     public static void start(Context context) {
@@ -85,13 +79,9 @@ public class LoginActivity extends RxBaseActivity<ActivityLoginBinding, LoginVie
         });
     }
 
-    @Inject
-    Repo repo;
-
     @Override
     public void initData() {
-        Log.i("TAG", "initData-------: "+repo);
-        repo.get();
+
     }
 
     @Override

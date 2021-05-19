@@ -1,7 +1,7 @@
 package com.rx.rxmvvmlib.aop.anno;
 
 import com.rx.rxmvvmlib.DefaultCfgsAdapter;
-import com.rx.rxmvvmlib.ICfgsAdapter;
+import com.rx.rxmvvmlib.RxMVVMInit;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,5 +16,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RxMVVMInitz {
-    Class<? extends ICfgsAdapter> clazz() default DefaultCfgsAdapter.class;
+    Class<? extends RxMVVMInit.ICfgsAdapter> clazz() default DefaultCfgsAdapter.class;
 }

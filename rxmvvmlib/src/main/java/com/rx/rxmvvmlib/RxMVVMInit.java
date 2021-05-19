@@ -6,15 +6,21 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.rx.rxmvvmlib.config.AppConfig;
+import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.ui.ICrashHandler;
+import com.rx.rxmvvmlib.ui.base.CrashHandler;
 import com.rx.rxmvvmlib.util.LogUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
-import com.rx.rxmvvmlib.view.base.CrashHandler;
 import com.tencent.smtt.sdk.QbSdk;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
+import okhttp3.Interceptor;
 
 
 /**
@@ -153,5 +159,27 @@ public class RxMVVMInit {
         config.setHttpSuccessCode(iCfgsAdapter.httpSuccessCode());
         config.setInterceptors(iCfgsAdapter.interceptors());
         config.setCustomHttpCodeFilter(iCfgsAdapter.customHttpCodeFilter());
+    }
+
+    public interface ICfgsAdapter {
+        boolean debugEnable();
+
+        int designWidthInDp();
+
+        int designHeightInDp();
+
+        ICrashHandler crashHandler();
+
+        IActivityLifecycleCallbacks activityLifecycleCallbacks();
+
+        String floderName();
+
+        String httpBaseUrl();
+
+        String httpSuccessCode();
+
+        List<Interceptor> interceptors();
+
+        ICustomHttpCodeFilter customHttpCodeFilter();
     }
 }

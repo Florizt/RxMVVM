@@ -2,9 +2,9 @@ package com.rx.rxmvvmlib;
 
 import android.content.Context;
 
-import com.rx.rxmvvmlib.view.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.view.ICrashHandler;
 import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.ui.ICrashHandler;
 import com.rx.rxmvvmlib.util.LogUtil;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import okhttp3.Interceptor;
  * 2021/4/27
  * 佛祖保佑       永无BUG
  */
-public class DefaultCfgsAdapter implements ICfgsAdapter {
+public class DefaultCfgsAdapter implements RxMVVMInit.ICfgsAdapter {
 
     public static DefaultCfgsAdapter create() {
         return new DefaultCfgsAdapter();
@@ -24,7 +24,7 @@ public class DefaultCfgsAdapter implements ICfgsAdapter {
 
     @Override
     public boolean debugEnable() {
-        return true;
+        return BuildConfig.DEBUG;
     }
 
     @Override

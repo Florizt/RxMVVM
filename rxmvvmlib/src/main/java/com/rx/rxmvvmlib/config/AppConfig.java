@@ -1,7 +1,7 @@
 package com.rx.rxmvvmlib.config;
 
-import com.rx.rxmvvmlib.view.IActivityLifecycleCallbacks;
-import com.rx.rxmvvmlib.view.ICrashHandler;
+import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;
+import com.rx.rxmvvmlib.ui.ICrashHandler;
 import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
 
 import java.io.Serializable;

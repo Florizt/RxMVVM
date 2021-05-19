@@ -1,7 +1,6 @@
 package com.rx.mvvm;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 
@@ -22,9 +21,5 @@ public class LoginViewModel extends RxBaseViewModel {
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
-    }
-
-    public void test(){
-        Log.i("TAG", "initViewDataBinding-----------: ");
     }
 }

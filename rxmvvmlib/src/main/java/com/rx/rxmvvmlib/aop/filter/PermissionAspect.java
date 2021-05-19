@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import com.rx.rxmvvmlib.aop.anno.PermissionCheck;
-import com.rx.rxmvvmlib.view.base.AppManager;
+import com.rx.rxmvvmlib.ui.base.AppManager;
 import com.rx.rxmvvmlib.aop.IPermissionCheckDenine;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
