@@ -1,7 +1,8 @@
-package com.rx.mvvm;
+package com.rx.mvvm.repository.config;
 
 import android.content.Context;
 
+import com.rx.mvvm.BuildConfig;
 import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
 import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;

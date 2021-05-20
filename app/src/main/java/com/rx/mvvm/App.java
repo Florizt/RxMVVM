@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.rx.mvvm.aop.anno.ArouterDestroy;
 import com.rx.mvvm.aop.anno.ArouterInit;
+import com.rx.mvvm.repository.config.AppCfgsAdapter;
 import com.rx.rxmvvmlib.aop.anno.RxMVVMInitz;
 
 /**

@@ -1,4 +1,4 @@
-package com.rx.mvvm.repository.service;
+package com.rx.mvvm.repository.datasource.service;
 
 import com.rx.mvvm.repository.entity.HttpResult;
 import com.rx.rxmvvmlib.mode.BaseEntity;
