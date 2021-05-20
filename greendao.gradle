@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+    }
+}
+
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    greendao {
+        schemaVersion 1//数据库版本号
+        targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
+        daoPackage 'com.rx.mvvm.greendao'//设置DaoMaster、DaoSession、Dao包名
+    }
+}
+
+dependencies {
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+}

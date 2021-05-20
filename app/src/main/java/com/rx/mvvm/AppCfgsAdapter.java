@@ -1,5 +1,7 @@
 package com.rx.mvvm;
 
+import android.content.Context;
+
 import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
 import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;
@@ -14,11 +16,11 @@ import okhttp3.Interceptor;
  * 2021/4/28
  * 佛祖保佑       永无BUG
  */
-public class DemoCfgsAdapter implements RxMVVMInit.ICfgsAdapter {
+public class AppCfgsAdapter implements RxMVVMInit.ICfgsAdapter {
 
     @Override
     public boolean debugEnable() {
-        return true;
+        return BuildConfig.DEBUG;
     }
 
     @Override
@@ -28,17 +30,32 @@ public class DemoCfgsAdapter implements RxMVVMInit.ICfgsAdapter {
 
     @Override
     public int designHeightInDp() {
-        return 664;
+        return 667;
     }
 
     @Override
     public ICrashHandler crashHandler() {
-        return new CrashHandlerImpl();
+        return new ICrashHandler() {
+            @Override
+            public void reportError(Context context, Throwable ex) {
+
+            }
+        };
     }
 
     @Override
     public IActivityLifecycleCallbacks activityLifecycleCallbacks() {
-        return new ActivityLifecycleCallbacksImpl();
+        return new IActivityLifecycleCallbacks() {
+            @Override
+            public void back2App(Context context) {
+
+            }
+
+            @Override
+            public void leaveApp(Context context) {
+
+            }
+        };
     }
 
     @Override

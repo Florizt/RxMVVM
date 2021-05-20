@@ -1,38 +1,31 @@
 apply plugin: 'com.android.application'
+apply from: '../signing.gradle'
 apply from: '../aspectj-app.gradle'
-
-
+apply from: '../greendao.gradle'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
-        applicationId "com.rx.mvvm"
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-    }
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.appTargetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
 
-    compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
-    }
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
 
-    //lint代码检查
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-        disable 'GoogleAppIndexingWarning'
-    }
+        /*manifestPlaceholders = [
+                // 设置manifest.xml中的变量
 
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/proguard/androidx-annotations.pro'
+        ]*/
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
     }
 
     sourceSets {
@@ -47,17 +40,6 @@ android {
     dataBinding {
         enabled true
     }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles 'proguard-rules.pro'
-        }
-
-        debug {
-            minifyEnabled false
-        }
-    }
 }
 
 repositories {
@@ -69,8 +51,10 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
-    implementation project(':rxmvvmlib')
-//    implementation 'com.github.Florizt:RxMVVM:v1.0.9'
+    implementation rootProject.ext.dependencies['filetree']
+    implementation rootProject.ext.dependencies['baselib']
+    implementation rootProject.ext.dependencies['greendao']
+    implementation rootProject.ext.dependencies['greendao-helper']
+    implementation rootProject.ext.dependencies['arouter']
+    annotationProcessor rootProject.ext.dependencies['arouter-compiler']
 }
-
