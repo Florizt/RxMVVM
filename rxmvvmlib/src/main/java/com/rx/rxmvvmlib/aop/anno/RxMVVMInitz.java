@@ -1,6 +1,6 @@
 package com.rx.rxmvvmlib.aop.anno;
 
-import com.rx.rxmvvmlib.DefaultCfgsAdapter;
+import com.rx.rxmvvmlib.config.DefaultCfgsAdapter;
 import com.rx.rxmvvmlib.RxMVVMInit;
 
 import java.lang.annotation.ElementType;

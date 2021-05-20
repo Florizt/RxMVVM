@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.rx.rxmvvmlib.config.AppConfig;
+import com.rx.rxmvvmlib.config.DefaultCfgsAdapter;
 import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
 import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;
 import com.rx.rxmvvmlib.ui.ICrashHandler;

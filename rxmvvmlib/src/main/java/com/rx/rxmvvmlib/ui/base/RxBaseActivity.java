@@ -13,6 +13,8 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.databinding.ActivityBaseBinding;
+import com.rx.rxmvvmlib.ui.keyboard.KeyboardHeightObserver;
+import com.rx.rxmvvmlib.ui.keyboard.KeyboardHeightProvider;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
 import com.rx.rxmvvmlib.util.UIUtils;
 import com.rx.rxmvvmlib.ui.IBaseView;
@@ -41,12 +43,13 @@ import me.jessyan.autosize.AutoSizeConfig;
  */
 
 public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBaseViewModel>
-        extends RxAppCompatActivity implements IBaseView, IImmersionBar {
+        extends RxAppCompatActivity implements IBaseView, IImmersionBar, KeyboardHeightObserver {
     protected RxBaseActivity activity;
     protected V binding;
     protected VM viewModel;
     private RxBaseLoadingDialog loadingDialog;
     private boolean isExit;
+    private KeyboardHeightProvider keyboardHeightProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,8 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
         initViewObservable();
         //注册EventBus
         viewModel.registerEventBus();
+        //初始化软键盘provider
+        keyboardHeightProvider = new KeyboardHeightProvider(this);
     }
 
     @Override
@@ -111,6 +116,29 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (keyboardHeightProvider != null) {
+            keyboardHeightProvider.setKeyboardHeightObserver(this);
+            keyboardHeightProvider.start();
+        }
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (keyboardHeightProvider != null) {
+            keyboardHeightProvider.setKeyboardHeightObserver(null);
+            keyboardHeightProvider.close();
+        }
+    }
+
+    @Override
+    public void onKeyboardHeightChanged(int height, int orientation) {
+
     }
 
     private void initImmersionBar() {
@@ -162,7 +190,7 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
         getLifecycle().addObserver(viewModel);
         //注入RxLifecycle生命周期
         viewModel.injectLifecycleProvider(this);
-
+        //LiveData需要
         binding.setLifecycleOwner(this);
     }
 

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.rx.mvvm.repository.IUserRepository;
 import com.rx.mvvm.repository.entity.HttpResult;
-import com.rx.mvvm.repository.datasource.service.IUserService;
+import com.rx.mvvm.repository.datasource.remote.IUserService;
 import com.rx.rxmvvmlib.mode.BaseEntity;
 import com.rx.rxmvvmlib.mode.remote.retrofit.TFunc;
 

@@ -4,7 +4,7 @@ package com.rx.rxmvvmlib.aop.filter;
 import android.app.Application;
 import android.text.TextUtils;
 
-import com.rx.rxmvvmlib.DefaultCfgsAdapter;
+import com.rx.rxmvvmlib.config.DefaultCfgsAdapter;
 import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.aop.anno.RxMVVMInitz;
 

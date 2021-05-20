@@ -1,7 +1,7 @@
 package com.rx.mvvm.repository;
 
 import com.rx.mvvm.repository.impl.UserRepository;
-import com.rx.mvvm.repository.datasource.service.IUserService;
+import com.rx.mvvm.repository.datasource.remote.IUserService;
 import com.rx.rxmvvmlib.mode.remote.retrofit.RetrofitFactory;
 
 /**
