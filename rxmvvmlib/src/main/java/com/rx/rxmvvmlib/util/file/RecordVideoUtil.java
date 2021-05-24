@@ -1,4 +1,4 @@
-package com.example.test.file;
+package com.rx.rxmvvmlib.util.file;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -285,6 +285,7 @@ public class RecordVideoUtil {
     }
 
     private SensorEventListener sensorEventListener = new SensorEventListener() {
+        @Override
         public void onSensorChanged(SensorEvent event) {
             if (Sensor.TYPE_ACCELEROMETER != event.sensor.getType()) {
                 return;
@@ -293,6 +294,7 @@ public class RecordVideoUtil {
             sensorAngle = getSensorAngle(values[0], values[1]);
         }
 
+        @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
         }
     };
