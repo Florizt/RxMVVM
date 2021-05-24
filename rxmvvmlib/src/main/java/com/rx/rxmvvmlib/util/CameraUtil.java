@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.util.file;
+package com.rx.rxmvvmlib.util;
 
 import android.app.Activity;
 import android.content.ContentValues;

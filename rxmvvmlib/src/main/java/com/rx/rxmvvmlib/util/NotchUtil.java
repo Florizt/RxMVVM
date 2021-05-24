@@ -14,9 +14,7 @@ import java.lang.reflect.Method;
  * 2018/7/27
  * 佛祖保佑       永无BUG
  */
-public class NotchUtils {
-    public static final int VIVO_NOTCH = 0x00000020;//是否有刘海
-    public static final int VIVO_FILLET = 0x00000008;//是否有圆角
+public class NotchUtil {
 
     /**
      * 是否是小米刘海屏
@@ -24,7 +22,7 @@ public class NotchUtils {
      * @return
      */
     public static boolean hasNotchAtXiaomi() {
-        if (SystemPropertiesInvoke.getInt("ro.miui.notch", 0) == 1) {
+        if (getInt("ro.miui.notch", 0) == 1) {
             return true;
         } else {
             return false;
@@ -38,21 +36,19 @@ public class NotchUtils {
      * @return
      */
     public static boolean hasNotchAtHuawei(Context context) {
-        boolean ret = false;
         try {
             ClassLoader classLoader = context.getClassLoader();
             Class HwNotchSizeUtil = classLoader.loadClass("com.huawei.android.util.HwNotchSizeUtil");
             Method get = HwNotchSizeUtil.getMethod("hasNotchInScreen");
-            ret = (boolean) get.invoke(HwNotchSizeUtil);
+            return (boolean) get.invoke(HwNotchSizeUtil);
         } catch (ClassNotFoundException e) {
             Log.e("Notch", "hasNotchAtHuawei ClassNotFoundException");
         } catch (NoSuchMethodException e) {
             Log.e("Notch", "hasNotchAtHuawei NoSuchMethodException");
         } catch (Exception e) {
             Log.e("Notch", "hasNotchAtHuawei Exception");
-        } finally {
-            return ret;
         }
+        return false;
     }
 
     /**
@@ -63,21 +59,19 @@ public class NotchUtils {
      * @return
      */
     public static int[] getNotchSizeAtHuawei(Context context) {
-        int[] ret = new int[]{0, 0};
         try {
             ClassLoader cl = context.getClassLoader();
             Class HwNotchSizeUtil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil");
             Method get = HwNotchSizeUtil.getMethod("getNotchSize");
-            ret = (int[]) get.invoke(HwNotchSizeUtil);
+            return (int[]) get.invoke(HwNotchSizeUtil);
         } catch (ClassNotFoundException e) {
             Log.e("Notch", "getNotchSizeAtHuawei ClassNotFoundException");
         } catch (NoSuchMethodException e) {
             Log.e("Notch", "getNotchSizeAtHuawei NoSuchMethodException");
         } catch (Exception e) {
             Log.e("Notch", "getNotchSizeAtHuawei Exception");
-        } finally {
-            return ret;
         }
+        return new int[]{0, 0};
     }
 
     /**
@@ -87,21 +81,19 @@ public class NotchUtils {
      * @return
      */
     public static boolean hasNotchAtVivo(Context context) {
-        boolean ret = false;
         try {
             ClassLoader classLoader = context.getClassLoader();
             Class FtFeature = classLoader.loadClass("android.util.FtFeature");
             Method method = FtFeature.getMethod("isFeatureSupport", int.class);
-            ret = (boolean) method.invoke(FtFeature, VIVO_NOTCH);
+            return (boolean) method.invoke(FtFeature, 0x00000020);
         } catch (ClassNotFoundException e) {
             Log.e("Notch", "hasNotchAtVivo ClassNotFoundException");
         } catch (NoSuchMethodException e) {
             Log.e("Notch", "hasNotchAtVivo NoSuchMethodException");
         } catch (Exception e) {
             Log.e("Notch", "hasNotchAtVivo Exception");
-        } finally {
-            return ret;
         }
+        return false;
     }
 
     /**
@@ -112,20 +104,6 @@ public class NotchUtils {
      */
     public static boolean hasNotchAtOPPO(Context context) {
         return context.getPackageManager().hasSystemFeature("com.oppo.feature.screen.heteromorphism");
-    }
-
-    /**
-     * 判断是否是刘海屏
-     *
-     * @return
-     */
-    public static boolean hasNotchScreen(Activity activity) {
-        if (hasNotchAtXiaomi() || hasNotchAtHuawei(activity) || hasNotchAtOPPO(activity)
-                || hasNotchAtVivo(activity) || isAndroidP(activity) != null) { //TODO 各种品牌
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -142,5 +120,29 @@ public class NotchUtils {
                 return windowInsets.getDisplayCutout();
         }
         return null;
+    }
+
+    /**
+     * 判断是否是刘海屏
+     *
+     * @return
+     */
+    public static boolean hasNotchScreen(Activity activity) {
+        if (hasNotchAtXiaomi() || hasNotchAtHuawei(activity) || hasNotchAtOPPO(activity)
+                || hasNotchAtVivo(activity) || isAndroidP(activity) != null) { //TODO 各种品牌
+            return true;
+        }
+
+        return false;
+    }
+
+    private static int getInt(final String key, final int def) {
+        try {
+            Method intMethod = Class.forName("android.os.SystemProperties")
+                    .getMethod("getInt", String.class, int.class);
+            return (Integer) intMethod.invoke(null, key, def);
+        } catch (Exception e) {
+            return def;
+        }
     }
 }

@@ -29,7 +29,7 @@ import java.io.IOException;
  * Created by let on 31/07/2017.
  */
 
-public class BitmapUtils {
+public class BitmapUtil {
 
     public static final int CORNER_NONE = 0;
     public static final int CORNER_TOP_LEFT = 1;

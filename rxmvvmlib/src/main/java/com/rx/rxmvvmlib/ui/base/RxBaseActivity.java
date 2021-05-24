@@ -16,7 +16,8 @@ import com.rx.rxmvvmlib.databinding.ActivityBaseBinding;
 import com.rx.rxmvvmlib.ui.keyboard.KeyboardHeightObserver;
 import com.rx.rxmvvmlib.ui.keyboard.KeyboardHeightProvider;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
-import com.rx.rxmvvmlib.util.UIUtils;
+import com.rx.rxmvvmlib.util.ToastUtil;
+import com.rx.rxmvvmlib.util.UIUtil;
 import com.rx.rxmvvmlib.ui.IBaseView;
 import com.rx.rxmvvmlib.ui.IImmersionBar;
 import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
@@ -211,8 +212,8 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
     public void exit() {
         if (!isExit) {
             isExit = true;
-            UIUtils.showToast(getString(R.string.press_the_exit_procedure_again));
-            UIUtils.postDelayTask(new Runnable() {
+            ToastUtil.showToast(activity, getString(R.string.press_the_exit_procedure_again));
+            UIUtil.postDelayTask(new Runnable() {
                 @Override
                 public void run() {
                     isExit = false;

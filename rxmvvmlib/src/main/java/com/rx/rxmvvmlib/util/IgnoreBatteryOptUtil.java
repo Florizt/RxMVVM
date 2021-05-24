@@ -67,7 +67,7 @@ public class IgnoreBatteryOptUtil {
             } else if (RomUtil.isHuawei()) {
                 //无
             } else if (RomUtil.isOppo()) {
-                String property = AppUtils.getSystemProperty("ro.build.version.opporom");
+                String property = AppUtil.getSystemProperty("ro.build.version.opporom");
                 if (RomUtil.getOppoVer(property) < 5.0) {
                     componentName = new ComponentName("com.coloros.oppoguardelf",
                             "com.coloros.powermanager.fuelgaue.PowerConsumptionActivity");
@@ -81,6 +81,57 @@ public class IgnoreBatteryOptUtil {
             } else if (RomUtil.isSamsung()) {
                 componentName = new ComponentName("com.samsung.android.sm_cn",
                         "com.samsung.android.sm.ui.battery.BatteryActivity");
+            } else {
+                intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                context.startActivity(intent);
+            }
+            intent.setComponent(componentName);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            //抛出异常就直接打开设置页面
+            intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            context.startActivity(intent);
+        }
+    }
+
+    /**
+     * GoTo Open Self Setting Layout
+     * Compatible Mainstream Models 兼容市面主流机型
+     *
+     * @param context
+     */
+    public static void openSelfStart(Context context) {
+        Intent intent = new Intent();
+        try {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName componentName = null;
+            if (RomUtil.isXiaomi()) {
+                componentName = new ComponentName("com.miui.securitycenter",
+                        "com.miui.permcenter.autostart.AutoStartManagementActivity");
+            } else if (RomUtil.isHuawei()) {
+                componentName = ComponentName.unflattenFromString("com.huawei.systemmanager/.startupmgr.ui.StartupNormalAppListActivity");//跳自启动管理
+            } else if (RomUtil.isOppo()) {
+                componentName = ComponentName.unflattenFromString("com.oppo.safe/.permission.startup.StartupAppListActivity");
+                Intent intentOppo = new Intent();
+                intentOppo.setClassName("com.oppo.safe/.permission.startup", "StartupAppListActivity");
+                if (context.getPackageManager().resolveActivity(intentOppo, 0) == null) {
+                    componentName = ComponentName.unflattenFromString("com.coloros.safecenter" + "/.startupapp.StartupAppListActivity");
+                }
+
+            } else if (RomUtil.isVivo()) {
+                componentName = new ComponentName("com.vivo.permissionmanager",
+                        "com.vivo.permissionmanager.activity.PurviewTabActivity");
+            } else if (RomUtil.isSamsung()) {
+                componentName = new ComponentName("com.samsung.android.sm_cn",
+                        "com.samsung.android.sm.ui.cstyleboard.SmartManagerDashBoardActivity");
+            } else if (RomUtil.isMeizu()) {
+                componentName = ComponentName.unflattenFromString("com.meizu.safe/.permission.SmartBGActivity");
+            } else if (RomUtil.isLetv()) {
+                intent.setAction("com.letv.android.permissionautoboot");
+            } else if (RomUtil.is360()) {
+                componentName = new ComponentName("com.yulong.android.coolsafe", ".ui.activity.autorun.AutoRunListActivity");
             } else {
                 intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(Uri.parse("package:" + context.getPackageName()));

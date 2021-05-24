@@ -1,4 +1,4 @@
-package com.rx.rxmvvmlib.util.file;
+package com.rx.rxmvvmlib.util;
 
 import android.content.Context;
 import android.text.TextUtils;

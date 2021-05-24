@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.rx.rxmvvmlib.util.UIUtils;
+import com.rx.rxmvvmlib.util.UIUtil;
 
 import java.math.BigDecimal;
 
@@ -88,7 +88,7 @@ public final class ViewAdapter {
                     textView.setMaxLines(1);//如果想一行显示，不能设置singleLine，不然setAutoSizeTextTypeUniformWithConfiguration会无效
 
                     TextPaint paint = ((TextView) textView).getPaint();
-                    paint.setTextSize(UIUtils.sp2px(autoSizeMax));//计算原始大小时，需要将字体大小恢复至原始值
+                    paint.setTextSize(UIUtil.sp2px(autoSizeMax));//计算原始大小时，需要将字体大小恢复至原始值
                     int selfWidth = (int) Layout.getDesiredWidth(((TextView) textView).getText().toString(), 0,
                             ((TextView) textView).getText().length(), paint);//计算原始大小
 

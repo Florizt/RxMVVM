@@ -14,7 +14,7 @@ import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.ui.binding.command.BindingAction;
 import com.rx.rxmvvmlib.ui.binding.command.BindingCommand;
 import com.rx.rxmvvmlib.databinding.DialogDefaultBinding;
-import com.rx.rxmvvmlib.util.UIUtils;
+import com.rx.rxmvvmlib.util.UIUtil;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -33,16 +33,16 @@ public class DefaultStyleDialog extends Dialog {
     private DialogListener listener;
     private boolean cancelable = true;
     private boolean canceledOnTouchOutside = true;
-    private int negativeTextColor = UIUtils.getColor(R.color.rx_555555);
-    private int negativeTextBackground = UIUtils.getColor(R.color.rx_ffffff);
-    private int positiveTextColor = UIUtils.getColor(R.color.rx_ff8008);
-    private int positiveTextBackground = UIUtils.getColor(R.color.rx_ffffff);
+    private int negativeTextColor = UIUtil.getColor(R.color.rx_555555);
+    private int negativeTextBackground = UIUtil.getColor(R.color.rx_ffffff);
+    private int positiveTextColor = UIUtil.getColor(R.color.rx_ff8008);
+    private int positiveTextBackground = UIUtil.getColor(R.color.rx_ffffff);
 
     public DefaultStyleDialog(@NonNull Context context) {
         super(context, R.style.Theme_Light_Dialog);
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        window.getDecorView().setBackgroundColor(UIUtils.getColor(R.color.rx_transparent));
+        window.getDecorView().setBackgroundColor(UIUtil.getColor(R.color.rx_transparent));
         window.getDecorView().setPadding(0, 0, 0, 0);
         window.setGravity(Gravity.CENTER);
         WindowManager.LayoutParams lp = window.getAttributes();

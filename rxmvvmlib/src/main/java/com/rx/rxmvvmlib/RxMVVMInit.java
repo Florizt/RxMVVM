@@ -12,7 +12,7 @@ import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;
 import com.rx.rxmvvmlib.ui.ICrashHandler;
 import com.rx.rxmvvmlib.ui.base.CrashHandler;
 import com.rx.rxmvvmlib.util.LogUtil;
-import com.rx.rxmvvmlib.util.UIUtils;
+import com.rx.rxmvvmlib.util.UIUtil;
 import com.tencent.smtt.sdk.QbSdk;
 
 import java.util.List;
@@ -73,7 +73,9 @@ public class RxMVVMInit {
             Context context = cx.getApplicationContext();
 
             // 主项目配置
-            UIUtils.init(context);
+            UIUtil.init(context);
+
+            LogUtil.setDebug(getConfig().isDebugEnable());
 
             // 崩溃抓取
             CrashHandler.getInstance().init(context, getConfig().getCrashHandler());

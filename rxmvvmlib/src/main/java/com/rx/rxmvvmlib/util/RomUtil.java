@@ -9,6 +9,7 @@ import android.text.TextUtils;
  * 佛祖保佑       永无BUG
  */
 public class RomUtil {
+
     public static String getMobileType() {
         return Build.MANUFACTURER;
     }

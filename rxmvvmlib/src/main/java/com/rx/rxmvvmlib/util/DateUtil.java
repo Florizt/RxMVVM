@@ -16,7 +16,7 @@ import java.util.TimeZone;
  * 2018/6/15
  * 佛祖保佑       永无BUG
  */
-public class DateUtils {
+public class DateUtil {
 
     /**
      * Java将Unix时间戳(毫秒)转换成指定格式日期字符串

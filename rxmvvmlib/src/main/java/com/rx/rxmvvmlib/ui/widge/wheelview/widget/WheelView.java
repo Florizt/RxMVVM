@@ -37,7 +37,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.rx.rxmvvmlib.util.UIUtils;
+import com.rx.rxmvvmlib.util.UIUtil;
 import com.rx.rxmvvmlib.ui.widge.wheelview.adapter.ArrayWheelAdapter;
 import com.rx.rxmvvmlib.ui.widge.wheelview.adapter.BaseWheelAdapter;
 import com.rx.rxmvvmlib.ui.widge.wheelview.adapter.SimpleWheelAdapter;
@@ -56,7 +56,7 @@ import java.util.List;
  */
 public class WheelView<T> extends ListView implements IWheelView<T> {
 
-    private int mItemH = UIUtils.dip2px(45); // 每一项高度
+    private int mItemH = UIUtil.dip2px(45); // 每一项高度
     private int mWheelSize = WHEEL_SIZE;    // 滚轮个数
     private boolean mLoop = LOOP;   // 是否循环滚动
     private List<T> mList = null;   // 滚轮数据列表

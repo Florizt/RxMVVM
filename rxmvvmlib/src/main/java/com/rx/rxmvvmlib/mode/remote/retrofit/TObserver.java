@@ -4,7 +4,7 @@ import com.google.gson.JsonSyntaxException;
 import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.RxMVVMInit;
 import com.rx.rxmvvmlib.util.LogUtil;
-import com.rx.rxmvvmlib.util.UIUtils;
+import com.rx.rxmvvmlib.util.UIUtil;
 
 import java.net.SocketTimeoutException;
 
@@ -47,14 +47,14 @@ public abstract class TObserver<T> implements Observer<T> {
     public void onError(Throwable e) {
         onRequestEnd();
         if (e instanceof SocketTimeoutException) {
-            LogUtil.e(UIUtils.getString(R.string.http_timeout_exception));
-            onFailure("-2", UIUtils.getString(R.string.http_timeout_exception));
+            LogUtil.e(UIUtil.getString(R.string.http_timeout_exception));
+            onFailure("-2", UIUtil.getString(R.string.http_timeout_exception));
         } else if (e instanceof JsonSyntaxException) {
-            LogUtil.e(UIUtils.getString(R.string.json_exception));
-            onFailure("-3", UIUtils.getString(R.string.json_exception));
+            LogUtil.e(UIUtil.getString(R.string.json_exception));
+            onFailure("-3", UIUtil.getString(R.string.json_exception));
         } else if (e instanceof HttpException) {
-            LogUtil.e(UIUtils.getString(R.string.http_exception));
-            onFailure("-4", UIUtils.getString(R.string.http_exception));
+            LogUtil.e(UIUtil.getString(R.string.http_exception));
+            onFailure("-4", UIUtil.getString(R.string.http_exception));
         } else if (e instanceof ResultException) {
             try {
                 ResultException resultException = (ResultException) e;

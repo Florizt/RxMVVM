@@ -1,7 +1,6 @@
 package com.rx.rxmvvmlib.util;
 
 import com.dgrlucky.log.LogX;
-import com.rx.rxmvvmlib.RxMVVMInit;
 
 
 /**
@@ -14,8 +13,8 @@ import com.rx.rxmvvmlib.RxMVVMInit;
 public class LogUtil {
     private static boolean debug;
 
-    static {
-        debug = RxMVVMInit.getConfig().isDebugEnable();
+    public static void setDebug(boolean debug) {
+        LogUtil.debug = debug;
     }
 
     public static void d(Object object) {

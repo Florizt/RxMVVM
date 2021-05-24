@@ -3,7 +3,7 @@ package com.rx.rxmvvmlib.mode.remote.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rx.rxmvvmlib.RxMVVMInit;
-import com.rx.rxmvvmlib.util.UIUtils;
+import com.rx.rxmvvmlib.util.UIUtil;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +24,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class RetrofitFactory {
     public static String url;
     private static OkHttpClient okHttpClient;
-    private static File cacheFile = new File(UIUtils.getContext().getCacheDir(), "cache");
+    private static File cacheFile = new File(UIUtil.getContext().getCacheDir(), "cache");
     private static Cache cache = new Cache(cacheFile, 1024 * 1024 * 100); //100Mb
     private static final String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     public static final Gson gson = new GsonBuilder()

@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
@@ -20,7 +21,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * 2018/1/12
  * 佛祖保佑       永无BUG
  */
-public class AppUtils {
+public class AppUtil {
 
     /**
      * 判断是否是Android Q版本
@@ -108,7 +108,7 @@ public class AppUtils {
      *
      * @return 当前应用的版本号
      */
-    public static String getAppVersionName(Context context) {
+    public static String getVersionName(Context context) {
         try {
             PackageManager manager = context.getPackageManager();
             PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
@@ -120,7 +120,7 @@ public class AppUtils {
         return null;
     }
 
-    public static String getAppVersionCode(Context context) {
+    public static String getVersionCode(Context context) {
         long appVersionCode = 0;
         try {
             PackageInfo packageInfo = context.getApplicationContext()
@@ -134,6 +134,33 @@ public class AppUtils {
         } catch (PackageManager.NameNotFoundException e) {
         }
         return String.valueOf(appVersionCode);
+    }
+
+    /**
+     * 返回Manifest指定meta-data值
+     *
+     * @param context 全局context
+     * @param key     meta-data key
+     * @return 成功-value
+     * 失败-""
+     */
+    public static String getMetaData(Context context, String key) {
+        ApplicationInfo app_info = null;
+        try {
+            app_info = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            if (app_info == null || app_info.metaData == null) {
+                return "";
+            } else {
+                Object obj = app_info.metaData.get(key);
+                if (obj != null) {
+                    return obj.toString();
+                } else {
+                    return "";
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
+        }
     }
 
     @SuppressLint("MissingPermission")

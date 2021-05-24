@@ -74,15 +74,15 @@ public class ApkUtil {
         return isInstall(context, "com.sina.weibo", false);
     }
 
-    public static boolean isGdMapInstalled(Context context) {
+    public static boolean isGdMapInstall(Context context) {
         return isInstall(context, "com.autonavi.minimap", false);
     }
 
-    public static boolean isBaiduMapInstalled(Context context) {
+    public static boolean isBaiduMapInstall(Context context) {
         return isInstall(context, "com.baidu.BaiduMap", false);
     }
 
-    public static boolean isTencentMapInstalled(Context context) {
+    public static boolean isTencentMapInstall(Context context) {
         return isInstall(context, "com.tencent.map", false);
     }
 }
