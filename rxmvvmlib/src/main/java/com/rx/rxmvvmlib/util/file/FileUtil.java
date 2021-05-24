@@ -1,6 +1,8 @@
 package com.rx.rxmvvmlib.util.file;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -10,8 +12,11 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by wuwei
@@ -195,5 +200,22 @@ public class FileUtil {
             }
         }
         return null;
+    }
+
+    public static void saveFile(Context context, String content, File file, boolean append) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        try {
+            FileOutputStream outStream = new FileOutputStream(file, append);
+            outStream.write(content.getBytes());
+            outStream.write("\r\n".getBytes());
+            outStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

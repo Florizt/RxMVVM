@@ -1,6 +1,5 @@
 package com.rx.rxmvvmlib.util;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -8,10 +7,7 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -28,20 +24,12 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.FitWindowsLinearLayout;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * Created by 吴巍 on 2017/9/5.
@@ -409,88 +397,9 @@ public class UIUtils {
         }
     }
 
-    public static String getAppName(Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    context.getPackageName(), 0);
-            int labelRes = packageInfo.applicationInfo.labelRes;
-            return context.getResources().getString(labelRes);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-    public static boolean isAvilible(Context context, String packageName) {
-        // 获取packagemanager
-        final PackageManager packageManager = context.getPackageManager();
-        // 获取所有已安装程序的包信息
-        List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
-        // 用于存储所有已安装程序的包名
-        List<String> packageNames = new ArrayList<String>();
-        // 从pinfo中将包名字逐一取出，压入pName list中
-        if (packageInfos != null) {
-            for (int i = 0; i < packageInfos.size(); i++) {
-                String packName = packageInfos.get(i).packageName;
-                packageNames.add(packName);
-            }
-        }
-        // 判断packageNames中是否有目标程序的包名，有TRUE，没有FALSE
-        return packageNames.contains(packageName);
-    }
 
-    public static void setSwitchColor(SwitchCompat v) {
 
-        // thumb color
-        int thumbColor = 0xffffffff;
-
-        // trackColor
-        int trackColor = 0xfff1f1f1;
-
-        // set the thumb color
-        DrawableCompat.setTintList(v.getThumbDrawable(), new ColorStateList(
-                new int[][]{
-                        new int[]{android.R.attr.state_checked},
-                        new int[]{}
-                },
-                new int[]{
-                        thumbColor,
-                        thumbColor
-                }));
-
-        // set the track color
-        DrawableCompat.setTintList(v.getTrackDrawable(), new ColorStateList(
-                new int[][]{
-                        new int[]{android.R.attr.state_checked},
-                        new int[]{}
-                },
-                new int[]{
-                        0xffffe61e,
-                        0xff828282
-                }));
-    }
-
-    public static void saveFile(String toSaveString, String fileName, boolean append) {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        try {
-            File saveFile = FileUtil.createFile(getContext(), FileUtil.TYPE_DOWNLOAD, fileName, "txt");
-            if (!saveFile.exists()) {
-                saveFile.createNewFile();
-            }
-            FileOutputStream outStream = new FileOutputStream(saveFile, append);
-            outStream.write(toSaveString.getBytes());
-            outStream.write("\r\n".getBytes());
-            outStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static String getResourcesUri(@DrawableRes int id) {
         Resources resources = getContext().getResources();

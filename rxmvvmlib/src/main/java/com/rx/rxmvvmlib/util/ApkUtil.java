@@ -15,13 +15,36 @@ import java.util.List;
  * 佛祖保佑       永无BUG
  */
 public class ApkUtil {
+    public static boolean isInstall(Context context, String packageName, boolean ignoreCase) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
+        boolean install = false;
+        if (packageInfos != null) {
+            for (int i = 0; i < packageInfos.size(); i++) {
+                String packName = packageInfos.get(i).packageName;
+                if (ignoreCase) {
+                    if (packName.equalsIgnoreCase(packageName)) {
+                        install = true;
+                        break;
+                    }
+                } else {
+                    if (packName.equals(packageName)) {
+                        install = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return install;
+    }
+
     /**
      * 检测是否安装支付宝
      *
      * @param context
      * @return
      */
-    public static boolean isAliPayInstalled(Context context) {
+    public static boolean isAliPayInstall(Context context) {
         Uri uri = Uri.parse("alipays://platformapi/startApp");
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         ComponentName componentName = intent.resolveActivity(context.getPackageManager());
@@ -31,53 +54,35 @@ public class ApkUtil {
     /**
      * 判断 用户是否安装微信客户端
      */
-    public static boolean isWechatInstalled(Context context) {
-        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
-                if (pn.equals("com.tencent.mm")) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public static boolean isWechatInstall(Context context) {
+        return isInstall(context, "com.tencent.mm", false);
     }
 
     /**
      * 判断 用户是否安装QQ客户端
      */
-    public static boolean isQQClientInstalled(Context context) {
-        final PackageManager packageManager = context.getPackageManager();
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
-                if (pn.equalsIgnoreCase("com.tencent.qqlite") || pn.equalsIgnoreCase("com.tencent.mobileqq")) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public static boolean isQQClientInstall(Context context) {
+        return isInstall(context, "com.tencent.qqlite", true)
+                || isInstall(context, "com.tencent.mobileqq", true);
     }
 
     /**
      * sina
      * 判断是否安装新浪微博
      */
-    public static boolean isSinaInstalled(Context context) {
-        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
-                if (pn.equals("com.sina.weibo")) {
-                    return true;
-                }
-            }
-        }
+    public static boolean isSinaInstall(Context context) {
+        return isInstall(context, "com.sina.weibo", false);
+    }
 
-        return false;
+    public static boolean isGdMapInstalled(Context context) {
+        return isInstall(context, "com.autonavi.minimap", false);
+    }
+
+    public static boolean isBaiduMapInstalled(Context context) {
+        return isInstall(context, "com.baidu.BaiduMap", false);
+    }
+
+    public static boolean isTencentMapInstalled(Context context) {
+        return isInstall(context, "com.tencent.map", false);
     }
 }

@@ -36,14 +36,14 @@ import okio.Sink;
  */
 public class UploadUtil {
 
-    public void upload(final Context context,
+    public static void upload(final Context context,
                        final String url,
                        final File file,
                        final UploadListener listener) {
         upload(context, url, false, null, file, listener);
     }
 
-    public void upload(final Context context,
+    public static void upload(final Context context,
                        final String url, final boolean setSSL, final String hostName,
                        final File file,
                        final UploadListener listener) {
@@ -138,7 +138,7 @@ public class UploadUtil {
         }
     }
 
-    private void setSSL(OkHttpClient okHttpClient, final String hostName) {
+    public static void setSSL(OkHttpClient okHttpClient, final String hostName) {
         SSLContext sc = null;
         try {
             sc = SSLContext.getInstance("SSL");

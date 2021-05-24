@@ -30,14 +30,14 @@ import okhttp3.Response;
  */
 public class DownloadUtil {
 
-    public void download(final Context context,
+    public static void download(final Context context,
                          final String url,
                          final File file,
                          final DownloadListener listener) {
         download(context, url, false, null, file, listener);
     }
 
-    public void download(final Context context,
+    public static void download(final Context context,
                          final String url, final boolean setSSL, final String hostName,
                          final File file,
                          final DownloadListener listener) {
@@ -122,7 +122,7 @@ public class DownloadUtil {
         }
     }
 
-    private void setSSL(OkHttpClient okHttpClient, final String hostName) {
+    public static void setSSL(OkHttpClient okHttpClient, final String hostName) {
         SSLContext sc = null;
         try {
             sc = SSLContext.getInstance("SSL");

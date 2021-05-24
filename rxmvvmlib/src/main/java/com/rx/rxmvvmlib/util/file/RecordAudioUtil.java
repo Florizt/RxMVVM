@@ -40,18 +40,17 @@ public class RecordAudioUtil {
     /**
      * 开始录音
      *
-     * @return 开始成功/失败
      */
-    public boolean startRecord(Context context, File file, int maxDuration, int canUseSize,
+    public void startRecord(Context context, File file, int maxDuration, int canUseSize,
                                AudioRecordListener listener) {
         this.file = file;
         this.listener = listener;
         if (isRunning) {
-            return false;
+            return;
         }
         if (!hasSdcard()) {
             Toast.makeText(context, "请先插入SD卡(存储卡)", Toast.LENGTH_SHORT).show();
-            return false;
+            return;
         }
         if (!isSDCanUseSize(canUseSize)) {
             Toast.makeText(context, "内存已经不足50M了，请先清理手机空间", Toast.LENGTH_SHORT).show();
@@ -60,11 +59,10 @@ public class RecordAudioUtil {
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC); // 在setOutputFormat之前
         mediaRecorder.setOutputFile(file.getAbsolutePath());//设置输出路径【会直接保存】
 
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);
-        mediaRecorder.setAudioSamplingRate(44100);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setAudioSamplingRate(44100);// 96 kHz is a very high sample rate, and is not guaranteed to be supported. I suggest that you try a common sample rate <= 48 kHz (e.g. 48000, 44100, 22050, 16000, 8000).
         mediaRecorder.setAudioEncodingBitRate(16000);
         mediaRecorder.setAudioChannels(1);
-        mediaRecorder.setAudioSamplingRate(8000); // 96 kHz is a very high sample rate, and is not guaranteed to be supported. I suggest that you try a common sample rate <= 48 kHz (e.g. 48000, 44100, 22050, 16000, 8000).
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mediaRecorder.setMaxDuration(maxDuration);
         mediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
@@ -86,10 +84,10 @@ public class RecordAudioUtil {
                 listener.onRecordFailed(e.getMessage());
             }
             isRunning = false;
-            return false;
+            return;
         }
         isRunning = true;
-        return true;
+        return;
     }
 
     //获取声音分贝的timer

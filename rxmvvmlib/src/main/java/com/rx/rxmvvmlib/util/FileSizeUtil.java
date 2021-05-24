@@ -18,41 +18,18 @@ public class FileSizeUtil {
     public static final int SIZETYPE_GB = 4;//获取文件大小单位为GB的double值
 
     /**
-     * 获取文件指定文件的指定单位的大小
+     * 获取文件的大小
      *
-     * @param file     文件
-     * @param sizeType 获取大小的类型1为B、2为KB、3为MB、4为GB
-     * @return double值的大小
+     * @param file 文件
+     * @return String值的大小
      */
-    public static double getFilesSize(File file, int sizeType) {
+    public static String getFileSize(File file) {
         long blockSize = 0;
         try {
             if (file.isDirectory()) {
-                blockSize = getFileSizes(file);
+                blockSize = getSizes(file);
             } else {
-                blockSize = getFileSize(file);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("获取文件大小", "获取失败!");
-        }
-        return FormetFileSize(blockSize, sizeType);
-    }
-
-    /**
-     * 调用此方法自动计算指定文件或指定文件夹的大小
-     *
-     * @param filePath 文件路径
-     * @return 计算好的带B、KB、MB、GB的字符串
-     */
-    public static String getAutoFileOrFilesSize(String filePath) {
-        File file = new File(filePath);
-        long blockSize = 0;
-        try {
-            if (file.isDirectory()) {
-                blockSize = getFileSizes(file);
-            } else {
-                blockSize = getFileSize(file);
+                blockSize = getSize(file);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,13 +39,80 @@ public class FileSizeUtil {
     }
 
     /**
+     * 获取文件的指定单位的大小
+     *
+     * @param file     文件
+     * @param sizeType 获取大小的类型1为B、2为KB、3为MB、4为GB
+     * @return double值的大小
+     */
+    public static double getFileSize(File file, int sizeType) {
+        long blockSize = 0;
+        try {
+            if (file.isDirectory()) {
+                blockSize = getSizes(file);
+            } else {
+                blockSize = getSize(file);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("获取文件大小", "获取失败!");
+        }
+        return FormetFileSize(blockSize, sizeType);
+    }
+
+    /**
+     * 获取文件的指定单位的大小
+     *
+     * @param filePath 文件路径
+     * @return 计算好的带B、KB、MB、GB的字符串
+     */
+    public static String getFileSize(String filePath) {
+        File file = new File(filePath);
+        long blockSize = 0;
+        try {
+            if (file.isDirectory()) {
+                blockSize = getSizes(file);
+            } else {
+                blockSize = getSize(file);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("获取文件大小", "获取失败!");
+        }
+        return FormetFileSize(blockSize);
+    }
+
+
+    /**
+     * 获取文件的指定单位的大小
+     *
+     * @param filePath 文件路径
+     * @return 计算好的带B、KB、MB、GB的字符串
+     */
+    public static double getFileSize(String filePath, int sizeType) {
+        File file = new File(filePath);
+        long blockSize = 0;
+        try {
+            if (file.isDirectory()) {
+                blockSize = getSizes(file);
+            } else {
+                blockSize = getSize(file);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("获取文件大小", "获取失败!");
+        }
+        return FormetFileSize(blockSize, sizeType);
+    }
+
+    /**
      * 获取指定文件大小
      *
      * @param
      * @return
      * @throws Exception
      */
-    private static long getFileSize(File file) throws Exception {
+    private static long getSize(File file) throws Exception {
         long size = 0;
         if (file.exists()) {
             FileInputStream fis = null;
@@ -88,14 +132,14 @@ public class FileSizeUtil {
      * @return
      * @throws Exception
      */
-    private static long getFileSizes(File f) throws Exception {
+    private static long getSizes(File f) throws Exception {
         long size = 0;
         File flist[] = f.listFiles();
         for (int i = 0; i < flist.length; i++) {
             if (flist[i].isDirectory()) {
-                size = size + getFileSizes(flist[i]);
+                size = size + getSizes(flist[i]);
             } else {
-                size = size + getFileSize(flist[i]);
+                size = size + getSize(flist[i]);
             }
         }
         return size;

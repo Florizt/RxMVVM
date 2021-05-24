@@ -39,7 +39,7 @@ public class SPUtils {
             editor.apply();
         } else {
             try {
-                editor.putString(key, Encrypt3DESUtil.encrypt3DES(value.getBytes()));
+                editor.putString(key, EncryptUtil.encrypt3DES(value.getBytes()));
                 editor.apply();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -53,7 +53,7 @@ public class SPUtils {
             return string;
         } else {
             try {
-                return Encrypt3DESUtil.decrypt3DES(string);
+                return EncryptUtil.decrypt3DES(string);
             } catch (Exception e) {
                 e.printStackTrace();
             }
