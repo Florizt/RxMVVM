@@ -1,11 +1,10 @@
 package com.rx.mvvm.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.rx.mvvm.repository.IUserRepository;
 import com.rx.mvvm.repository.RepositoryFactory;
-import com.rx.rxmvvmlib.mode.BaseEntity;
-import com.rx.rxmvvmlib.mode.remote.retrofit.TObserver;
 import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 
 import androidx.annotation.NonNull;
@@ -27,7 +26,7 @@ public class MainViewModel extends RxBaseViewModel {
     @Override
     public void onCreate() {
         super.onCreate();
-        userRepository.login().subscribe(new TObserver<BaseEntity>() {
+      /*  userRepository.login().subscribe(new TObserver<BaseEntity>() {
             @Override
             public void onRequestStart() {
 
@@ -47,6 +46,9 @@ public class MainViewModel extends RxBaseViewModel {
             public void onFailure(String code, String message) {
 
             }
-        });
+        });*/
+        userRepository.saveUserCache(123, "哈哈哈哈哈哈");
+        Log.i("TAG", "saveUserCsasache-111: " + userRepository.getUid());
+        Log.i("TAG", "saveUserCsasache-222: " + userRepository.getToken());
     }
 }

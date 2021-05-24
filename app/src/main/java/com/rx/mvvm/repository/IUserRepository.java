@@ -9,4 +9,12 @@ import io.reactivex.Observable;
  */
 public interface IUserRepository {
     Observable login();
+
+    void saveUserCache(int uid, String token);
+
+    int getUid();
+
+    String getToken();
+
+    boolean isLogin();
 }

@@ -18,7 +18,7 @@ import java.io.StreamCorruptedException;
 
 public class SPUtil {
 
-    public synchronized static SharedPreferences getPrefs(Context context) {
+    private synchronized static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
     }
 

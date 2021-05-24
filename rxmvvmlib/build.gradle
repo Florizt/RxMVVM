@@ -1,8 +1,11 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.Florizt'
+group = 'com.github.Florizt'
 
-apply from: '../aspectj-lib.gradle'
+apply from: 'libgradles/aspectj-lib.gradle'
+apply from: 'libgradles/ui.gradle'
+apply from: 'libgradles/network.gradle'
+apply from: 'libgradles/greendao.gradle'
 
 
 android {
@@ -23,79 +26,5 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
-
-    // --------------------------------------UI--------------------------------------------
-    // 系统组件
-    api('androidx.appcompat:appcompat:1.1.0')
-    api('com.google.android.material:material:1.0.0')
-    api('androidx.recyclerview:recyclerview:1.0.0')
-    api('androidx.constraintlayout:constraintlayout:1.1.3')
-    api 'com.afollestad.material-dialogs:core:0.9.4.5'
-    api 'org.apache.commons:commons-lang3:3.9'
-
-    // 沉浸式状态栏
-    api 'com.gyf.immersionbar:immersionbar:2.3.3'
-
-    // 下拉刷新
-    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
-
-    // 适配
-    api 'me.jessyan:autosize:1.1.2'
-
-    // 瓦力
-    api 'com.meituan.android.walle:library:1.1.6'
-
-    // eventbus
-    api 'org.greenrobot:eventbus:3.0.0'
-
-    // logx日志
-    api 'com.github.dgrlucky:logx:1.0.0'
-
-    // BackgroundLibrary
-    api 'com.noober.background:core:1.6.1'
-
-    //阴影布局
-    api 'com.github.lihangleo2:ShadowLayout:3.1.8'
-
-    //腾讯x5内核浏览器
-    api 'com.tencent.tbs.tbssdk:sdk:43903'
-
-    //rx 6.0权限请求
-    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
-
-    //Google AAC
-    api 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.1.0'
-
-    //rx系列与View生命周期同步
-    api 'com.trello.rxlifecycle2:rxlifecycle:2.2.2'
-    api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.2'
-
-    //rxbinding
-    api 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
-
-    //recyclerview的databinding套装
-    api 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:3.1.1'
-    api 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:3.1.1'
-
-
-    // --------------------------------------NetWork--------------------------------------------
-
-    //Glide
-    api 'com.github.bumptech.glide:glide:4.10.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
-
-    // fastjson
-    api 'com.alibaba:fastjson:1.1.71.android'
-
-    // retrofit+rxjava
-    api 'com.squareup.retrofit2:retrofit:2.2.0'
-    api 'com.squareup.retrofit2:converter-gson:2.2.0'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-
-    // okhttp
-    api 'com.squareup.okhttp3:okhttp:3.8.1'
-    api 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    api 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

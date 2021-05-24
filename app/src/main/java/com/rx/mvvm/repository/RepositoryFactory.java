@@ -1,7 +1,9 @@
 package com.rx.mvvm.repository;
 
+import com.rx.mvvm.repository.datasource.local.IUserLocalService;
 import com.rx.mvvm.repository.impl.UserRepository;
 import com.rx.mvvm.repository.datasource.remote.IUserService;
+import com.rx.rxmvvmlib.mode.locate.LocalFactory;
 import com.rx.rxmvvmlib.mode.remote.retrofit.RetrofitFactory;
 
 /**
@@ -12,6 +14,7 @@ import com.rx.rxmvvmlib.mode.remote.retrofit.RetrofitFactory;
 public class RepositoryFactory {
     public static IUserRepository getUserRepository() {
         IUserService userService = RetrofitFactory.create(IUserService.class);
-        return new UserRepository(userService);
+        IUserLocalService userLocalService = LocalFactory.create(IUserLocalService.class);
+        return new UserRepository(userService, userLocalService);
     }
 }

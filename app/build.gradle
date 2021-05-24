@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
-apply from: '../signing.gradle'
-apply from: '../aspectj-app.gradle'
-apply from: '../greendao.gradle'
+apply from: '../gradles/signing.gradle'
+apply from: '../gradles/aspectj-app.gradle'
+apply from: '../gradles/dependencies.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -50,11 +50,4 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation rootProject.ext.dependencies['filetree']
-    implementation rootProject.ext.dependencies['baselib']
-    implementation rootProject.ext.dependencies['greendao']
-    implementation rootProject.ext.dependencies['greendao-helper']
-    implementation rootProject.ext.dependencies['arouter']
-    annotationProcessor rootProject.ext.dependencies['arouter-compiler']
-}
+
