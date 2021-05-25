@@ -66,7 +66,7 @@ public class Localfit {
             if (type == LocalType.SP) {
                 return SPUtil.getDecrypt(context, key[0], psw, method.getReturnType());
             } else {
-                if (args != null && args.length > 0 && args[0] instanceof Long) {
+                if (args != null && args.length == 1 && args[0] instanceof Long) {
                     return new DaoUtil(dao).queryById((Long) args[0]);
                 } else {
                     return new DaoUtil(dao).queryAll();

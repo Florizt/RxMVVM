@@ -1,0 +1,180 @@
+adb shell dumpsys window | findstr mCurrentFocus
+
+查找intent：adb shell dumpsys activity activities 搜索 intent.action
+
+mumu模拟器：adb connect 127.0.0.1:7555
+
+海马玩模拟器：adb connect 127.0.0.1:26944
+
+逍遥安卓模拟器：adb connect 127.0.0.1:21503
+
+夜神玩模拟器：adb connect 127.0.0.1:62001
+
+天天模拟器：adb connect 127.0.0.1:6555 
+
+
+// 启动时间：
+adb shell am start -W tv.everest.codein/.ui.activity.HomeActivity
+导出电量txt
+adb shell dumpsys batterystats > batterystats.txt
+
+
+// 抓取log：
+adb logcat -v time > log.txt
+
+
+// 破解AndroidManifest.xml
+java -jar AXMLPrinter2.jar AndroidManifest.xml >> AndroidManifest.txt
+
+
+// 获取md5、sha
+keytool -v -list -keystore keystore
+
+
+& lt; < 小于号
+& gt; > 大于号
+& amp; & 和
+& apos; ' 单引号
+& quot; " 双引号
+<= 要写成 & lt;=
+
+
+// 重新签名
+cd C:\sdk\build-tools\26.0.2
+
+apksigner.bat sign --ks C:\Users\13450\Desktop\YmxPassengerAndroid\app\ymxapp.jks C:\Users\13450\Desktop\release\passenger\xysc-passenger-release-v1.0.0.apk
+
+apksigner.bat verify -v --print-certs C:\Users\13450\Desktop\release\passenger\xysc-passenger-release-v1.0.0.apk
+
+
+// 打包
+cd C:\Users\13450\Desktop\tools\release
+
+java -jar walle-cli-all.jar batch -f channel.txt  C:\Users\13450\Desktop\release\passenger\xysc-passenger-release-v1.0.0.apk
+
+
+// hilt常见用法：
+
+classpath 'com.google.dagger:hilt-android-gradle-plugin:2.28-alpha'
+
+ implementation 'com.google.dagger:hilt-android:2.28-alpha'
+ annotationProcessor 'com.google.dagger:hilt-android-compiler:2.28-alpha'
+ 
+ apply plugin: 'dagger.hilt.android.plugin'
+ 
+ Application：@HiltAndroidApp
+ 
+ Activity：@AndroidEntryPoint
+ 
+			 @Inject
+			 User1 user1;
+			 
+			 @Inject
+			 User2 cn;
+			 
+			 User2InCN
+			 @Inject
+			 User2 cn;
+			 
+			 User2InEN
+			 @Inject
+			 User2 en;
+ 
+ 1，实体类
+	class User1{
+		 @Inject
+		 public User1(){
+	 
+		}
+	 }
+ 
+ 2，抽象类、接口
+	interface User2{
+	
+	}
+	
+	class CN implement User2{
+		 @Inject
+		 public CN(){
+	 
+		}
+	 }
+	 
+	class EN implement User2{
+		 @Inject
+		 public EN(){
+	 
+		}
+	 }
+ 2.1，一个实现类
+	@Module
+	@InstallIn(ActivityComponent.class)
+	abstract class User2Module {
+		@Binds
+		abstract User2 bindUser2(CN cn);
+	}
+ 
+ 2.2，多个实现类
+	@Qualifier
+	@Retention(AnnotationRetention.RUNTIME)
+	annotation class User2InCN
+
+	@Qualifier
+	@Retention(AnnotationRetention.RUNTIME)
+	annotation class User2InEN
+	
+	@Module
+	@InstallIn(ActivityComponent.class)
+	abstract class User2Module {
+		@User2InCN
+		@Binds
+		abstract User2 bindUser2(CN cn);
+
+		@User2InUSA
+		@Binds
+		abstract User2 bindUser2(EN en);
+	}
+ 
+ 3，第三方
+	@Module
+	@InstallIn(ActivityComponent.class)
+	class RetrofitModule {
+		@Provides
+		@Singleton
+		return RetrofitFactory.create;
+	}
+
+
+// git常见用法
+仓库关联
+1,新建远程仓库：Test(会生成readme和gitignore文件)
+2,新建本地项目：Test(会生成java文件，本地和远程不一致)
+	2.1,git init(对应VCS->Import into VC->Create git Repository)
+	2.2,git config user.email  user.name(对应设置->Version Control->Github)
+	2.3,git remote add origin https://(对应VCS->Git->Remotes)
+	2.5,git add .(对应右击项目根目录->Git->Add)
+	2.6,git commit -m xxx(对应右击项目根目录->Git->Commit Directory)
+	(git bash中文不显示：git config --global core.quotepath false)
+	2.7,git pull origin master或者git pull origin master --allow-unrelated-histories
+	2.8,再次进行2.5和2.6
+	2.9,git push origin master
+	
+分支与合并
+1,假如现在在dev分支上，刚开发完项目，执行了下列命令：
+	git  add .
+	git  commit -m '提交的备注信息'
+	git  push -u origin dev 本地dev分支push到远程dev上
+2,想将dev分支合并到master分支，操作如下：
+	2.1,首先切换到master分支上
+		git checkout master
+	2.2,如果是多人开发的话 需要把远程master上的代码pull下来
+		git pull origin master
+	如果是自己一个开发就没有必要了，为了保险期间还是pull
+3,然后我们把dev分支的代码合并到master上
+	git merge dev
+4,然后查看状态及执行提交命令
+	git status
+5,最后执行下面提交命令,需要push到远程master上
+	git push origin master
+
+	
