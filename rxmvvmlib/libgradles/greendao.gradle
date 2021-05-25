@@ -10,6 +10,6 @@ buildscript {
 apply plugin: 'org.greenrobot.greendao'
 
 dependencies {
-    api 'org.greenrobot:greendao:3.2.2'
-    api 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
 }
