@@ -1,5 +1,6 @@
 package com.rx.mvvm.repository.datasource.local;
 
+import com.rx.mvvm.repository.entity.User;
 import com.rx.rxmvvmlib.mode.locate.L_GET;
 import com.rx.rxmvvmlib.mode.locate.LocalType;
 import com.rx.rxmvvmlib.mode.locate.L_POST;
@@ -18,4 +19,10 @@ public interface IUserLocalService {
 
     @L_GET(type = LocalType.SP, key = {"token"})
     String getToken();
+
+    @L_POST(type = LocalType.DB)
+    void saveUser(User user);
+
+    @L_GET(type = LocalType.DB)
+    User getUser(long id);
 }

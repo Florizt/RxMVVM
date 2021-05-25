@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.rx.mvvm.repository.IUserRepository;
 import com.rx.mvvm.repository.RepositoryFactory;
+import com.rx.mvvm.repository.entity.User;
 import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 
 import androidx.annotation.NonNull;
@@ -50,5 +51,8 @@ public class MainViewModel extends RxBaseViewModel {
         userRepository.saveUserCache(123, "哈哈哈哈哈哈");
         Log.i("TAG", "saveUserCsasache-111: " + userRepository.getUid());
         Log.i("TAG", "saveUserCsasache-222: " + userRepository.getToken());
+        Log.i("TAG", "saveUserCsasache-333---------------------------: " );
+        userRepository.saveUser(new User((long) 1,"aaa","张三",20));
+        Log.i("TAG", "saveUserCsasache-444: " + userRepository.getUser(1).toString());
     }
 }

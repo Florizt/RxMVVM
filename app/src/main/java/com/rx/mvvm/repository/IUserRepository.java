@@ -1,5 +1,7 @@
 package com.rx.mvvm.repository;
 
+import com.rx.mvvm.repository.entity.User;
+
 import io.reactivex.Observable;
 
 /**
@@ -17,4 +19,8 @@ public interface IUserRepository {
     String getToken();
 
     boolean isLogin();
+
+    void saveUser(User user);
+
+    User getUser(long id);
 }

@@ -7,6 +7,7 @@ import com.rx.mvvm.repository.IUserRepository;
 import com.rx.mvvm.repository.datasource.local.IUserLocalService;
 import com.rx.mvvm.repository.datasource.remote.IUserService;
 import com.rx.mvvm.repository.entity.HttpResult;
+import com.rx.mvvm.repository.entity.User;
 import com.rx.rxmvvmlib.mode.BaseEntity;
 import com.rx.rxmvvmlib.mode.remote.retrofit.TFunc;
 
@@ -57,4 +58,16 @@ public class UserRepository implements IUserRepository {
     public boolean isLogin() {
         return !TextUtils.isEmpty(getToken());
     }
+
+    @Override
+    public void saveUser(User user) {
+        userLocalService.saveUser(user);
+    }
+
+    @Override
+    public User getUser(long id) {
+        return userLocalService.getUser(id);
+    }
+
+
 }

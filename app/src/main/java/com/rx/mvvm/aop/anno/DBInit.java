@@ -1,4 +1,6 @@
-package com.rx.rxmvvmlib.mode.locate;
+package com.rx.mvvm.aop.anno;
+
+import org.greenrobot.greendao.AbstractDao;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,13 +9,13 @@ import java.lang.annotation.Target;
 
 /**
  * Created by wuwei
- * 2021/5/24
+ * 2021/3/22
  * 佛祖保佑       永无BUG
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface L_POST {
-    LocalType type() default LocalType.SP;
+public @interface DBInit {
+    String dbName();
 
-    String[] key() default "";//for sp key-value
+    Class<? extends AbstractDao<?, ?>>[] daoClasses();
 }

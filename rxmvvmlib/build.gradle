@@ -7,7 +7,6 @@ apply from: 'libgradles/ui.gradle'
 apply from: 'libgradles/network.gradle'
 apply from: 'libgradles/greendao.gradle'
 
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"

@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
 public @interface L_GET {
     LocalType type() default LocalType.SP;
 
-    String[] key() default "";
+    String[] key() default "";//for sp key-value
 }
