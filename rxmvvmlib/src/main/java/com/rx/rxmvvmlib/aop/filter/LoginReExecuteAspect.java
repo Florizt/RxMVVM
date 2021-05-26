@@ -17,7 +17,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class LoginReExecuteAspect {
     @Pointcut("execution(@com.rx.rxmvvmlib.aop.anno.LoginReExecute * *(..))")
-    public void loginReExecute() {
+    private void loginReExecute() {
 
     }
 

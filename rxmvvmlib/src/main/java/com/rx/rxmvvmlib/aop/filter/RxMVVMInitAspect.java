@@ -22,7 +22,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Aspect
 public class RxMVVMInitAspect {
     @Pointcut("execution(@com.rx.rxmvvmlib.aop.anno.RxMVVMInitz * *(..))")
-    public void rxMVVMInit() {
+    private void rxMVVMInit() {
 
     }
 

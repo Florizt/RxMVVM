@@ -7,10 +7,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:3.5.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
-        classpath 'org.aspectj:aspectjtools:1.8.9'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.8'
     }
 }
 

@@ -18,12 +18,12 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class ArouterAspect {
     @Pointcut("execution(@com.rx.mvvm.aop.anno.ArouterInit * *(..))")
-    public void arouterInit() {
+    private void arouterInit() {
 
     }
 
     @Pointcut("execution(@com.rx.mvvm.aop.anno.ArouterDestroy * *(..))")
-    public void arouterDestroy() {
+    private void arouterDestroy() {
 
     }
 

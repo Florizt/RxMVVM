@@ -16,8 +16,8 @@ import java.lang.reflect.Proxy;
  */
 public class Localfit {
 
-    final Context context;
-    final String psw;
+    private Context context;
+    private String psw;
     private AbstractDao dao;
 
     Localfit(Context context, String psw, AbstractDao dao) {

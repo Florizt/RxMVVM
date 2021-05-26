@@ -1,0 +1,11 @@
+apply plugin: 'android-aspectjx'
+
+// AOP 配置
+android {
+    aspectjx {
+        enabled true
+        exclude 'androidx','kotlin','com.google','com.squareup','com.alipay','org.apache'
+    }
+}
+
+

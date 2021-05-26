@@ -2,10 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.Florizt'
 
-apply from: 'libgradles/aspectj-lib.gradle'
 apply from: 'libgradles/ui.gradle'
 apply from: 'libgradles/network.gradle'
 apply from: 'libgradles/greendao.gradle'
+apply from: 'libgradles/aspectjx.gradle'
+
 
 android {
     compileSdkVersion 29

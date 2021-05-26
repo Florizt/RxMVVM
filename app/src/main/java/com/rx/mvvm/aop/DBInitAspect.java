@@ -20,7 +20,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Aspect
 public class DBInitAspect {
     @Pointcut("execution(@com.rx.mvvm.aop.anno.DBInit * *(..))")
-    public void dBInit() {
+    private void dBInit() {
 
     }
 

@@ -24,7 +24,7 @@ import io.reactivex.functions.Consumer;
 @Aspect
 public class PermissionAspect {
     @Pointcut("execution(@com.rx.rxmvvmlib.aop.anno.PermissionCheck * *(..))")
-    public void permissionCheck() {
+    private void permissionCheck() {
 
     }
 
@@ -36,7 +36,7 @@ public class PermissionAspect {
 
         if (permissionCheck != null && permissionCheck.permissions().length > 0) {
             try {
-                final Activity activity = AppManager.getAppManager().currentActivity();
+                final Activity activity = AppManager.getInstance().currentActivity();
                 if (null != activity) {
                     RxPermissions rxPermissions = new RxPermissions(activity);
                     rxPermissions

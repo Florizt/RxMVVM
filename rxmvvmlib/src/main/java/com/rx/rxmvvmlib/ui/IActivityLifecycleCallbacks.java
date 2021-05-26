@@ -20,7 +20,7 @@ public abstract class IActivityLifecycleCallbacks {
     private boolean isRunInBackground = true;
 
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-        AppManager.getAppManager().addActivity(activity);
+        AppManager.getInstance().addActivity(activity);
     }
 
 
@@ -41,7 +41,7 @@ public abstract class IActivityLifecycleCallbacks {
 
     public void onActivityPaused(@NonNull Activity activity) {
         if (activity.isFinishing()) {
-            AppManager.getAppManager().removeActivity(activity);
+            AppManager.getInstance().removeActivity(activity);
         }
     }
 

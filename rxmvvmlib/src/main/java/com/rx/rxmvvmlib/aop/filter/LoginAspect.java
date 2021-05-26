@@ -20,7 +20,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Aspect
 public class LoginAspect {
     @Pointcut("execution(@com.rx.rxmvvmlib.aop.anno.LoginCheck * *(..))")
-    public void loginCheck() {
+    private void loginCheck() {
 
     }
 

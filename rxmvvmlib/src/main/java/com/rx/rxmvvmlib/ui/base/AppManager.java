@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment;
  */
 public class AppManager {
 
-    private static Stack<Activity> activityStack = new Stack<>();
-    private static Stack<Fragment> fragmentStack = new Stack<>();
-    private static AppManager instance;
+    private Stack<Activity> activityStack = new Stack<>();
+    private Stack<Fragment> fragmentStack = new Stack<>();
+    private static volatile AppManager instance;
 
     private AppManager() {
     }
@@ -23,18 +23,22 @@ public class AppManager {
      *
      * @return AppManager
      */
-    public static AppManager getAppManager() {
+    public static AppManager getInstance() {
         if (instance == null) {
-            instance = new AppManager();
+            synchronized (AppManager.class) {
+                if (instance == null) {
+                    instance = new AppManager();
+                }
+            }
         }
         return instance;
     }
 
-    public static Stack<Activity> getActivityStack() {
+    public Stack<Activity> getActivityStack() {
         return activityStack;
     }
 
-    public static Stack<Fragment> getFragmentStack() {
+    public Stack<Fragment> getFragmentStack() {
         return fragmentStack;
     }
 

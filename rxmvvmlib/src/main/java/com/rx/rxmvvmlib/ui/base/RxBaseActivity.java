@@ -227,7 +227,7 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_HOME);
                 startActivity(intent);
-                AppManager.getAppManager().appExit();
+                AppManager.getInstance().appExit();
                 System.exit(0);
             } catch (Exception e) {
 
