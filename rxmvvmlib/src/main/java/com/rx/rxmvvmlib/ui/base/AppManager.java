@@ -2,6 +2,7 @@ package com.rx.rxmvvmlib.ui.base;
 
 import android.app.Activity;
 
+import java.lang.ref.SoftReference;
 import java.util.Stack;
 
 import androidx.fragment.app.Fragment;
@@ -11,11 +12,12 @@ import androidx.fragment.app.Fragment;
  */
 public class AppManager {
 
-    private Stack<Activity> activityStack = new Stack<>();
-    private Stack<Fragment> fragmentStack = new Stack<>();
+    private SoftReference<Stack<Activity>> activityStack = new SoftReference<>(new Stack<Activity>());
+    private SoftReference<Stack<Fragment>> fragmentStack = new SoftReference<>(new Stack<Fragment>());
     private static volatile AppManager instance;
 
     private AppManager() {
+
     }
 
     /**
@@ -35,11 +37,11 @@ public class AppManager {
     }
 
     public Stack<Activity> getActivityStack() {
-        return activityStack;
+        return activityStack.get();
     }
 
     public Stack<Fragment> getFragmentStack() {
-        return fragmentStack;
+        return fragmentStack.get();
     }
 
 
@@ -47,18 +49,17 @@ public class AppManager {
      * 添加Activity到堆栈
      */
     public void addActivity(Activity activity) {
-        if (activityStack == null) {
-            activityStack = new Stack<Activity>();
+        if (activityStack.get() != null) {
+            activityStack.get().add(activity);
         }
-        activityStack.add(activity);
     }
 
     /**
      * 移除指定的Activity
      */
     public void removeActivity(Activity activity) {
-        if (activity != null) {
-            activityStack.remove(activity);
+        if (activityStack.get() != null) {
+            activityStack.get().remove(activity);
         }
     }
 
@@ -67,10 +68,7 @@ public class AppManager {
      * 是否有activity
      */
     public boolean isActivity() {
-        if (activityStack != null) {
-            return !activityStack.isEmpty();
-        }
-        return false;
+        return activityStack.get() != null && !activityStack.get().isEmpty();
     }
 
     /**
@@ -78,7 +76,10 @@ public class AppManager {
      */
     public Activity currentActivity() {
         try {
-            return activityStack.lastElement();
+            if (activityStack.get() != null) {
+                return activityStack.get().lastElement();
+            }
+            return null;
         } catch (Exception e) {
             return null;
         }
@@ -88,8 +89,9 @@ public class AppManager {
      * 结束当前Activity（堆栈中最后一个压入的）
      */
     public void finishActivity() {
-        Activity activity = activityStack.lastElement();
-        finishActivity(activity);
+        if (activityStack.get() != null) {
+            finishActivity(activityStack.get().lastElement());
+        }
     }
 
     /**
@@ -108,10 +110,12 @@ public class AppManager {
      * 结束指定类名的Activity
      */
     public void finishActivity(Class<?> cls) {
-        for (Activity activity : activityStack) {
-            if (activity.getClass().equals(cls)) {
-                finishActivity(activity);
-                break;
+        if (activityStack.get() != null) {
+            for (Activity activity : activityStack.get()) {
+                if (activity.getClass().equals(cls)) {
+                    finishActivity(activity);
+                    break;
+                }
             }
         }
     }
@@ -120,26 +124,28 @@ public class AppManager {
      * 结束所有Activity
      */
     public void finishAllActivity() {
-        for (int i = 0, size = activityStack.size(); i < size; i++) {
-            if (null != activityStack.get(i)) {
-                finishActivity(activityStack.get(i));
+        if (activityStack.get() != null) {
+            for (int i = 0, size = activityStack.get().size(); i < size; i++) {
+                if (null != activityStack.get().get(i)) {
+                    finishActivity(activityStack.get().get(i));
+                }
             }
+            activityStack.get().clear();
         }
-        activityStack.clear();
     }
 
     /**
      * 获取指定的Activity
      *
-     * @author kymjs
      */
     public Activity getActivity(Class<?> cls) {
-        if (activityStack != null)
-            for (Activity activity : activityStack) {
+        if (activityStack.get() != null) {
+            for (Activity activity : activityStack.get()) {
                 if (activity.getClass().equals(cls)) {
                     return activity;
                 }
             }
+        }
         return null;
     }
 
@@ -148,18 +154,17 @@ public class AppManager {
      * 添加Fragment到堆栈
      */
     public void addFragment(Fragment fragment) {
-        if (fragmentStack == null) {
-            fragmentStack = new Stack<Fragment>();
+        if (fragmentStack.get() != null) {
+            fragmentStack.get().add(fragment);
         }
-        fragmentStack.add(fragment);
     }
 
     /**
      * 移除指定的Fragment
      */
     public void removeFragment(Fragment fragment) {
-        if (fragment != null) {
-            fragmentStack.remove(fragment);
+        if (fragmentStack.get() != null) {
+            fragmentStack.get().remove(fragment);
         }
     }
 
@@ -168,19 +173,15 @@ public class AppManager {
      * 是否有Fragment
      */
     public boolean isFragment() {
-        if (fragmentStack != null) {
-            return !fragmentStack.isEmpty();
-        }
-        return false;
+        return fragmentStack.get() != null && !fragmentStack.get().isEmpty();
     }
 
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
      */
     public Fragment currentFragment() {
-        if (fragmentStack != null) {
-            Fragment fragment = fragmentStack.lastElement();
-            return fragment;
+        if (fragmentStack.get() != null) {
+            return fragmentStack.get().lastElement();
         }
         return null;
     }
@@ -200,7 +201,9 @@ public class AppManager {
             //            其实android的机制决定了用户无法完全退出应用，当你的application最长时间没有被用过的时候，android自身会决定将application关闭了。
             //System.exit(0);
         } catch (Exception e) {
-            activityStack.clear();
+            if (activityStack.get() != null) {
+                activityStack.get().clear();
+            }
             e.printStackTrace();
         }
     }
