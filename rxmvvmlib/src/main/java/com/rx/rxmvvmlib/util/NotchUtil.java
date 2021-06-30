@@ -129,7 +129,7 @@ public class NotchUtil {
      */
     public static boolean hasNotchScreen(Activity activity) {
         if (hasNotchAtXiaomi() || hasNotchAtHuawei(activity) || hasNotchAtOPPO(activity)
-                || hasNotchAtVivo(activity) || isAndroidP(activity) != null) { //TODO 各种品牌
+                || hasNotchAtVivo(activity) || isAndroidP(activity) != null) {
             return true;
         }
 

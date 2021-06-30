@@ -4,9 +4,9 @@ package com.rx.rxmvvmlib.aop.filter;
 import android.app.Application;
 import android.text.TextUtils;
 
-import com.rx.rxmvvmlib.config.DefaultCfgsAdapter;
-import com.rx.rxmvvmlib.RxMVVMInit;
-import com.rx.rxmvvmlib.aop.anno.RxMVVMInitz;
+import com.rx.rxmvvmlib.RMEngine;
+import com.rx.rxmvvmlib.aop.anno.RxMVVMInit;
+import com.rx.rxmvvmlib.repository.config.DefaultCfgsAdapter;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -21,26 +21,26 @@ import org.aspectj.lang.reflect.MethodSignature;
  */
 @Aspect
 public class RxMVVMInitAspect {
-    @Pointcut("execution(@com.rx.rxmvvmlib.aop.anno.RxMVVMInitz * *(..))")
+    @Pointcut("execution(@com.rx.rxmvvmlib.aop.anno.RxMVVMInit * *(..))")
     private void rxMVVMInit() {
 
     }
 
     @Around("rxMVVMInit()")
     public void aroundJoinAspectRxMVVMInit(ProceedingJoinPoint joinPoint) throws Throwable {
+        joinPoint.proceed();
+
         if (!(joinPoint.getThis() instanceof Application)) {
             throw new IllegalStateException("RxMVVMInit not in application");
         }
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        RxMVVMInitz rxMVVMInit = methodSignature.getMethod().getAnnotation(RxMVVMInitz.class);
+        RxMVVMInit rxMVVMInit = methodSignature.getMethod().getAnnotation(RxMVVMInit.class);
         if (rxMVVMInit != null
                 && !TextUtils.equals(rxMVVMInit.clazz().getName(), DefaultCfgsAdapter.class.getName())) {
-            RxMVVMInit.getInstance().init((Application) joinPoint.getThis(), rxMVVMInit.clazz().newInstance());
+            RMEngine.getInstance().init((Application) joinPoint.getThis(), rxMVVMInit.clazz().newInstance());
         } else {
-            RxMVVMInit.getInstance().init((Application) joinPoint.getThis());
+            RMEngine.getInstance().init((Application) joinPoint.getThis());
         }
-
-        joinPoint.proceed();
     }
 }

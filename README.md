@@ -88,7 +88,7 @@ RxMVVMInit.getInstance().init(this, new ICfgsAdapter() {
 在Application的onCreate()方法上使用：
 
 ```
-@RxMVVMInitz(clazz = DemoCfgsAdapter.class)
+@RxMVVMInit(clazz = DemoCfgsAdapter.class)
 @Override
 public void onCreate() {
     super.onCreate();

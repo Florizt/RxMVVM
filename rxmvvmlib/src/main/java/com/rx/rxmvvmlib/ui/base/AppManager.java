@@ -136,7 +136,6 @@ public class AppManager {
 
     /**
      * 获取指定的Activity
-     *
      */
     public Activity getActivity(Class<?> cls) {
         if (activityStack.get() != null) {

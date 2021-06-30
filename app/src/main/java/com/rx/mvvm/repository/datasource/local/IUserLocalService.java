@@ -1,9 +1,9 @@
 package com.rx.mvvm.repository.datasource.local;
 
 import com.rx.mvvm.repository.entity.User;
-import com.rx.rxmvvmlib.mode.locate.L_GET;
-import com.rx.rxmvvmlib.mode.locate.LocalType;
-import com.rx.rxmvvmlib.mode.locate.L_POST;
+import com.rx.rxmvvmlib.repository.datasource.locate.L_GET;
+import com.rx.rxmvvmlib.repository.datasource.locate.LocalType;
+import com.rx.rxmvvmlib.repository.datasource.locate.L_POST;
 
 /**
  * Created by wuwei

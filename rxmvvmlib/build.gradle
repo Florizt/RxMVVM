@@ -23,8 +23,16 @@ android {
     dataBinding {
         enabled true
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //视频合并
+    implementation 'com.googlecode.mp4parser:isoparser:1.1.21'
 }

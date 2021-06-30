@@ -62,7 +62,6 @@ public class ViewAdapter {
                 }
             }
         });
-
     }
 
     @SuppressWarnings("unchecked")

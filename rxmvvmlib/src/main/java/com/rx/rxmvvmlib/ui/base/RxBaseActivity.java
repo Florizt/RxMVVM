@@ -5,21 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.barlibrary.OnKeyboardListener;
 import com.rx.rxmvvmlib.R;
-import com.rx.rxmvvmlib.RxMVVMInit;
+import com.rx.rxmvvmlib.RMEngine;
 import com.rx.rxmvvmlib.databinding.ActivityBaseBinding;
-import com.rx.rxmvvmlib.ui.keyboard.KeyboardHeightObserver;
-import com.rx.rxmvvmlib.ui.keyboard.KeyboardHeightProvider;
+import com.rx.rxmvvmlib.ui.IBaseView;
+import com.rx.rxmvvmlib.ui.IImmersionBar;
+import com.rx.rxmvvmlib.ui.IKeyboardChange;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
 import com.rx.rxmvvmlib.util.ToastUtil;
 import com.rx.rxmvvmlib.util.UIUtil;
-import com.rx.rxmvvmlib.ui.IBaseView;
-import com.rx.rxmvvmlib.ui.IImmersionBar;
 import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -44,13 +45,12 @@ import me.jessyan.autosize.AutoSizeConfig;
  */
 
 public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBaseViewModel>
-        extends RxAppCompatActivity implements IBaseView, IImmersionBar, KeyboardHeightObserver {
+        extends RxAppCompatActivity implements IBaseView, IImmersionBar, IKeyboardChange {
     protected RxBaseActivity activity;
     protected V binding;
     protected VM viewModel;
     private RxBaseLoadingDialog loadingDialog;
     private boolean isExit;
-    private KeyboardHeightProvider keyboardHeightProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,6 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
         initViewObservable();
         //注册EventBus
         viewModel.registerEventBus();
-        //初始化软键盘provider
-        keyboardHeightProvider = new KeyboardHeightProvider(this);
     }
 
     @Override
@@ -111,44 +109,19 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            if (RxMVVMInit.getConfig().getActivityLifecycleCallbacks() != null) {
-                RxMVVMInit.getConfig().getActivityLifecycleCallbacks().onActivityResult(activity, requestCode, resultCode, data);
+            if (RMEngine.getConfig().getActivityLifecycleCallbacks() != null) {
+                RMEngine.getConfig().getActivityLifecycleCallbacks().onActivityResult(activity, requestCode, resultCode, data);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (keyboardHeightProvider != null) {
-            keyboardHeightProvider.setKeyboardHeightObserver(this);
-            keyboardHeightProvider.start();
-        }
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (keyboardHeightProvider != null) {
-            keyboardHeightProvider.setKeyboardHeightObserver(null);
-            keyboardHeightProvider.close();
-        }
-    }
-
-    @Override
-    public void onKeyboardHeightChanged(int height, int orientation) {
-
-    }
-
     private void initImmersionBar() {
         if (immersionBarEnabled()) {
             if (isFullScreen()) {
                 ImmersionBar.with(this)
-                        .fullScreen(true)
-                        .navigationBarColor(R.color.rx_transparent)
-                        .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
+                        .hideBar(BarHide.FLAG_HIDE_BAR)
                         .init();
             } else {
                 ImmersionBar.with(this)
@@ -156,6 +129,14 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
                         .statusBarDarkFont(statusBarDarkFont(), 0.2f)
                         .statusBarColor(statusBarColor())
                         .navigationBarColor(navigationBarColor())
+                        .keyboardEnable(keyboardEnable())
+                        .keyboardMode(keyboardMode())
+                        .setOnKeyboardListener(new OnKeyboardListener() {
+                            @Override
+                            public void onKeyboardChange(boolean isPopup, int keyboardHeight) {
+                                RxBaseActivity.this.onKeyboardChange(isPopup, keyboardHeight);
+                            }
+                        })
                         .init();
             }
         }
@@ -191,15 +172,15 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
         getLifecycle().addObserver(viewModel);
         //注入RxLifecycle生命周期
         viewModel.injectLifecycleProvider(this);
-        //LiveData需要
+
         binding.setLifecycleOwner(this);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (isExit()) {
-                doSthIsExit();
+            if (isBack()) {
+                doSthIsBack();
             } else {
                 exit();
             }
@@ -221,8 +202,8 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
             }, 1500);
         } else {
             try {
-                if (RxMVVMInit.getConfig().getActivityLifecycleCallbacks() != null) {
-                    RxMVVMInit.getConfig().getActivityLifecycleCallbacks().onAppExit(activity);
+                if (RMEngine.getConfig().getActivityLifecycleCallbacks() != null) {
+                    RMEngine.getConfig().getActivityLifecycleCallbacks().onAppExit(activity);
                 }
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_HOME);
@@ -266,7 +247,7 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
         viewModel.getUC().getBackEvent().observe(this, new Observer<Void>() {
             @Override
             public void onChanged(Void aVoid) {
-                doSthIsExit();
+                doSthIsBack();
             }
         });
     }
@@ -333,5 +314,128 @@ public abstract class RxBaseActivity<V extends ViewDataBinding, VM extends RxBas
     protected void hideFragment(@NonNull Fragment showFragment) {
         getSupportFragmentManager().beginTransaction()
                 .hide(showFragment).commitAllowingStateLoss();
+    }
+
+    //-----------------------------------------------默认接口------------------------------------------------------
+
+    /**
+     * 是否开启沉浸式
+     *
+     * @return
+     */
+    @Override
+    public boolean immersionBarEnabled() {
+        return true;
+    }
+
+    /**
+     * 沉浸式下是否全屏
+     *
+     * @return
+     */
+    @Override
+    public boolean isFullScreen() {
+        return false;
+    }
+
+    /**
+     * 沉浸式非全屏下状态栏字体是否深色
+     *
+     * @return
+     */
+    @Override
+    public boolean statusBarDarkFont() {
+        return true;
+    }
+
+    /**
+     * 是否fitsSystemWindows
+     *
+     * @return
+     */
+    @Override
+    public boolean fitsSystemWindows() {
+        return true;
+    }
+
+    /**
+     * 沉浸式非全屏下状态栏背景颜色
+     *
+     * @return
+     */
+    @Override
+    public int statusBarColor() {
+        return R.color.rx_ffffff;
+    }
+
+    /**
+     * 沉浸式非全屏下底部导航栏背景颜色
+     *
+     * @return
+     */
+    @Override
+    public int navigationBarColor() {
+        return R.color.rx_ffffff;
+    }
+
+    /**
+     * 按返回键是否只是返回
+     *
+     * @return
+     */
+    @Override
+    public boolean isBack() {
+        return true;
+    }
+
+    /**
+     * 按返回键仅仅只是返回上个界面时要做的操作
+     */
+    @Override
+    public void doSthIsBack() {
+        finish();
+    }
+
+    /**
+     * 初始化界面传递参数
+     */
+    @Override
+    public void initParam() {
+
+    }
+
+    /**
+     * loading弹出布局
+     *
+     * @return
+     */
+    @Override
+    public int initLoadingLayoutId() {
+        return R.layout.loading_dialog;
+    }
+
+    /**
+     * loading弹出是否消失
+     *
+     * @return
+     */
+    @Override
+    public boolean loadingCancelable() {
+        return false;
+    }
+
+    @Override
+    public boolean keyboardEnable() {
+        return true;
+    }
+
+    @Override
+    public int keyboardMode() {
+        return WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
+    }
+
+    @Override
+    public void onKeyboardChange(boolean isPopup, int keyboardHeight) {
+
     }
 }

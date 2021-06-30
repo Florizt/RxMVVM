@@ -3,8 +3,8 @@ package com.rx.mvvm.repository.config;
 import android.content.Context;
 
 import com.rx.mvvm.BuildConfig;
-import com.rx.rxmvvmlib.RxMVVMInit;
-import com.rx.rxmvvmlib.mode.remote.ICustomHttpCodeFilter;
+import com.rx.rxmvvmlib.RMEngine;
+import com.rx.rxmvvmlib.repository.datasource.remote.ICustomHttpCodeFilter;
 import com.rx.rxmvvmlib.ui.IActivityLifecycleCallbacks;
 import com.rx.rxmvvmlib.ui.ICrashHandler;
 
@@ -17,7 +17,7 @@ import okhttp3.Interceptor;
  * 2021/4/28
  * 佛祖保佑       永无BUG
  */
-public class AppCfgsAdapter implements RxMVVMInit.ICfgsAdapter {
+public class AppCfgsAdapter implements RMEngine.ICfgsAdapter {
 
     @Override
     public boolean debugEnable() {

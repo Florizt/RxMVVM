@@ -37,7 +37,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.rx.rxmvvmlib.util.UIUtil;
 import com.rx.rxmvvmlib.ui.widge.wheelview.adapter.ArrayWheelAdapter;
 import com.rx.rxmvvmlib.ui.widge.wheelview.adapter.BaseWheelAdapter;
 import com.rx.rxmvvmlib.ui.widge.wheelview.adapter.SimpleWheelAdapter;
@@ -45,6 +44,7 @@ import com.rx.rxmvvmlib.ui.widge.wheelview.common.WheelConstants;
 import com.rx.rxmvvmlib.ui.widge.wheelview.common.WheelViewException;
 import com.rx.rxmvvmlib.ui.widge.wheelview.graphics.DrawableFactory;
 import com.rx.rxmvvmlib.ui.widge.wheelview.util.WheelUtils;
+import com.rx.rxmvvmlib.util.UIUtil;
 
 import java.util.HashMap;
 import java.util.List;

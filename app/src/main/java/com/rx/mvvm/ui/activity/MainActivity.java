@@ -23,11 +23,6 @@ public class MainActivity extends RxBaseActivity<ActivityMainBinding, MainViewMo
     }
 
     @Override
-    public void initParam() {
-
-    }
-
-    @Override
     public void initView(Bundle savedInstanceState) {
 
     }
@@ -40,55 +35,5 @@ public class MainActivity extends RxBaseActivity<ActivityMainBinding, MainViewMo
     @Override
     public void initViewObservable() {
 
-    }
-
-    @Override
-    public int initLoadingLayoutId() {
-        return 0;
-    }
-
-    @Override
-    public boolean loadingCancelable() {
-        return false;
-    }
-
-    @Override
-    public boolean isExit() {
-        return false;
-    }
-
-    @Override
-    public void doSthIsExit() {
-
-    }
-
-    @Override
-    public boolean immersionBarEnabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isFullScreen() {
-        return false;
-    }
-
-    @Override
-    public boolean statusBarDarkFont() {
-        return false;
-    }
-
-    @Override
-    public boolean fitsSystemWindows() {
-        return false;
-    }
-
-    @Override
-    public int statusBarColor() {
-        return 0;
-    }
-
-    @Override
-    public int navigationBarColor() {
-        return 0;
     }
 }

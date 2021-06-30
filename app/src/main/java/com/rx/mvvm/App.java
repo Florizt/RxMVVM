@@ -7,7 +7,7 @@ import com.rx.mvvm.aop.anno.ArouterInit;
 import com.rx.mvvm.aop.anno.DBInit;
 import com.rx.mvvm.repository.config.AppCfgsAdapter;
 import com.rx.mvvm.repository.greendao.UserDao;
-import com.rx.rxmvvmlib.aop.anno.RxMVVMInitz;
+import com.rx.rxmvvmlib.aop.anno.RxMVVMInit;
 
 /**
  * Created by wuwei
@@ -15,7 +15,7 @@ import com.rx.rxmvvmlib.aop.anno.RxMVVMInitz;
  * 佛祖保佑       永无BUG
  */
 public class App extends Application {
-    @RxMVVMInitz(clazz = AppCfgsAdapter.class)
+    @RxMVVMInit(clazz = AppCfgsAdapter.class)
     @ArouterInit
     @DBInit(dbName = "test", daoClasses = {UserDao.class})
     @Override

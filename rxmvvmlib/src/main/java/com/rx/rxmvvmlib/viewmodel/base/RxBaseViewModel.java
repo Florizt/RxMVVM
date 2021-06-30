@@ -2,8 +2,8 @@ package com.rx.rxmvvmlib.viewmodel.base;
 
 import android.app.Application;
 
-import com.rx.rxmvvmlib.config.MessageEvent;
-import com.rx.rxmvvmlib.mode.SingleLiveEvent;
+import com.rx.rxmvvmlib.repository.config.MessageEvent;
+import com.rx.rxmvvmlib.repository.datasource.SingleLiveEvent;
 import com.rx.rxmvvmlib.viewmodel.IBaseViewModel;
 import com.trello.rxlifecycle2.LifecycleProvider;
 

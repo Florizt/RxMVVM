@@ -355,4 +355,42 @@ public class DateUtil {
                 : ("0" + hours) + ":" + (minutes >= 10 ? (minutes + "") : ("0" + minutes)) + ":"
                 + (second >= 10 ? (second + "") : ("0" + second)));
     }
+
+    public static String getVideoDurationBySecond(int second) {
+        if (second <= 0) {
+            return "00:00";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int hours = second / 60 * 60;
+        if (hours > 0) {
+            second -= hours * 60 * 60;
+        }
+
+        int minutes = second / 60;
+        if (minutes > 0) {
+            second -= minutes * 60;
+        }
+
+        return minutes + ":" + second;
+    }
+
+    public static String getAudioDurationBySecond(int second) {
+        if (second <= 0) {
+            return 0 + "\'" + 0 + "\"";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int hours = second / 60 * 60;
+        if (hours > 0) {
+            second -= hours * 60 * 60;
+        }
+
+        int minutes = second / 60;
+        if (minutes > 0) {
+            second -= minutes * 60;
+        }
+
+        return minutes + "\'" + second + "\"";
+    }
 }

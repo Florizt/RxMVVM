@@ -4,8 +4,8 @@ import com.rx.mvvm.repository.datasource.local.IUserLocalService;
 import com.rx.mvvm.repository.greendao.DaoManager;
 import com.rx.mvvm.repository.impl.UserRepository;
 import com.rx.mvvm.repository.datasource.remote.IUserService;
-import com.rx.rxmvvmlib.mode.locate.LocalFactory;
-import com.rx.rxmvvmlib.mode.remote.retrofit.RetrofitFactory;
+import com.rx.rxmvvmlib.repository.datasource.locate.LocalFactory;
+import com.rx.rxmvvmlib.repository.datasource.remote.retrofit.RetrofitFactory;
 import com.rx.rxmvvmlib.util.UIUtil;
 
 /**

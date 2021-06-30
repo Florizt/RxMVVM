@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 import com.rx.rxmvvmlib.ui.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
+import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.lang.reflect.ParameterizedType;
@@ -191,5 +191,15 @@ public abstract class RxBaseFragment<V extends ViewDataBinding, VM extends RxBas
     protected void hideFragment(@NonNull Fragment showFragment) {
         getChildFragmentManager().beginTransaction()
                 .hide(showFragment).commitAllowingStateLoss();
+    }
+
+    //-----------------------------------------------默认接口------------------------------------------------------
+
+    /**
+     * 初始化界面传递参数
+     */
+    @Override
+    public void initParam() {
+
     }
 }

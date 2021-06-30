@@ -15,6 +15,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import androidx.core.content.ContextCompat;
 
@@ -34,29 +37,35 @@ public class FileUtil {
     public static final String POST_VIDEO = ".mp4";
     public static final String POST_AUDIO = ".mp3";
 
-    public static File createFile(Context context, int type, String fileName, String format) {
-        fileName = TextUtils.isEmpty(fileName) ? String.valueOf(System.currentTimeMillis()) : fileName;
+    public static File createFile(Context context, int type, String fileName, String format, String sub) {
+        if (TextUtils.isEmpty(fileName)) {
+            fileName = new SimpleDateFormat("yyyyMMddhhmmss", Locale.CHINA).format(new Date());
+        }
+        if (sub.startsWith("/") && sub.length() > 1) {
+            sub = sub.substring(1, sub.length());
+        }
         File tmpFile = null;
         String suffixType;
+        boolean hasFormat = (fileName.lastIndexOf(".") > 0 && fileName.lastIndexOf(".") + 1 < fileName.length());
         try {
             switch (type) {
                 case FileUtil.TYPE_VIDEO:
-                    tmpFile = new File(createDir(context, type),
-                            (fileName.lastIndexOf(".") > 0 && fileName.lastIndexOf(".") + 1 < fileName.length()) ? fileName : fileName + POST_VIDEO);
+                    tmpFile = new File(createDir(context, type, sub),
+                            hasFormat ? fileName : fileName + POST_VIDEO);
                     break;
                 case FileUtil.TYPE_AUDIO:
-                    tmpFile = new File(createDir(context, type),
-                            (fileName.lastIndexOf(".") > 0 && fileName.lastIndexOf(".") + 1 < fileName.length()) ? fileName : fileName + POST_AUDIO);
+                    tmpFile = new File(createDir(context, type, sub),
+                            hasFormat ? fileName : fileName + POST_AUDIO);
                     break;
                 case FileUtil.TYPE_IMAGE:
-                    tmpFile = new File(createDir(context, type),
-                            (fileName.lastIndexOf(".") > 0 && fileName.lastIndexOf(".") + 1 < fileName.length()) ? fileName : fileName + POST_IMAGE);
+                    tmpFile = new File(createDir(context, type, sub),
+                            hasFormat ? fileName : fileName + POST_IMAGE);
                     break;
                 case FileUtil.TYPE_DOWNLOAD:
                 default:
                     suffixType = TextUtils.isEmpty(format) ? POST_IMAGE : format;
-                    tmpFile = new File(createDir(context, type),
-                            (fileName.lastIndexOf(".") > 0 && fileName.lastIndexOf(".") + 1 < fileName.length()) ? fileName : fileName + suffixType);
+                    tmpFile = new File(createDir(context, type, sub),
+                            hasFormat ? fileName : fileName + suffixType);
                     break;
             }
             if (tmpFile != null && !tmpFile.exists() && tmpFile.createNewFile()) {
@@ -68,7 +77,10 @@ public class FileUtil {
         return tmpFile;
     }
 
-    public static File createDir(Context context, int type) {
+    public static File createDir(Context context, int type, String sub) {
+        if (sub.startsWith("/") && sub.length() > 1) {
+            sub = sub.substring(1, sub.length());
+        }
         File rootDir;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             rootDir = getRootDirFile(context, type);
@@ -81,7 +93,8 @@ public class FileUtil {
         }
 
         File folderDir = new File(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-                ? rootDir.getAbsolutePath() : rootDir.getAbsolutePath() + getParentPath(context, type));
+                ? rootDir.getAbsolutePath() + "/" + sub
+                : rootDir.getAbsolutePath() + getParentPath(context, type, sub));
 
         if (folderDir != null && !folderDir.exists() && folderDir.mkdirs()) {
         }
@@ -106,20 +119,23 @@ public class FileUtil {
         }
     }
 
-    public static String getParentPath(Context context, int type) {
+    public static String getParentPath(Context context, int type, String sub) {
+        if (sub.startsWith("/") && sub.length() > 1) {
+            sub = sub.substring(1, sub.length());
+        }
         switch (type) {
             case FileUtil.TYPE_VIDEO:
-                return "/" + context.getPackageName() + "/video/";
+                return "/" + context.getPackageName() + "/video/" + sub;
             case FileUtil.TYPE_AUDIO:
-                return "/" + context.getPackageName() + "/audio/";
+                return "/" + context.getPackageName() + "/audio/" + sub;
             case FileUtil.TYPE_IMAGE:
-                return "/" + context.getPackageName() + "/image/";
+                return "/" + context.getPackageName() + "/image/" + sub;
             case FileUtil.TYPE_DOWNLOAD:
-                return "/" + context.getPackageName() + "/download/";
+                return "/" + context.getPackageName() + "/download/" + sub;
             case FileUtil.TYPE_DOCUMENT:
-                return "/" + context.getPackageName() + "/document/";
+                return "/" + context.getPackageName() + "/document/" + sub;
             default:
-                return "/" + context.getPackageName() + "/download/";
+                return "/" + context.getPackageName() + "/download/" + sub;
         }
     }
 

@@ -3,9 +3,9 @@ package com.rx.rxmvvmlib.aop.filter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
+import com.rx.rxmvvmlib.aop.IPermissionCheckDenine;
 import com.rx.rxmvvmlib.aop.anno.PermissionCheck;
 import com.rx.rxmvvmlib.ui.base.AppManager;
-import com.rx.rxmvvmlib.aop.IPermissionCheckDenine;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.aspectj.lang.ProceedingJoinPoint;

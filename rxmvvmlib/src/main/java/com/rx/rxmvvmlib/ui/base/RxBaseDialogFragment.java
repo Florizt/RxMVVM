@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
+import com.rx.rxmvvmlib.R;
 import com.rx.rxmvvmlib.ui.IBaseDialogView;
 import com.rx.rxmvvmlib.ui.IBaseView;
 import com.rx.rxmvvmlib.util.SoftKeyboardUtil;
+import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 import com.trello.rxlifecycle2.components.support.RxDialogFragment;
 
 import java.lang.reflect.Constructor;
@@ -254,5 +255,35 @@ public abstract class RxBaseDialogFragment<V extends ViewDataBinding, VM extends
                 SoftKeyboardUtil.hiddenSoftKeyboard(getActivity(), v.getWindowToken());
             }
         }
+    }
+
+    //-----------------------------------------------默认接口------------------------------------------------------
+
+    /**
+     * 初始化界面传递参数
+     */
+    @Override
+    public void initParam() {
+
+    }
+
+    /**
+     * loading弹出布局
+     *
+     * @return
+     */
+    @Override
+    public int initLoadingLayoutId() {
+        return R.layout.loading_dialog;
+    }
+
+    /**
+     * loading弹出是否消失
+     *
+     * @return
+     */
+    @Override
+    public boolean loadingCancelable() {
+        return false;
     }
 }

@@ -1,6 +1,6 @@
 package com.rx.mvvm.repository.entity;
 
-import com.rx.rxmvvmlib.mode.BaseEntity;
+import com.rx.rxmvvmlib.repository.datasource.BaseEntity;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;

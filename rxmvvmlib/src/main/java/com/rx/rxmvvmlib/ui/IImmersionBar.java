@@ -42,4 +42,18 @@ public interface IImmersionBar {
      * @return
      */
     int navigationBarColor();
+
+    /**
+     * 解决EditText与软键盘冲突
+     *
+     * @return true：EditText跟随软键盘弹起，false反之
+     */
+    boolean keyboardEnable();
+
+    /**
+     * 软键盘模式
+     *
+     * @return
+     */
+    int keyboardMode();
 }

@@ -34,17 +34,23 @@ public class RecordVideoUtil {
     private Context context;
     private int viewWidth;
     private int viewHeight;
+
     SensorManager sm;
+
     private Camera camera;
     private int cameraId;
+
     private int sensorAngle;
     private boolean isRecorder = false;
     MediaRecorder mediaRecorder;
 
-    public void startPreview(Context context, SurfaceHolder holder, int viewWidth, int viewHeight) {
+    public RecordVideoUtil(Context context, int viewWidth, int viewHeight){
         this.context = context;
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
+    }
+
+    public void startPreview(SurfaceHolder holder) {
         if (camera == null) {
             try {
                 if (Camera.getNumberOfCameras() == 2) {
@@ -202,7 +208,7 @@ public class RecordVideoUtil {
         mediaRecorder.setAudioChannels(mProfile.audioChannels);
         mediaRecorder.setAudioSamplingRate(mProfile.audioSampleRate);
 
-        if (cameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
+        if (cameraId == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             //手机预览倒立的处理
             int cameraAngle = getCameraDisplayOrientation(context, cameraId);
             if (cameraAngle == 270) {
@@ -223,7 +229,7 @@ public class RecordVideoUtil {
                     mediaRecorder.setOrientationHint(nowAngle);
                 }
             }
-        } else {
+        } else  if (cameraId == Camera.CameraInfo.CAMERA_FACING_BACK){
             mediaRecorder.setOrientationHint(nowAngle);
         }
 
@@ -240,7 +246,7 @@ public class RecordVideoUtil {
         }
     }
 
-    public void stopRecord(boolean isShort) {
+    public void stopRecord() {
         if (!isRecorder) {
             return;
         }
@@ -300,8 +306,8 @@ public class RecordVideoUtil {
     };
 
     public int getCameraDisplayOrientation(Context context, int cameraId) {
-        android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
-        android.hardware.Camera.getCameraInfo(cameraId, info);
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(cameraId, info);
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         int rotation = wm.getDefaultDisplay().getRotation();
         int degrees = 0;

@@ -153,8 +153,9 @@ public class RCImageView extends ImageView implements Checkable, RCAttrs {
 
     @Override
     public void invalidate() {
-        if (null != mRCHelper)
+        if (null != mRCHelper) {
             mRCHelper.refreshRegion(this);
+        }
         super.invalidate();
     }
 

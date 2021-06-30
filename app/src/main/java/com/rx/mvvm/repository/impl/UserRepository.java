@@ -8,8 +8,8 @@ import com.rx.mvvm.repository.datasource.local.IUserLocalService;
 import com.rx.mvvm.repository.datasource.remote.IUserService;
 import com.rx.mvvm.repository.entity.HttpResult;
 import com.rx.mvvm.repository.entity.User;
-import com.rx.rxmvvmlib.mode.BaseEntity;
-import com.rx.rxmvvmlib.mode.remote.retrofit.TFunc;
+import com.rx.rxmvvmlib.repository.datasource.BaseEntity;
+import com.rx.rxmvvmlib.repository.datasource.remote.retrofit.TFunc;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

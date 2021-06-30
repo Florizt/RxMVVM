@@ -58,10 +58,10 @@ public interface IBaseView {
      *
      * @return
      */
-    boolean isExit();
+    boolean isBack();
 
     /**
      * 按返回键仅仅只是返回上个界面时要做的操作
      */
-    void doSthIsExit();
+    void doSthIsBack();
 }

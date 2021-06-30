@@ -1,8 +1,8 @@
 package com.rx.mvvm.repository.entity;
 
-import com.rx.rxmvvmlib.mode.remote.retrofit.anno.HttpCode;
-import com.rx.rxmvvmlib.mode.remote.retrofit.anno.HttpData;
-import com.rx.rxmvvmlib.mode.remote.retrofit.anno.HttpMsg;
+import com.rx.rxmvvmlib.repository.datasource.remote.retrofit.anno.HttpCode;
+import com.rx.rxmvvmlib.repository.datasource.remote.retrofit.anno.HttpData;
+import com.rx.rxmvvmlib.repository.datasource.remote.retrofit.anno.HttpMsg;
 
 /**
  * Created by wuwei

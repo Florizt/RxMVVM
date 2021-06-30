@@ -11,9 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.rx.rxmvvmlib.R;
+import com.rx.rxmvvmlib.databinding.DialogDefaultBinding;
 import com.rx.rxmvvmlib.ui.binding.command.BindingAction;
 import com.rx.rxmvvmlib.ui.binding.command.BindingCommand;
-import com.rx.rxmvvmlib.databinding.DialogDefaultBinding;
 import com.rx.rxmvvmlib.util.UIUtil;
 
 import androidx.annotation.NonNull;

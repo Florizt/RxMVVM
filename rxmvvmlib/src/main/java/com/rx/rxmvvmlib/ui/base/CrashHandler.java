@@ -89,7 +89,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         try {
             long current = System.currentTimeMillis();
             String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(current));
-            File file = new File(FileUtil.createDir(context, FileUtil.TYPE_DOCUMENT), FILE_NAME + time + FILE_NAME_SUFFIX);
+            File file = new File(FileUtil.createDir(context, FileUtil.TYPE_DOCUMENT,"crash"), FILE_NAME + time + FILE_NAME_SUFFIX);
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             pw.println(time);
             dumpPhoneInfo(pw);

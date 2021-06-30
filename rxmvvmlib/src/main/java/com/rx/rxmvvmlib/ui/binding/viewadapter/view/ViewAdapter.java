@@ -27,7 +27,7 @@ import io.reactivex.functions.Consumer;
  */
 
 public class ViewAdapter {
-    //防重复点击间隔(秒)
+    //防重复点击间隔(毫秒)
     public static final int CLICK_INTERVAL = 500;//ms
 
     /**

@@ -2,8 +2,8 @@ package com.rx.rxmvvmlib.ui.base;
 
 import android.os.Bundle;
 
-import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 import com.rx.rxmvvmlib.ui.IBaseDialogView;
+import com.rx.rxmvvmlib.viewmodel.base.RxBaseViewModel;
 
 import androidx.databinding.ViewDataBinding;
 
